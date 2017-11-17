@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArchPM.Core
+namespace ArchPM.Core.Enums
 {
     /// <summary>
     /// 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArchPM.Core;
 using ArchPM.Messaging.MqLog.Infrastructure;
+using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging.MqLog
 {

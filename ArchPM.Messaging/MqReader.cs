@@ -3,6 +3,7 @@ using System.Messaging;
 using ArchPM.Core;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.Infrastructure.EventArg;
+using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging
 {

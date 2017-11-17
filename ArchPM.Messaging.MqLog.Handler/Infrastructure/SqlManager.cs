@@ -9,6 +9,8 @@ using ArchPM.Core.Extensions;
 using ArchPM.Messaging.MqLog.Infrastructure;
 using ArchPM.Core.Extensions.Advanced;
 using ArchPM.Messaging.MqLog.Handler;
+using ArchPM.Core.Logging.BasicLogging;
+using ArchPM.Core.Enums;
 
 namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
 {

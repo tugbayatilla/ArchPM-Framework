@@ -8,6 +8,7 @@ using ArchPM.Core.Extensions;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.Infrastructure.EventArg;
 using ArchPM.Core.Extensions.Advanced;
+using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging
 {

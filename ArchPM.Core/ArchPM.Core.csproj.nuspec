@@ -15,7 +15,7 @@
     <tags>ArchPM Core</tags>
      <files>
     <!-- Include everything in \build -->
-    <file src="build\**" target="build" />
+    <file src="bin\release\**" target="build" />
 
     <!-- Other files -->
     <!-- ... -->

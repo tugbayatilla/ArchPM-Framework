@@ -1,4 +1,5 @@
-﻿using ArchPM.Core.Exceptions;
+﻿using ArchPM.Core.Enums;
+using ArchPM.Core.Exceptions;
 using ArchPM.Core.Extensions.Advanced;
 using System;
 using System.Collections.Generic;

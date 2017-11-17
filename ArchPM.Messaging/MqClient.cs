@@ -5,6 +5,7 @@ using System.Messaging;
 using System.ServiceProcess;
 using ArchPM.Core;
 using ArchPM.Core.Extensions;
+using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging
 {

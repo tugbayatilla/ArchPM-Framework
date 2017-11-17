@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.Core
+namespace ArchPM.Core.Logging.BasicLogging
 {
     public sealed class NullBasicLog : IBasicLog
     {
