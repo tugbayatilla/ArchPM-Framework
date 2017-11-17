@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Data;
 using ArchPM.Data;
-using Sisli.MIS.Infrastructure.Contexts;
+using ArchPM.Data.Contexts;
 
-namespace Sisli.MIS.Infrastructure.UnitOfWorks
+namespace ArchPM.Data.UnitOfWorks
 {
     public class MemoryUnitOfWork : IUnitOfWork
     {

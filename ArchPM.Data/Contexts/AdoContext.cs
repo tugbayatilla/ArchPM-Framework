@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
 using ArchPM.Core;
+using ArchPM.Data.UnitOfWorks;
 
-namespace ArchPM.Data.ADO
+namespace ArchPM.Data.Contexts
 {
     public abstract class AdoContext : IDbContext
     {

@@ -1,9 +1,9 @@
 ﻿using ArchPM.Data;
-using Sisli.MIS.Infrastructure.UnitOfWorks;
+using ArchPM.Data.UnitOfWorks;
 using System.Collections.Generic;
 using System.Data;
 
-namespace Sisli.MIS.Infrastructure.Contexts
+namespace ArchPM.Data.Contexts
 {
     public class MemoryContext : IDbContext
     {

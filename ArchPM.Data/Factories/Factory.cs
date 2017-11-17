@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sisli.MIS.Infrastructure.Factories
+namespace ArchPM.Data.Factories
 {
     public abstract class Factory<T>
     {

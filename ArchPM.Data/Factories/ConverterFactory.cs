@@ -2,7 +2,6 @@
 //using ArchPM.Core.Exceptions;
 //using ArchPM.Core.Extensions;
 //using ArchPM.Data;
-//using Sisli.MIS.Infrastructure.Interfaces;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -10,7 +9,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace Sisli.MIS.Infrastructure.Factories
+//namespace X
 //{
 //    public sealed class ConverterFactory : Factory<IObjectConverter>
 //    {

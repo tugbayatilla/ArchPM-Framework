@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace ArchPM.Data
+namespace ArchPM.Data.UnitOfWorks
 {
     public class NullUnitOfWork : IUnitOfWork
     {

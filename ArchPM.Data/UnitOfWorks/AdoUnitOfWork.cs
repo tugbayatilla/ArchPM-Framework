@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ArchPM.Core;
 
-namespace ArchPM.Data.ADO
+namespace ArchPM.Data.UnitOfWorks
 {
     public class AdoUnitOfWork : IUnitOfWork
     {

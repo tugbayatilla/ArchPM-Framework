@@ -52,7 +52,7 @@
     <Compile Include="Factories\RepositoryFactory.cs" />
     <Compile Include="Contexts\MemoryContext.cs" />
     <Compile Include="UnitOfWorks\MemoryUnitOfWork.cs" />
-    <Compile Include="Nulls\NullTransaction.cs" />
+    <Compile Include="Contexts\NullTransaction.cs" />
     <Compile Include="DbConnectionFactory.cs" />
     <Compile Include="AppConfigManager.cs" />
     <Compile Include="Enums.cs" />
@@ -71,6 +71,7 @@
       <Name>ArchPM.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

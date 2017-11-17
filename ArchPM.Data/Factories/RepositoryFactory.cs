@@ -9,7 +9,7 @@
 //using System.IO;
 //using ArchPM.Core.Enums;
 
-//namespace Sisli.MIS.Infrastructure.Factories
+//namespace X
 //{
 //    //closed
 //    public sealed class RepositoryFactory : Factory<IRepository>

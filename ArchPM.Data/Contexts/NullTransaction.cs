@@ -1,7 +1,7 @@
 ﻿using ArchPM.Core;
 using System.Data;
 
-namespace ArchPM.Data.ADO
+namespace ArchPM.Data.Contexts
 {
     public class NullTransaction : IDbTransaction
     {
