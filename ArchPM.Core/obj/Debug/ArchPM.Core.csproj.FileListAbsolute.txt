@@ -4,3 +4,9 @@ C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core
 C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.dll
 C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.pdb
 C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.csprojResolveAssemblyReference.cache
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\bin\Debug\ArchPM.Core.dll
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\bin\Debug\ArchPM.Core.pdb
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.csproj.CoreCompileInputs.cache
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.dll
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\obj\Debug\ArchPM.Core.pdb
+C:\Users\tugba\Source\Repos\ArchPM-Framework\ArchPM.Core\bin\Debug\ArchPM.Core.xml

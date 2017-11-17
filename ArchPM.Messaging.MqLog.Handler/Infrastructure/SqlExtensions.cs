@@ -270,7 +270,7 @@ namespace ArchPM.Messaging.MqLog.Handler
                         var property = properties.FirstOrDefault(p => p.Name == sqlFieldName);
                         if (property != null)
                         {
-                            if (property.IsNullable() && sqlFieldValue == null)
+                            if (property.IsGenericNullable() && sqlFieldValue == null)
                                 throw new DataLayerException(
                                     String.Format("Property '{0}' is not nullable in '{1}', but the sql query field '{2}' is NULL!", property.Name, typeof(T).Name, sqlFieldName));
                             if (property.PropertyType != sqlFieldValue.GetType())
@@ -338,7 +338,7 @@ namespace ArchPM.Messaging.MqLog.Handler
                     Type type = property.PropertyType;
 
                     //nullable property ise, nullable altinda kalan tipi bulmaliyiz.
-                    if (property.IsNullable())
+                    if (property.IsGenericNullable())
                     {
                         type = Nullable.GetUnderlyingType(type);
                     }

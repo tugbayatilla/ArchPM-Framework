@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ArchPM.Core</id>
+    <version>0.0.1</version>
+    <authors>Tugbay Atilla</authors>
+    <owners>tugbay</owners>
+    <licenseUrl>https://github.com/tugbayatilla/ArchPM-Framework/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tugbayatilla/ArchPM-Framework/tree/master/ArchPM.Core</projectUrl>
+    <iconUrl>https://github.com/tugbayatilla/ArchPM-Framework/blob/master/icon.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>ArchPM Core Operations</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>ArchPM Core</tags>
+     <files>
+    <!-- Include everything in \build -->
+    <file src="build\**" target="build" />
+
+    <!-- Other files -->
+    <!-- ... -->
+    </files>
+  </metadata>
+</package>

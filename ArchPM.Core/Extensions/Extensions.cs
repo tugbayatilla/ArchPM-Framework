@@ -156,7 +156,7 @@ namespace ArchPM.Core.Extensions
 
         #endregion
 
-        #region
+        #region Exception
 
         /// <summary>
         /// Returns the number of milliseconds since Jan 1, 1970
@@ -196,8 +196,6 @@ namespace ArchPM.Core.Extensions
 
 
         #endregion
-
-
 
         #region List
 
@@ -294,7 +292,7 @@ namespace ArchPM.Core.Extensions
         }
 
         static List<String> listNames = new List<string>() { "IEnumerable`1", "Enumerable", "List`1", "WhereSelectListIterator`2" };
-        public static Boolean IsList(this Type type)
+        static Boolean IsList(this Type type)
         {
             return
                 (type.ReflectedType != null && listNames.Contains(type.ReflectedType.Name)
@@ -318,7 +316,7 @@ namespace ArchPM.Core.Extensions
             entityProperty.ValueTypeOf = property.PropertyType;
             entityProperty.Nullable = false;
 
-            if (property.IsNullable())
+            if (property.IsGenericNullable())
             {
                 entityProperty.ValueType = Nullable.GetUnderlyingType(property.PropertyType).Name;
                 entityProperty.ValueTypeOf = Nullable.GetUnderlyingType(property.PropertyType);
@@ -342,7 +340,7 @@ namespace ArchPM.Core.Extensions
             return entityProperty;
         }
 
-        public static Boolean IsNullable(this PropertyInfo property)
+        public static Boolean IsGenericNullable(this PropertyInfo property)
         {
             return property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
