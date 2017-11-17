@@ -51,13 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\Advanced\AdvancedExtensions.cs" />
-    <Compile Include="AssemblyManager.cs" />
+    <Compile Include="Extensions\AdvancedExtensions.cs" />
     <Compile Include="Enums\EnumManager.cs" />
     <Compile Include="Enums\EnumResult.cs" />
     <Compile Include="Exceptions\ServiceAdaptorException.cs" />
     <Compile Include="Exceptions\FatalException.cs" />
-    <Compile Include="Exceptions\SqlQueryBuilderException.cs" />
     <Compile Include="Enums\EnumDescriptionAttribute.cs" />
     <Compile Include="Exceptions\AuthenticationException.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
@@ -67,16 +65,10 @@
     <Compile Include="Exceptions\RepositoryException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Extensions\Advanced\MoneyExtensions.cs" />
-    <Compile Include="Extensions\Advanced\ObjectExtension.cs" />
-    <Compile Include="Extensions\Advanced\SqlExtensions.cs" />
-    <Compile Include="Extensions\Advanced\TextExtensions.cs" />
-    <Compile Include="Extensions\Advanced\TypeExtensions.cs" />
     <Compile Include="BasicLog\IBasicLog.cs" />
     <Compile Include="BasicLog\NullBasicLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\PropertyDTO.cs" />
-    <Compile Include="Extensions\Advanced\ReflectionExtensions.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Validations.cs" />
   </ItemGroup>

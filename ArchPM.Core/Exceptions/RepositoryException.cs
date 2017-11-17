@@ -9,17 +9,6 @@ namespace ArchPM.Core.Exceptions
     /// <seealso cref="ArchPM.Core.Exceptions.IArchPMException" />
     public class RepositoryException : Exception, IArchPMException
     {
-       // /// <summary>
-       // /// Initializes a new instance of the <see cref="RepositoryException" /> class.
-       // /// </summary>
-       // /// <param name="message">The message.</param>
-       // /// <param name="args">The arguments.</param>
-       //public RepositoryException(String message, params Object[] args)
-       //     : base(String.Format(message, args))
-       // {
-
-       // }
-
        /// <summary>
        /// Initializes a new instance of the <see cref="RepositoryException"/> class.
        /// </summary>

@@ -48,6 +48,7 @@
     <Compile Include="DbOperationsBusiness.cs" />
     <Compile Include="Infrastructure\IDbOperations.cs" />
     <Compile Include="Infrastructure\Repository.cs" />
+    <Compile Include="Infrastructure\SqlExtensions.cs" />
     <Compile Include="Infrastructure\SqlManager.cs" />
     <Compile Include="Infrastructure\SqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

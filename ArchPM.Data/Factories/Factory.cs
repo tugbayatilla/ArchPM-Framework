@@ -29,7 +29,7 @@ namespace ArchPM.Data.Factories
             if (this.IsInitialized)
                 return;
 
-            var assemblies = AssemblyManager.GetAssembliesInDirectory(binPath);
+            var assemblies = Utils.GetAssembliesInDirectory(binPath);
             foreach (var item in assemblies)
             {
                 try

@@ -8,6 +8,7 @@ using ArchPM.Core;
 using ArchPM.Core.Extensions;
 using ArchPM.Messaging.MqLog.Infrastructure;
 using ArchPM.Core.Extensions.Advanced;
+using ArchPM.Messaging.MqLog.Handler;
 
 namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
 {

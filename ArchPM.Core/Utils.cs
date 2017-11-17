@@ -3,6 +3,7 @@ using ArchPM.Core.Extensions.Advanced;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -28,33 +29,32 @@ namespace ArchPM.Core
             return result;
         }
 
-        public static PropertyInfo FindProperty<From>(String searchName)
-           where From : class, new()
+        /// <summary>
+        /// Loads the assemblies.
+        /// </summary>
+        /// <param name="directoryFolderPath">The directory folder path.</param>
+        /// <returns></returns>
+        public static IEnumerable<Assembly> GetAssembliesInDirectory(String directoryPath = "", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
-            From fromObject = new From();
+            if (String.IsNullOrEmpty(directoryPath))
+                directoryPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "bin"); // note: don't use CurrentEntryAssembly or anything like that.
 
-            Func<String, IEnumerable<String>> createPossiles = p => {
-                var createPossilesResult = new List<String>();
-                createPossilesResult.Add(p);
-                var preparedPropertyName = p.Replace("_", "");
+            DirectoryInfo directory = new DirectoryInfo(directoryPath);
+            if (directory.Exists)
+            {
+                FileInfo[] files = directory.GetFiles("*.dll", searchOption);
 
-                createPossilesResult.Add(preparedPropertyName.ToLower());
-                createPossilesResult.Add(preparedPropertyName.ToLower().ToEnglish());
-                createPossilesResult.Add(preparedPropertyName.ToLowerInvariant().ToEnglish());
-                createPossilesResult = createPossilesResult.Distinct().ToList();
+                foreach (FileInfo file in files)
+                {
+                    // Load the file into the application domain.
+                    AssemblyName assemblyName = AssemblyName.GetAssemblyName(file.FullName);
+                    Assembly assembly = AppDomain.CurrentDomain.Load(assemblyName);
+                    yield return assembly;
+                }
+            }
 
-                return createPossilesResult;
-            };
-
-            //prepare possible names
-            var searchNames = new List<String>();
-            searchNames.AddRange(createPossiles(searchName));
-
-            var result = fromObject.GetType().GetProperties().FirstOrDefault(p => createPossiles(p.Name).Intersect(searchNames).Any());
-
-            return result;
+            yield break;
         }
-
 
     }
 }

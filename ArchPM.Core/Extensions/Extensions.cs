@@ -293,6 +293,14 @@ namespace ArchPM.Core.Extensions
             }
         }
 
+        static List<String> listNames = new List<string>() { "IEnumerable`1", "Enumerable", "List`1", "WhereSelectListIterator`2" };
+        public static Boolean IsList(this Type type)
+        {
+            return
+                (type.ReflectedType != null && listNames.Contains(type.ReflectedType.Name)
+              || listNames.Contains(type.Name));
+        }
+
         static PropertyDTO ConvertPropertyInfoToPropertyDTO<T>(this T entity, PropertyInfo property)
         {
             var entityProperty = new PropertyDTO();
@@ -329,7 +337,7 @@ namespace ArchPM.Core.Extensions
                 entityProperty.Nullable = true;
             }
             entityProperty.IsPrimitive = entityProperty.ValueTypeOf.IsDotNetPirimitive();
-            entityProperty.IsEnum = entityProperty.ValueTypeOf.IsEnumOrIsBaseEnum();
+            entityProperty.IsEnum = IsEnumOrIsBaseEnum(entityProperty.ValueTypeOf);
 
             return entityProperty;
         }
@@ -337,6 +345,29 @@ namespace ArchPM.Core.Extensions
         public static Boolean IsNullable(this PropertyInfo property)
         {
             return property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
+        }
+
+        public static Boolean IsDotNetPirimitive(this Type systemType)
+        {
+            if (systemType == typeof(String)
+                || systemType == typeof(Int32)
+                || systemType == typeof(Int64)
+                || systemType == typeof(Int16)
+                || systemType == typeof(float)
+                || systemType == typeof(Decimal)
+                || systemType == typeof(DateTime)
+                || systemType == typeof(Boolean)
+                || systemType == typeof(Guid)
+                || systemType == typeof(Enum)
+                || IsEnumOrIsBaseEnum(systemType))
+                return true;
+            else
+                return false;
+        }
+
+        static Boolean IsEnumOrIsBaseEnum(Type type)
+        {
+            return type.IsEnum || (type.BaseType != null && type.BaseType == typeof(Enum));
         }
     }
 }

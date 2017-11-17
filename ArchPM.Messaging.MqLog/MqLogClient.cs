@@ -8,6 +8,8 @@ using ArchPM.Core.Extensions;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.MqLog.Infrastructure;
 using ArchPM.Core.Extensions.Advanced;
+using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace ArchPM.Messaging.MqLog
 {
@@ -314,14 +316,39 @@ namespace ArchPM.Messaging.MqLog
         {
             MqLogMessageDTO messageDto = new MqLogMessageDTO();
 
-            messageDto.TBYEntityName = typeof(T).AnonymousSupportedTypeName();
+            messageDto.TBYEntityName = AnonymousSupportedTypeName(typeof(T));
             messageDto.TBYMessageType = messageType;
             messageDto.Properties = entity.Properties().ToList();
 
             return messageDto;
         }
 
-        
+        String AnonymousSupportedTypeName(Type type)
+        {
+            String name = type.Name;
+            if (IsAnonymousType(type))
+            {
+                name = name
+                    .Replace("<>", "")
+                    .Replace("VB$", "")
+                    .Replace("`", "");
+            }
+
+            return name;
+        }
+
+        Boolean IsAnonymousType(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+
+            // HACK: The only way to detect anonymous types right now.
+            return Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false)
+                && type.IsGenericType && type.Name.Contains("AnonymousType")
+                && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
+                && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
+        }
+
 
     }
 

@@ -9,17 +9,6 @@ namespace ArchPM.Core.Exceptions
     /// <seealso cref="ArchPM.Core.Exceptions.IArchPMException" />
     public class AuthenticationException : Exception, IArchPMException
     {
-       // /// <summary>
-       // /// Initializes a new instance of the <see cref="AuthenticationException"/> class.
-       // /// </summary>
-       // /// <param name="message">The message.</param>
-       // /// <param name="args">The arguments.</param>
-       //public AuthenticationException(String message, params Object[] args)
-       //     : base(String.Format(message, args))
-       // {
-
-       // }
-
        /// <summary>
        /// Initializes a new instance of the <see cref="AuthenticationException"/> class.
        /// </summary>

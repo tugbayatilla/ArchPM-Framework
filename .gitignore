@@ -1,3 +1,8 @@
+# Visual Studio Files
+bin
+obj
+.vs
+
 # Prerequisites
 *.d
 
