@@ -1,0 +1,9 @@
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\bin\Debug\ArchPM.Core.Tests.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\bin\Debug\ArchPM.Core.Tests.pdb
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\bin\Debug\ArchPM.Core.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\bin\Debug\ArchPM.Core.pdb
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\obj\Debug\ArchPM.Core.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\obj\Debug\ArchPM.Core.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\obj\Debug\ArchPM.Core.Tests.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Core.Test\obj\Debug\ArchPM.Core.Tests.pdb

@@ -1,0 +1,7 @@
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\bin\Debug\ArchPM.Messaging.MqLog.Tests.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\bin\Debug\ArchPM.Messaging.MqLog.Tests.pdb
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\obj\Debug\ArchPM.Messaging.MqLog.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\obj\Debug\ArchPM.Messaging.MqLog.Tests.csproj.CoreCompileInputs.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\obj\Debug\ArchPM.Messaging.MqLog.Tests.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Messaging.MqLog.Tests\obj\Debug\ArchPM.Messaging.MqLog.Tests.pdb

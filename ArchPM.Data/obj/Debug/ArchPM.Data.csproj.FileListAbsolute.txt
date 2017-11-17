@@ -1,0 +1,8 @@
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\bin\Debug\ArchPM.Data.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\bin\Debug\ArchPM.Data.pdb
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\bin\Debug\ArchPM.Core.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\bin\Debug\ArchPM.Core.pdb
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\obj\Debug\ArchPM.Data.csprojResolveAssemblyReference.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\obj\Debug\ArchPM.Data.csproj.CoreCompileInputs.cache
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\obj\Debug\ArchPM.Data.dll
+C:\Users\Tuğbay\source\repos\ArchPM-Framework\ArchPM.Data\obj\Debug\ArchPM.Data.pdb
