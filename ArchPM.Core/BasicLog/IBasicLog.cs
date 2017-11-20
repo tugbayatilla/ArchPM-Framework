@@ -1,14 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchPM.Core.Logging.BasicLogging
 {
+    /// <summary>
+    /// Basic Logging interface
+    /// </summary>
     public interface IBasicLog
     {
-        void Log(Exception ex);
+        /// <summary>
+        /// Logs the specified ex.
+        /// </summary>
+        /// <typeparam name="T">Generic type of exception</typeparam>
+        /// <param name="ex">The ex.</param>
+        void Log<T>(T ex) where T : Exception;
+
+
+        /// <summary>
+        /// Logs the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
         void Log(String message);
     }
 }

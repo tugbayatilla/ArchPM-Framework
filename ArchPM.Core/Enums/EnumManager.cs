@@ -5,8 +5,17 @@ using System.Reflection;
 
 namespace ArchPM.Core.Enums
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EnumManager
     {
+        /// <summary>
+        /// Gets the enum description.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static String GetEnumDescription(Type type, String name)
         {
             String result = name;
@@ -50,8 +59,7 @@ namespace ArchPM.Core.Enums
         /// <summary>
         /// Get description if exist, or name
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="lang"></param>
+        /// <param name="value">The value.</param>
         /// <returns></returns>
         public static String GetDescription(String value)
         {
@@ -129,6 +137,11 @@ namespace ArchPM.Core.Enums
             return (U)typeof(T).GetField(e.ToString()).GetValue(e);
         }
 
+        /// <summary>
+        /// Gets the value as string.
+        /// </summary>
+        /// <param name="e">The e.</param>
+        /// <returns></returns>
         public static String GetValueAsString(T e)
         {
             return Convert.ToString((Int32)typeof(T).GetField(e.ToString()).GetValue(e));
@@ -137,6 +150,11 @@ namespace ArchPM.Core.Enums
         #endregion
 
 
+        /// <summary>
+        /// Gets the list.
+        /// </summary>
+        /// <param name="hasExcluded">if set to <c>true</c> [has excluded].</param>
+        /// <returns></returns>
         public static IEnumerable<EnumResult> GetList(Boolean hasExcluded = false)
         {
             List<EnumResult> result = new List<EnumResult>();

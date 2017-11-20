@@ -1,15 +1,14 @@
 ﻿using ArchPM.Core.Enums;
 using ArchPM.Core.Exceptions;
-using ArchPM.Core.Extensions.Advanced;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchPM.Core.Extensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Extensions
     {
         #region Dictionary
@@ -142,7 +141,9 @@ namespace ArchPM.Core.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
         /// <param name="value">The value.</param>
-        /// <returns></returns>
+        /// <returns>
+        ///   <c>true</c> if [is] [the specified value]; otherwise, <c>false</c>.
+        /// </returns>
         public static Boolean Is<T>(this System.Enum type, T value)
         {
             try
@@ -164,6 +165,7 @@ namespace ArchPM.Core.Extensions
         /// This method can be used for Json Datetime
         /// </summary>
         /// <param name="ex">The ex.</param>
+        /// <param name="showMessageTypeAsHeader">if set to <c>true</c> [show message type as header].</param>
         /// <returns></returns>
         public static String GetAllMessages(this Exception ex, Boolean showMessageTypeAsHeader = true)
         {
@@ -179,6 +181,11 @@ namespace ArchPM.Core.Extensions
             return message;
         }
 
+        /// <summary>
+        /// Gets all exceptions.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <returns></returns>
         public static IEnumerable<Exception> GetAllExceptions(this Exception ex)
         {
             if (ex != null)
@@ -201,11 +208,11 @@ namespace ArchPM.Core.Extensions
         #region List
 
         /// <summary>
-        /// 
+        /// Fors the each.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="projection"></param>
+        /// <param name="source">The source.</param>
+        /// <param name="action">The action.</param>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
             foreach (var item in source)
@@ -242,22 +249,6 @@ namespace ArchPM.Core.Extensions
                 throw new ValidationException("The list can't be empty");
             }
         }
-
-        ///// <summary>
-        ///// Tests if provided list of objects doesnt contain null values.
-        ///// Throws ValidationException if it has null value.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="objects">list of objects</param>
-        //public static void NoNullElements<T>(this IList<T> objects)
-        //{
-        //    foreach (object obj in objects)
-        //    {
-        //        obj.NotNull();
-        //    }
-        //}
-
-
 
         #endregion
 
@@ -300,11 +291,19 @@ namespace ArchPM.Core.Extensions
               || listNames.Contains(type.Name));
         }
 
+        /// <summary>
+        /// Converts the property information to property dto.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
         static PropertyDTO ConvertPropertyInfoToPropertyDTO<T>(this T entity, PropertyInfo property)
         {
-            var entityProperty = new PropertyDTO();
-
-            entityProperty.Name = property.Name;
+            var entityProperty = new PropertyDTO
+            {
+                Name = property.Name
+            };
             try
             {
                 entityProperty.Value = property.GetValue(entity, null);
@@ -341,11 +340,25 @@ namespace ArchPM.Core.Extensions
             return entityProperty;
         }
 
+        /// <summary>
+        /// Determines whether [is generic nullable].
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        ///   <c>true</c> if [is generic nullable] [the specified property]; otherwise, <c>false</c>.
+        /// </returns>
         public static Boolean IsGenericNullable(this PropertyInfo property)
         {
             return property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
 
+        /// <summary>
+        /// Determines whether [is dot net pirimitive].
+        /// </summary>
+        /// <param name="systemType">Type of the system.</param>
+        /// <returns>
+        ///   <c>true</c> if [is dot net pirimitive] [the specified system type]; otherwise, <c>false</c>.
+        /// </returns>
         public static Boolean IsDotNetPirimitive(this Type systemType)
         {
             if (systemType == typeof(String)
@@ -364,6 +377,13 @@ namespace ArchPM.Core.Extensions
                 return false;
         }
 
+        /// <summary>
+        /// Determines whether [is enum or is base enum] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [is enum or is base enum] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
         static Boolean IsEnumOrIsBaseEnum(Type type)
         {
             return type.IsEnum || (type.BaseType != null && type.BaseType == typeof(Enum));

@@ -1,19 +1,20 @@
-﻿using ArchPM.Core.Extensions;
-using ArchPM.Core.Extensions.Advanced;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchPM.Core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Utils
     {
+        /// <summary>
+        /// The lock
+        /// </summary>
         static Object _lock = new object();
+
         /// <summary>
         /// Creates the unique number.
         /// </summary>
@@ -32,7 +33,8 @@ namespace ArchPM.Core
         /// <summary>
         /// Loads the assemblies.
         /// </summary>
-        /// <param name="directoryFolderPath">The directory folder path.</param>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <param name="searchOption">The search option.</param>
         /// <returns></returns>
         public static IEnumerable<Assembly> GetAssembliesInDirectory(String directoryPath = "", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {

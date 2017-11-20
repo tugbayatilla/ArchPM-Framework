@@ -3,7 +3,7 @@
 namespace ArchPM.Core.Enums
 {
     /// <summary>
-    /// 
+    /// the attribute to get more information from enums
     /// </summary>
     /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
@@ -13,6 +13,10 @@ namespace ArchPM.Core.Enums
         /// The description
         /// </summary>
         private String description;
+
+        /// <summary>
+        /// The exclude
+        /// </summary>
         private Boolean exclude = false;
 
         /// <summary>

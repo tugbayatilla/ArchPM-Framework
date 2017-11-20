@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchPM.Core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Validations
     {
         /// <summary>
-        /// 
+        /// Throws the exception if.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <param name="predicate"></param>
-        /// <param name="exception"></param>
+        /// <param name="obj">The object.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="exception">The exception.</param>
         public static void ThrowExceptionIf<T>(this T obj, Func<T, Boolean> predicate, Exception exception = null)
         {
             if (exception == null)
@@ -27,16 +26,34 @@ namespace ArchPM.Core
             }
         }
 
+        /// <summary>
+        /// Throws the exception if null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="exception">The exception.</param>
         public static void ThrowExceptionIfNull<T>(this T obj, Exception exception = null)
         {
             obj.ThrowExceptionIf(p => p == null, exception);
         }
 
+        /// <summary>
+        /// Throws the exception if null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="message">The message.</param>
         public static void ThrowExceptionIfNull<T>(this T obj, String message)
         {
             obj.ThrowExceptionIf(p => p == null, new Exception(message));
         }
 
+        /// <summary>
+        /// Throws the exception if null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="message">The message.</param>
         public static void ThrowExceptionIfNull<T>(this Object obj, String message = "") where T: Exception, new()
         {
             if(String.IsNullOrEmpty(message))

@@ -1,15 +1,14 @@
-﻿using ArchPM.Core.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchPM.Core.Extensions.Advanced
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AdvancedExtensions
     {
         /// <summary>
@@ -19,9 +18,7 @@ namespace ArchPM.Core.Extensions.Advanced
         /// <returns></returns>
         public static Boolean IsNumeric(this Object obj)
         {
-            double retNum;
-
-            bool isNum = Double.TryParse(Convert.ToString(obj), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out retNum);
+            bool isNum = Double.TryParse(Convert.ToString(obj), System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, out double retNum);
             return isNum;
         }
 
@@ -110,20 +107,17 @@ namespace ArchPM.Core.Extensions.Advanced
                 }
                 else if (name == "Byte" || (name == nullable && fullName.Contains("System.Byte")))
                 {
-                    Byte temp;
-                    Byte.TryParse(obj.ToString(), out temp);
+                    Byte.TryParse(obj.ToString(), out byte temp);
                     result = temp;
                 }
                 else if (name == "DateTime" || (name == nullable && fullName.Contains("System.DateTime")))
                 {
-                    DateTime temp;
-                    DateTime.TryParse(obj.ToString(), out temp);
+                    DateTime.TryParse(obj.ToString(), out DateTime temp);
                     result = temp;
                 }
                 else if (name == "Boolean" || (name == nullable && fullName.Contains("System.Boolean")))
                 {
-                    Boolean temp;
-                    Boolean.TryParse(obj.ToString(), out temp);
+                    Boolean.TryParse(obj.ToString(), out bool temp);
                     result = temp;
                 }
                 else if (name == "String" || (name == nullable && fullName.Contains("System.String")))
@@ -141,7 +135,13 @@ namespace ArchPM.Core.Extensions.Advanced
             return (T)result;
         }
 
-        //todo:test yazilmali
+        /// <summary>
+        /// Gets the provider.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="currentAssembly">The current assembly.</param>
+        /// <param name="constructorArguments">The constructor arguments.</param>
+        /// <returns></returns>
         public static IEnumerable<T> GetProvider<T>(this Assembly currentAssembly, params Object[] constructorArguments)
         {
             var types = currentAssembly.GetTypes();
@@ -163,6 +163,12 @@ namespace ArchPM.Core.Extensions.Advanced
             }
         }
 
+        /// <summary>
+        /// Gets the provider types.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="currentAssembly">The current assembly.</param>
+        /// <returns></returns>
         public static IEnumerable<Type> GetProviderTypes<T>(this Assembly currentAssembly)
         {
             var types = currentAssembly.GetTypes();
@@ -194,6 +200,12 @@ namespace ArchPM.Core.Extensions.Advanced
             return instance;
         }
 
+        /// <summary>
+        /// Adds the property.
+        /// </summary>
+        /// <param name="expando">The expando.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyValue">The property value.</param>
         public static void AddProperty(this ExpandoObject expando, String propertyName, Object propertyValue)
         {
             var expandoDict = expando as IDictionary<String, Object>;
