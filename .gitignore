@@ -1,7 +1,7 @@
 # Visual Studio Files
 bin
 obj
-.vs
+.vs/
 
 # Prerequisites
 *.d
