@@ -7,12 +7,15 @@ using ArchPM.Core;
 
 namespace ArchPM.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class DbConnectionFactory
     {
         /// <summary>
         /// Creates and Opens the connection
         /// </summary>
-        /// <param name="connectionName"></param>
+        /// <param name="connectionName">Name of the connection.</param>
         /// <returns></returns>
         public static IDbConnection Create(String connectionName)
         {

@@ -5,12 +5,20 @@ using ArchPM.Data.UnitOfWorks;
 
 namespace ArchPM.Data.Contexts
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="ArchPM.Data.IDbContext" />
     public abstract class AdoContext : IDbContext
     {
         IDbConnection connection;
         IDbTransaction firstTransaction;
         readonly String connectionName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AdoContext"/> class.
+        /// </summary>
+        /// <param name="connectionName">Name of the connection.</param>
         public AdoContext(String connectionName)
         {
             this.connectionName = connectionName;
@@ -54,7 +62,6 @@ namespace ArchPM.Data.Contexts
                     }
                 }
             };
-
 
             return uow;
         }
