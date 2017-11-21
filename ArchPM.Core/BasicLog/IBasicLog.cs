@@ -10,9 +10,8 @@ namespace ArchPM.Core.Logging.BasicLogging
         /// <summary>
         /// Logs the specified ex.
         /// </summary>
-        /// <typeparam name="T">Generic type of exception</typeparam>
         /// <param name="ex">The ex.</param>
-        void Log<T>(T ex) where T : Exception;
+        void Log(Exception ex);
 
 
         /// <summary>
