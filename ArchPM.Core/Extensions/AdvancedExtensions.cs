@@ -215,5 +215,29 @@ namespace ArchPM.Core.Extensions.Advanced
                 expandoDict.Add(propertyName, propertyValue);
         }
 
+        /// <summary>
+        /// Gets the constants.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public static IEnumerable<FieldInfo> GetConstants(this Type type)
+        {
+            var fieldInfos = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+
+            return fieldInfos.Where(fi => fi.IsLiteral && !fi.IsInitOnly);
+        }
+
+        /// <summary>
+        /// Gets the constants values.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public static IEnumerable<T> GetConstantsValues<T>(this Type type) where T : class
+        {
+            var fieldInfos = GetConstants(type);
+
+            return fieldInfos.Select(fi => fi.GetRawConstantValue() as T);
+        }
     }
 }

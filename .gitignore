@@ -1,8 +1,8 @@
 # Visual Studio Files
-bin
-obj
+bin/
+obj/
 .vs/
-.test
+packages/
 
 # Prerequisites
 *.d
