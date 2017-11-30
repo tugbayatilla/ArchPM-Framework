@@ -15,7 +15,7 @@ namespace ArchPM.Web.Core.Managers
 
         public static AuthenticatedUserInfo getAuthUser()
         {
-            return new AuthenticatedUserInfo() { Username = "Null Session", Fullname = "This is Null Session Provider", Mail = "" };
+            return new AuthenticatedUserInfo("") { Username = "Null Session", Fullname = "This is Null Session Provider" };
         }
 
 

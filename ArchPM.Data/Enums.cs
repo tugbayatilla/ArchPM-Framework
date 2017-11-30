@@ -3,6 +3,27 @@
     /// <summary>
     /// 
     /// </summary>
+    public enum DatabaseEnvironments
+    {
+        /// <summary>
+        /// Test Environment: 0
+        /// </summary>
+        Test,
+
+        /// <summary>
+        /// Development Environment: 1
+        /// </summary>
+        Development,
+
+        /// <summary>
+        /// Production Environment: 2
+        /// </summary>
+        Production
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public enum EntityStatus
     {
         /// <summary>

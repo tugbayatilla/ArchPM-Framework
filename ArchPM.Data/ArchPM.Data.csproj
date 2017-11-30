@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiError.cs" />
+    <Compile Include="Api\ApiMethodHandler.cs" />
     <Compile Include="Api\ApiResponse.cs" />
     <Compile Include="Api\ApiResponseCodes.cs" />
     <Compile Include="Contexts\AdoContext.cs" />

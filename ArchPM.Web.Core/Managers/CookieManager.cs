@@ -1,5 +1,7 @@
 ﻿using ArchPM.Web.Core.Domain;
 using System;
+using System.Security.Principal;
+using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Security;
@@ -12,7 +14,7 @@ namespace ArchPM.Web.Core.Managers
     public class CookieManager
     {
         /// <summary>
-        /// Creates the specified user.
+        /// Creates the Cookie and set it to Response
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -21,10 +23,10 @@ namespace ArchPM.Web.Core.Managers
             HttpCookie cookie;
             DateTime cookieIssuedDate = DateTime.Now;
 
-            var ticket = new FormsAuthenticationTicket(0,
-                user.Username,
+            var ticket = new FormsAuthenticationTicket(1,
+                user.Mail,
                 cookieIssuedDate,
-                cookieIssuedDate.AddMinutes(FormsAuthentication.Timeout.TotalMinutes),
+                cookieIssuedDate.AddMinutes(FormsAuthentication.Timeout.TotalMinutes == 0 ? 15 : FormsAuthentication.Timeout.TotalMinutes),
                 false,
                 new JavaScriptSerializer().Serialize(user),
                 FormsAuthentication.FormsCookiePath);
@@ -39,6 +41,11 @@ namespace ArchPM.Web.Core.Managers
                 HttpOnly = true,
                 Secure = FormsAuthentication.RequireSSL
             };
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Response.Cookies.Clear();
+                HttpContext.Current.Response.Cookies.Add(cookie);
+            }
             return cookie;
         }
 
@@ -69,18 +76,36 @@ namespace ArchPM.Web.Core.Managers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="principal"></param>
+        public static void SetPrincipal(IPrincipal principal)
+        {
+            Thread.CurrentPrincipal = principal;
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.User = principal;
+            }
+        }
+
+        /// <summary>
         /// Destroys this instance.
         /// </summary>
         public static void Destroy()
         {
-            HttpContext.Current.Session.Abandon();
-            HttpContext.Current.Response.Clear();
-            HttpContext.Current.Response.Cookies.Clear();
+            Thread.CurrentPrincipal = null;
 
-            HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            HttpContext.Current.Response.Cache.SetExpires(DateTime.Now);
-            HttpContext.Current.Response.Cache.SetNoServerCaching();
-            HttpContext.Current.Response.Cache.SetNoStore();
+            if (HttpContext.Current != null)
+            {
+                HttpContext.Current.Session.Abandon();
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Cookies.Clear();
+
+                HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                HttpContext.Current.Response.Cache.SetExpires(DateTime.Now);
+                HttpContext.Current.Response.Cache.SetNoServerCaching();
+                HttpContext.Current.Response.Cache.SetNoStore();
+            }
         }
 
         /// <summary>
@@ -92,6 +117,15 @@ namespace ArchPM.Web.Core.Managers
             cookie.Expires = DateTime.Now.AddDays(-1);
             HttpContext.Current.Response.SetCookie(cookie);
         }
-    }
 
+        /// <summary>
+        /// Call in Global.asax to set Principal to Thread.CurrentPrincipal and HttpContext.Current.User if exist
+        /// </summary>
+        public static void CallPostAuthenticateRequest()
+        {
+            var user = GetAuthUser();
+            SetPrincipal(user);
+        }
+    }
 }
+
