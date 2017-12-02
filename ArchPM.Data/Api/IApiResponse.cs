@@ -39,6 +39,6 @@ namespace ArchPM.Data.Api
         /// <value>
         /// The Execution Time
         /// </value>
-        Double ET { get; set; }
+        Int64 ET { get; set; }
     }
 }

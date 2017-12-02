@@ -51,7 +51,7 @@ namespace ArchPM.Data.Api
         /// <value>
         /// The Execution Time
         /// </value>
-        public Double ET { get; set; }
+        public Int64 ET { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiResponse{T}"/> class.

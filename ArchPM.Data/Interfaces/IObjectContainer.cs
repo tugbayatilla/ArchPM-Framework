@@ -18,6 +18,7 @@ namespace ArchPM.Data
         /// <param name="name">The name.</param>
         /// <returns></returns>
         T Resolve<T>(String name = "");
+
         /// <summary>
         /// Resolves all.
         /// </summary>

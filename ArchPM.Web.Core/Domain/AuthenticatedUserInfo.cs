@@ -8,7 +8,7 @@ namespace ArchPM.Web.Core.Domain
     {
         public AuthenticatedUserInfo()
         {
-            this.Scenarios = new List<String>();
+            this.Claims = new List<String>();
             this.Roles = new List<String>();
         }
         public AuthenticatedUserInfo(String mail) : this()
@@ -17,13 +17,12 @@ namespace ArchPM.Web.Core.Domain
         }
         public String Username { get; set; }
         public String Mail { get; set; }
-        public String Password { get; set; }
         public String Fullname { get; set; }
         public List<String> Roles { get; set; }
-        public List<String> Scenarios { get; set; }
+        public List<String> Claims { get; set; }
 
         public IIdentity Identity => new GenericIdentity(this.Mail);
 
-        public bool IsInRole(string role) => false;
+        public bool IsInRole(string role) => Roles.Contains(role);
     }
 }

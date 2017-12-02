@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public enum DatabaseEnvironments
+    public enum ApplicationEnvironments
     {
         /// <summary>
         /// Test Environment: 0

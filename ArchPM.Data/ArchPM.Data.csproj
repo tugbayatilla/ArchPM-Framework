@@ -54,9 +54,14 @@
     <Compile Include="Api\ApiMethodHandler.cs" />
     <Compile Include="Api\ApiResponse.cs" />
     <Compile Include="Api\ApiResponseCodes.cs" />
+    <Compile Include="Business\CoreBusiness.cs" />
     <Compile Include="Contexts\AdoContext.cs" />
     <Compile Include="Api\IApiResponse.cs" />
+    <Compile Include="Interfaces\IBusiness.cs" />
     <Compile Include="Interfaces\IObjectContainer.cs" />
+    <Compile Include="Repositories\AdoRepository.cs" />
+    <Compile Include="Repositories\MemoryRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="UnitOfWorks\AdoUnitOfWork.cs" />
     <Compile Include="Contexts\MemoryContext.cs" />
     <Compile Include="UnitOfWorks\MemoryUnitOfWork.cs" />
@@ -70,12 +75,12 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IDbContext.cs" />
     <Compile Include="UnitOfWorks\NullUnitOfWork.cs" />
-    <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
