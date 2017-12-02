@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ArchPM.Core, Version=0.0.5.23458, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArchPM.Core.0.0.5\lib\net45\ArchPM.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
@@ -59,14 +62,13 @@
     <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
-      <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
-      <Name>ArchPM.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ArchPM.Messaging\ArchPM.Messaging.csproj">
       <Project>{9e31cd0e-a2fd-484c-be24-35e9a7b6340c}</Project>
       <Name>ArchPM.Messaging</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

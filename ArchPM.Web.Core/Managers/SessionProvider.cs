@@ -1,5 +1,5 @@
 ﻿using ArchPM.Core.Exceptions;
-using ArchPM.Web.Core.Domain;
+using ArchPM.Core.Session;
 
 namespace ArchPM.Web.Core.Managers
 {

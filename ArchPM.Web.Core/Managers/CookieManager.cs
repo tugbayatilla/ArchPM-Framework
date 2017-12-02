@@ -1,4 +1,4 @@
-﻿using ArchPM.Web.Core.Domain;
+﻿using ArchPM.Core.Session;
 using System;
 using System.Security.Principal;
 using System.Threading;
@@ -41,11 +41,13 @@ namespace ArchPM.Web.Core.Managers
                 HttpOnly = true,
                 Secure = FormsAuthentication.RequireSSL
             };
+
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Response.Cookies.Clear();
-                HttpContext.Current.Response.Cookies.Add(cookie);
+                HttpContext.Current.Response.SetCookie(cookie);
             }
+
             return cookie;
         }
 
@@ -59,14 +61,15 @@ namespace ArchPM.Web.Core.Managers
             try
             {
                 FormsIdentity identity = System.Web.HttpContext.Current.User.Identity as FormsIdentity;
+                if (identity == null)
+                    throw new Exception("Authentication required!");
+
                 FormsAuthenticationTicket ticket = identity.Ticket;
                 if (String.IsNullOrEmpty(ticket.UserData))
                     throw new NullReferenceException("Identity ticket user data is expected but not found! Set token to forms authentication cookie user data during logon operation.");
 
                 var tokenStr = ticket.UserData;
-
                 var token = new JavaScriptSerializer().Deserialize<AuthenticatedUserInfo>(tokenStr);
-
                 return token;
             }
             catch (Exception ex)
@@ -79,11 +82,12 @@ namespace ArchPM.Web.Core.Managers
         /// 
         /// </summary>
         /// <param name="principal"></param>
-        public static void SetPrincipal(IPrincipal principal)
+        public static void SetPrincipal(AuthenticatedUserInfoPrincipal principal)
         {
             Thread.CurrentPrincipal = principal;
             if (HttpContext.Current != null)
             {
+                principal.SetIdentity(HttpContext.Current.User.Identity);
                 HttpContext.Current.User = principal;
             }
         }
@@ -123,8 +127,12 @@ namespace ArchPM.Web.Core.Managers
         /// </summary>
         public static void CallPostAuthenticateRequest()
         {
-            var user = GetAuthUser();
-            SetPrincipal(user);
+            var authUser = GetAuthUser();
+            if (authUser != null && !(authUser is NullAuthenticatedUserInfo))
+            {
+                var principal = new AuthenticatedUserInfoPrincipal(authUser);
+                SetPrincipal(principal);
+            }
         }
     }
 }

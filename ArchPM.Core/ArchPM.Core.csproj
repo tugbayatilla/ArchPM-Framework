@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Notification\INotification.cs" />
+    <Compile Include="Session\NullAuthenticatedUserInfo.cs" />
+    <Compile Include="Session\AuthenticatedUserInfoPrincipal.cs" />
     <Compile Include="Session\AuthenticatedUserInfo.cs" />
     <Compile Include="Extensions\AdvancedExtensions.cs" />
     <Compile Include="Enums\EnumManager.cs" />

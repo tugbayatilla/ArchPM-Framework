@@ -5,12 +5,18 @@ using System.Linq.Expressions;
 namespace ArchPM.Data
 {
     /// <summary>
-    /// 
+    /// Common Database Operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="ArchPM.Data.IRepository" />
     public interface IRepository<T> : IRepository
     {
+        /// <summary>
+        /// Sets the context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        void SetContext(IDbContext context);
+
         /// <summary>
         /// Finds the specified select predicate.
         /// </summary>

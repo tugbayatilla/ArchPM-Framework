@@ -1,4 +1,4 @@
-﻿using ArchPM.Web.Core.Domain;
+﻿using ArchPM.Core.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +12,18 @@ namespace ArchPM.Web.Core
     /// 
     /// </summary>
     /// <code>must be set in config file at pages section in pageBaseType="ArchPM.Web.Core.BaseViewPage"</code>
-    public abstract class BaseViewPage : WebViewPage
+    public class BaseViewPage : WebViewPage
     {
-        public virtual new AuthenticatedUserInfo User
+        /// <summary>
+        /// When overridden in a derived class, gets a user value based on the HTTP context.
+        /// </summary>
+        public new AuthenticatedUserInfo User
         {
             get { return base.User as AuthenticatedUserInfo; }
+        }
+
+        public override void Execute()
+        {
         }
     }
 
@@ -24,11 +31,18 @@ namespace ArchPM.Web.Core
     /// 
     /// </summary>
     /// <code>must be set in config file at pages section in pageBaseType="ArchPM.Web.Core.BaseViewPage"</code>
-    public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
+    public class BaseViewPage<TModel> : WebViewPage<TModel>
     {
-        public virtual new AuthenticatedUserInfo User
+        /// <summary>
+        /// When overridden in a derived class, gets a user value based on the HTTP context.
+        /// </summary>
+        public new AuthenticatedUserInfo User
         {
             get { return base.User as AuthenticatedUserInfo; }
+        }
+
+        public override void Execute()
+        {
         }
     }
 }

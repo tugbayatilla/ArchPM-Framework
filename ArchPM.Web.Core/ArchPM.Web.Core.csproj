@@ -28,11 +28,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ArchPM.Web.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchPM.Core, Version=0.0.3.24535, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArchPM.Core.0.0.3\lib\net45\ArchPM.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,9 +48,6 @@
   <ItemGroup>
     <Compile Include="BaseController.cs" />
     <Compile Include="BaseViewPage.cs" />
-    <Compile Include="Domain\AuthenticatedUserInfo.cs" />
-    <Compile Include="Domain\NullAuthenticatedUserInfo.cs" />
-    <Compile Include="Interfaces\ISessionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Managers\CacheManager.cs" />
     <Compile Include="Managers\CookieManager.cs" />
@@ -61,13 +56,17 @@
     <Compile Include="Managers\SessionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
+      <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
+      <Name>ArchPM.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ArchPM.Data\ArchPM.Data.csproj">
       <Project>{860A1505-8866-4513-83CC-0B4D8AF332AC}</Project>
       <Name>ArchPM.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

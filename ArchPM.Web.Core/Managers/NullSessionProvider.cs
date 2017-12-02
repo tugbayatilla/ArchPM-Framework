@@ -1,5 +1,5 @@
-﻿using ArchPM.Web.Core;
-using ArchPM.Web.Core.Domain;
+﻿using ArchPM.Core.Session;
+using ArchPM.Web.Core;
 
 namespace ArchPM.Web.Core.Managers
 {
@@ -15,7 +15,7 @@ namespace ArchPM.Web.Core.Managers
 
         public static AuthenticatedUserInfo getAuthUser()
         {
-            return new AuthenticatedUserInfo("") { Username = "Null Session", Fullname = "This is Null Session Provider" };
+            return new AuthenticatedUserInfo() { Username = "Null Session", Fullname = "This is Null Session Provider" };
         }
 
 

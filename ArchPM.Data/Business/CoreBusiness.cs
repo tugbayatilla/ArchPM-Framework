@@ -1,5 +1,6 @@
 ﻿//using ArchPM.Core;
 //using ArchPM.Core.Exceptions;
+//using ArchPM.Core.Session;
 //using ArchPM.Data.Interfaces;
 //using System;
 //using System.Collections.Generic;
@@ -12,19 +13,37 @@
 //{
 //    public class CoreBusiness<To> : IBusiness<To> where To : class, IDbEntity, new()
 //    {
-//        protected readonly ISessionProvider
+//        /// <summary>
+//        /// The session provider
+//        /// </summary>
+//        protected readonly ISessionProvider sessionProvider;
+//        /// <summary>
+//        /// The container
+//        /// </summary>
 //        protected readonly IObjectContainer container;
+//        /// <summary>
+//        /// Gets or sets the database context.
+//        /// </summary>
+//        /// <value>
+//        /// The database context.
+//        /// </value>
 //        public IDbContext DbContext { get; set; }
 
+//        /// <summary>
+//        /// Initializes a new instance of the <see cref="CoreBusiness{To}"/> class.
+//        /// </summary>
+//        /// <param name="container">The container.</param>
 //        public CoreBusiness(IObjectContainer container)
 //        {
 //            container.ThrowExceptionIfNull();
 //            this.container = container;
+//            this.DbContext = container.Resolve<IDbContext>();
 //        }
 
 //        public IEnumerable<To> GetAll(Expression<Func<To, Boolean>> predicate = null)
 //        {
 //            var rep = container.Resolve<IRepository<To>>();
+//            rep.SetContext(this.DbContext);
 //            return rep.Find(predicate);
 //        }
 
@@ -71,12 +90,17 @@
 
 //        }
 
+//        /// <summary>
+//        /// Persist the entity to database
+//        /// </summary>
+//        /// <param name="entity">The entity.</param>
+//        /// <returns></returns>
+//        /// <exception cref="BusinessException">Save Failed!</exception>
 //        public To Save(To entity)
 //        {
 //            try
 //            {
 //                var rep = container.Resolve<IRepository<To>>(); //context verilecek
-//                //ChangeLogTypes changeLogType = ChangeLogTypes.Insert;
 
 //                if (entity.ID == default(Int32))
 //                {
@@ -86,11 +110,7 @@
 //                else
 //                {
 //                    rep.Update(entity);
-//                    changeLogType = ChangeLogTypes.Update;
 //                }
-
-//                //insert change log
-//                changeLogService.ChangeLog(entity, this.dbContext, this.sessionProvider, changeLogType);
 
 //                return entity;
 //            }
@@ -101,37 +121,6 @@
 
 //        }
 
-//        public void UpdateGiven(To entity, Expression<Func<To, Object>> includePredicate)
-//        {
-//            try
-//            {
-//                var rep = RepositoryFactory.Instance.Create<To>(this.dbContext);
-//                entity = rep.UpdateGivenFields(entity, includePredicate);
-
-//                //insert change log
-//                changeLogService.ChangeLog(entity, this.dbContext, this.sessionProvider, ChangeLogTypes.Update);
-//            }
-//            catch (Exception ex)
-//            {
-//                throw new BusinessException("UpdateGiven Failed!", ex);
-//            }
-
-//        }
-
-
-
-//        public IEnumerable<To> Search(int skip, int take, Expression<Func<To, bool>> wherePredicate = null, OrderByPredicateContainer<To> orderByContainer = null)
-//        {
-//            try
-//            {
-//                var rep = RepositoryFactory.Instance.Create<To>(this.dbContext);
-//                return rep.Search(skip, take, wherePredicate, orderByContainer);
-//            }
-//            catch (Exception ex)
-//            {
-//                throw new BusinessException("Search Failed!", ex);
-//            }
-//        }
 
 //    }
 //}
