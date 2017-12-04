@@ -27,6 +27,13 @@ namespace ArchPM.Data.Api
         /// </value>
         String Code { get; set; }
         /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
+        String Message { get; set; }
+        /// <summary>
         /// Gets or sets the errors.
         /// </summary>
         /// <value>

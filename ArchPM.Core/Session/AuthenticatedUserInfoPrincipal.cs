@@ -27,6 +27,8 @@ namespace ArchPM.Core.Session
             this.Roles = info.Roles;
             this.Username = info.Username;
             this.identity = new GenericIdentity(Mail);
+            this.ID = info.ID;
+            this.Data = info.Data;
         }
 
         /// <summary>

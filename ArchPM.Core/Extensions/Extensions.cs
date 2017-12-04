@@ -33,6 +33,28 @@ namespace ArchPM.Core.Extensions
             throw new Exception("the value is not found in the dictionary");
         }
 
+        /// <summary>
+        /// Saves the specified key. updates if exist, otherwise insert key
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        public static void Save<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+        {
+            dictionary.ThrowExceptionIfNull(new ArgumentNullException("dictionary"));
+
+            if (dictionary.ContainsKey(key))
+            {
+                dictionary[key] = value;
+            }
+            else
+            {
+                dictionary.Add(key, value);
+            }
+        }
+
         #endregion
 
         #region Enums
@@ -161,8 +183,7 @@ namespace ArchPM.Core.Extensions
         #region Exception
 
         /// <summary>
-        /// Returns the number of milliseconds since Jan 1, 1970
-        /// This method can be used for Json Datetime
+        /// Gets all exception messages seperated by \r\n
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <param name="showMessageTypeAsHeader">if set to <c>true</c> [show message type as header].</param>

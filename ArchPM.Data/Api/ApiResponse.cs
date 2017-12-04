@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using ArchPM.Core;
 using ArchPM.Core.Extensions;
+using ArchPM.Core.Exceptions;
 
 namespace ArchPM.Data.Api
 {
@@ -31,6 +32,13 @@ namespace ArchPM.Data.Api
         /// The code.
         /// </value>
         public String Code { get; set; }
+        /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>
+        /// The code.
+        /// </value>
+        public String Message { get; set; }
         /// <summary>
         /// Gets or sets the errors.
         /// </summary>
@@ -71,8 +79,9 @@ namespace ArchPM.Data.Api
             ApiResponse<T> obj = new ApiResponse<T>();
 
             obj.Result = false;
-            obj.Code = ApiResponseCodes.ERROR;
+            obj.Code = setErrorCodeBasedOnException(ex);
             obj.Data = default(T);
+            obj.Message = ex.GetAllMessages(false);
 
             ex.GetAllExceptions().ForEach(p =>
             {
@@ -80,6 +89,26 @@ namespace ArchPM.Data.Api
             });
 
             return obj;
+        }
+
+        internal static String setErrorCodeBasedOnException(Exception ex)
+        {
+            if(ex is System.Security.Authentication.AuthenticationException || ex is Core.Exceptions.AuthenticationException)
+            {
+                return ApiResponseCodes.AUTHENTICATION_FAILED;
+            }
+            else if (ex is AuthorizationException)
+            {
+                return ApiResponseCodes.AUTHORIZATION_FAILED;
+            }
+            else if (ex is ValidationException)
+            {
+                return ApiResponseCodes.VALIDATION_ERROR;
+            }
+            else
+            {
+                return ApiResponseCodes.ERROR;
+            }
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArchPM.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Web.Script.Serialization;
@@ -17,9 +18,22 @@ namespace ArchPM.Core.Session
         {
             this.Claims = new List<String>();
             this.Roles = new List<String>();
+            this.Data = new Dictionary<String, object>
+            {
+                { "ID", this.ID }
+            };
+
             this.Mail = "";
         }
-        
+
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Object ID { get { return _id; } set { _id = value; this.Data.Save("ID", value); } }
+        Object _id;
         /// <summary>
         /// Gets or sets the username.
         /// </summary>
@@ -55,5 +69,13 @@ namespace ArchPM.Core.Session
         /// The claims.
         /// </value>
         public List<String> Claims { get; set; }
+        /// <summary>
+        /// Gets or sets the claims.
+        /// </summary>
+        /// <value>
+        /// The claims.
+        /// </value>
+        public IDictionary<String, Object> Data { get; set; }
+
     }
 }
