@@ -87,6 +87,7 @@ namespace ArchPM.Web.Core.Managers
             Thread.CurrentPrincipal = principal;
             if (HttpContext.Current != null)
             {
+                //not to lose formsIdentity info
                 principal.SetIdentity(HttpContext.Current.User.Identity);
                 HttpContext.Current.User = principal;
             }

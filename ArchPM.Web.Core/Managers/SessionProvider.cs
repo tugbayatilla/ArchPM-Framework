@@ -1,5 +1,7 @@
-﻿using ArchPM.Core.Exceptions;
+﻿using ArchPM.Core;
+using ArchPM.Core.Exceptions;
 using ArchPM.Core.Session;
+using System.Web;
 
 namespace ArchPM.Web.Core.Managers
 {
@@ -10,35 +12,41 @@ namespace ArchPM.Web.Core.Managers
     public class SessionProvider : ISessionProvider
     {
         /// <summary>
-        /// Gets the authentication user.
+        /// The current context
+        /// </summary>
+        readonly HttpContextBase currentContext;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SessionProvider" /> class.
+        /// </summary>
+        /// <param name="currentContext">The current context.</param>
+        public SessionProvider(HttpContextBase currentContext)
+        {
+            currentContext.ThrowExceptionIfNull();
+            this.currentContext = currentContext;
+        }
+
+
+        /// <summary>
+        /// Gets the authentication user. Need to set &lt;pages pageBaseType="ArchPM.Web.Core.BaseViewPage"&gt;
         /// </summary>
         /// <value>
         /// The authentication user.
         /// </value>
+        /// <exception cref="AuthenticationException">Context User is not AuthenticatedUserInfo</exception>
         public AuthenticatedUserInfo AuthUser
         {
             get
             {
-                return GetAuthenticatedUserInfo();
+                if (currentContext.User is AuthenticatedUserInfo)
+                {
+                    var result = currentContext.User as AuthenticatedUserInfo;
+                    return result;
+                }
+                else
+                {
+                    throw new AuthenticationException("Context User is not AuthenticatedUserInfo");
+                }
             }
         }
-
-        /// <summary>
-        /// Gets the authenticated user information.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="AuthenticationException">Authentication Failed!</exception>
-        public static AuthenticatedUserInfo GetAuthenticatedUserInfo()
-        {
-            //eachtime it must be read from the cookie. if we set into the variable then sessionprovider keeps it.
-            //kernel keeps it as static.
-            var authUser = CookieManager.GetAuthUser();
-            if (authUser == null || authUser is NullAuthenticatedUserInfo)
-                throw new AuthenticationException("Authentication Failed!");
-
-            return authUser;
-        }
-
-
     }
 }
