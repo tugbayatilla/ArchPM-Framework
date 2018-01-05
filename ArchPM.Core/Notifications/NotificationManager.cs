@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.Core.Notification
+namespace ArchPM.Core.Notifications
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notification.INotificationManager" />
-    public class NotificationManager : INotificationManager
+    /// <seealso cref="ArchPM.Core.Notifications.INotificationAsync" />
+    public class NotificationAsyncManager : INotificationAsync
     {
         /// <summary>
         /// The registered notifiers
         /// </summary>
-        readonly Dictionary<NotificationLocations, List<INotifier>> registeredNotifiers;
+        readonly Dictionary<NotificationLocations, List<INotifierAsync>> registeredNotifiers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationManager"/> class.
+        /// Initializes a new instance of the <see cref="NotificationAsyncManager"/> class.
         /// </summary>
-        public NotificationManager()
+        public NotificationAsyncManager()
         {
-            registeredNotifiers = new Dictionary<NotificationLocations, List<INotifier>>();
+            registeredNotifiers = new Dictionary<NotificationLocations, List<INotifierAsync>>();
         }
 
         /// <summary>
@@ -30,15 +29,18 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="notificationLocation">Default: Console | File</param>
-        public void Notify(string message, NotificationLocations notificationLocation)
+        /// <returns></returns>
+        public Task NotifyAsync(string message, NotificationLocations notificationLocation)
         {
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
                 if (notificationLocation.HasFlag(p))
                 {
-                    registeredNotifiers[p].ForEach(x => x.Notify(message));
+                    registeredNotifiers[p].ForEach(async x => await x.Notify(message));
                 }
             });
+
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -46,15 +48,16 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <param name="notificationLocation">The notification location.</param>
-        public void Notify(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog)
+        public Task NotifyAsync(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog)
         {
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
                 if (notificationLocation.HasFlag(p))
                 {
-                    registeredNotifiers[p].ForEach(x => x.Notify(ex));
+                    registeredNotifiers[p].ForEach(async x => await x.Notify(ex));
                 }
             });
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -62,15 +65,16 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
         /// <param name="notificationLocation">The notification location.</param>
-        public void Notify(NotificationMessage notificationMessage, NotificationLocations notificationLocation)
+        public Task NotifyAsync(NotificationMessage notificationMessage, NotificationLocations notificationLocation)
         {
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
                 if (notificationLocation.HasFlag(p))
                 {
-                    registeredNotifiers[p].ForEach(x => x.Notify(notificationMessage));
+                    registeredNotifiers[p].ForEach(async x => await x.Notify(notificationMessage));
                 }
             });
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -78,11 +82,11 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="notificationLocation">The notification location.</param>
         /// <param name="notifier">The notifier.</param>
-        public void RegisterNotifier(NotificationLocations notificationLocation, INotifier notifier)
+        public void RegisterNotifier(NotificationLocations notificationLocation, INotifierAsync notifier)
         {
             if (!registeredNotifiers.ContainsKey(notificationLocation))
             {
-                registeredNotifiers.Add(notificationLocation, new List<INotifier>());
+                registeredNotifiers.Add(notificationLocation, new List<INotifierAsync>());
             }
 
             registeredNotifiers[notificationLocation].Add(notifier);

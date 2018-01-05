@@ -54,15 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Notification\NotificationLocations.cs" />
-    <Compile Include="Notification\Notifiers\ConsoleNotifier.cs" />
-    <Compile Include="Notification\Notifiers\EventLogNotifier.cs" />
-    <Compile Include="Notification\Notifiers\FileNotifier.cs" />
-    <Compile Include="Notification\INotificationManager.cs" />
-    <Compile Include="Notification\INotifier.cs" />
-    <Compile Include="Notification\NotificationManager.cs" />
-    <Compile Include="Notification\NullNotification.cs" />
-    <Compile Include="Notification\Notifiers\ResultNotifier.cs" />
+    <Compile Include="Notifications\NotificationLocations.cs" />
+    <Compile Include="Notifications\Notifiers\ConsoleNotifier.cs" />
+    <Compile Include="Notifications\Notifiers\EventLogNotifier.cs" />
+    <Compile Include="Notifications\Notifiers\FileNotifier.cs" />
+    <Compile Include="Notifications\INotification.cs" />
+    <Compile Include="Notifications\INotifier.cs" />
+    <Compile Include="Notifications\NotificationManager.cs" />
+    <Compile Include="Notifications\NullNotification.cs" />
+    <Compile Include="Notifications\Notifiers\ResultNotifier.cs" />
     <Compile Include="Session\NullAuthenticatedUserInfo.cs" />
     <Compile Include="Session\AuthenticatedUserInfoPrincipal.cs" />
     <Compile Include="Session\AuthenticatedUserInfo.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="BasicLog\IBasicLog.cs" />
     <Compile Include="BasicLog\NullBasicLog.cs" />
     <Compile Include="Session\ISessionProvider.cs" />
-    <Compile Include="Notification\NotificationMessage.cs" />
+    <Compile Include="Notifications\NotificationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\PropertyDTO.cs" />
     <Compile Include="Utils.cs" />

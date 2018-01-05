@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.Core.Notification
+namespace ArchPM.Core.Notifications
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notification.INotificationManager" />
-    public class NullNotification : INotificationManager
+    /// <seealso cref="ArchPM.Core.Notifications.INotificationAsync" />
+    public class NullNotification : INotificationAsync
     {
         /// <summary>
         /// Notify given message to given location or locations
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="notificationLocation">Default: Console | File</param>
-        public void Notify(string message, NotificationLocations notificationLocation)
+        public Task NotifyAsync(string message, NotificationLocations notificationLocation)
         {
             //do nothing here
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -27,9 +25,10 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <param name="notificationLocation">The notification location.</param>
-        public void Notify(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog)
+        public Task NotifyAsync(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog)
         {
             //do nothing here
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -38,9 +37,10 @@ namespace ArchPM.Core.Notification
         /// <param name="notificationMessage">The notification message.</param>
         /// <param name="notificationLocation">The notification location.</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void Notify(NotificationMessage notificationMessage, NotificationLocations notificationLocation)
+        public Task NotifyAsync(NotificationMessage notificationMessage, NotificationLocations notificationLocation)
         {
             // do nothing here
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -48,9 +48,11 @@ namespace ArchPM.Core.Notification
         /// </summary>
         /// <param name="notificationLocation">The notification location.</param>
         /// <param name="notifier">The notifier.</param>
-        public void RegisterNotifier(NotificationLocations notificationLocation, INotifier notifier)
+        public void RegisterNotifier(NotificationLocations notificationLocation, INotifierAsync notifier)
         {
             //do nothing here
         }
+
+       
     }
 }

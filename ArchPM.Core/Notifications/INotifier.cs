@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.Core.Notification
+namespace ArchPM.Core.Notifications
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface INotifier
+    public interface INotifierAsync
     {
         /// <summary>
         /// Notifies the specified notification message.
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
-        void Notify(NotificationMessage notificationMessage);
+        Task Notify(NotificationMessage notificationMessage);
         /// <summary>
         /// Notifies the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        void Notify(String message);
+        Task Notify(String message);
         /// <summary>
         /// Notifies the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        void Notify(Exception ex);
+        Task Notify(Exception ex);
     }
 }
