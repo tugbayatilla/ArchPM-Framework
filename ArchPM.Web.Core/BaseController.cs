@@ -70,5 +70,17 @@ namespace ArchPM.Web.Core
             return Json(result);
         }
 
+        protected void SetNoCache()
+        {
+            Response.Headers.Remove("Cache-Control");
+            Response.Headers.Remove("Pragma");
+            Response.Headers.Remove("Expires");
+
+            Response.AppendHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            Response.AppendHeader("Pragma", "no-cache"); // HTTP 1.0.
+            Response.AppendHeader("Expires", "0"); // Proxies.
+
+        }
+
     }
 }

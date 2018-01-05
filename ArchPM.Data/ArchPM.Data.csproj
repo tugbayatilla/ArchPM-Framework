@@ -54,6 +54,9 @@
     <Compile Include="Api\ApiMethodHandler.cs" />
     <Compile Include="Api\ApiResponse.cs" />
     <Compile Include="Api\ApiResponseCodes.cs" />
+    <Compile Include="Api\IApiResponseElapsedTime.cs" />
+    <Compile Include="Api\IApiResponseLog.cs" />
+    <Compile Include="Api\NullApiResponseLog.cs" />
     <Compile Include="Business\CoreBusiness.cs" />
     <Compile Include="Contexts\AdoContext.cs" />
     <Compile Include="Api\IApiResponse.cs" />

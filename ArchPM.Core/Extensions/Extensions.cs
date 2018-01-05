@@ -12,6 +12,23 @@ namespace ArchPM.Core.Extensions
     /// </summary>
     public static class Extensions
     {
+
+        /// <summary>
+        /// Calculates the profit.
+        /// </summary>
+        /// <param name="capital">The capital.</param>
+        /// <param name="profitPercent">The profit percent.</param>
+        /// <returns></returns>
+        public static Decimal CalculateProfit(this Decimal capital, Decimal profitPercent)
+        {
+            Decimal hund = 100M;
+            var result = ((capital * profitPercent) / hund) + capital;
+
+            return result;
+        }
+
+
+
         #region Dictionary
 
         /// <summary>

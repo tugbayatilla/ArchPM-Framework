@@ -54,7 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Notification\INotification.cs" />
+    <Compile Include="Notification\NotificationLocations.cs" />
+    <Compile Include="Notification\Notifiers\ConsoleNotifier.cs" />
+    <Compile Include="Notification\Notifiers\EventLogNotifier.cs" />
+    <Compile Include="Notification\Notifiers\FileNotifier.cs" />
+    <Compile Include="Notification\INotificationManager.cs" />
+    <Compile Include="Notification\INotifier.cs" />
+    <Compile Include="Notification\NotificationManager.cs" />
+    <Compile Include="Notification\NullNotification.cs" />
+    <Compile Include="Notification\Notifiers\ResultNotifier.cs" />
     <Compile Include="Session\NullAuthenticatedUserInfo.cs" />
     <Compile Include="Session\AuthenticatedUserInfoPrincipal.cs" />
     <Compile Include="Session\AuthenticatedUserInfo.cs" />

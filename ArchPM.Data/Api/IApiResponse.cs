@@ -9,8 +9,16 @@ namespace ArchPM.Data.Api
     /// <summary>
     /// 
     /// </summary>
-    public interface IApiResponse
+    public interface IApiResponse : IApiResponseElapsedTime
     {
+
+        /// <summary>
+        /// Gets or sets the requested URL.
+        /// </summary>
+        /// <value>
+        /// The requested URL.
+        /// </value>
+        String RequestedUrl { get; set; }
         /// <summary>
         /// Gets or sets a value the requested operation whether is operated correctly or not. 
         /// this is not HttpResponse result.
@@ -34,18 +42,26 @@ namespace ArchPM.Data.Api
         /// </value>
         String Message { get; set; }
         /// <summary>
-        /// Gets or sets the errors.
+        /// Gets the source.
         /// </summary>
         /// <value>
-        /// The errors.
+        /// The code.
         /// </value>
-        List<ApiError> Errors { get; set; }
-        /// <summary>
-        /// Gets or sets the et.
-        /// </summary>
-        /// <value>
-        /// The Execution Time
-        /// </value>
-        Int64 ET { get; set; }
+        String Source { get; }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IApiResponse<T> : IApiResponse
+    {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
+        T Data { get; set; }
+    }
+
 }

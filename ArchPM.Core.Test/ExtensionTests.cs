@@ -9,24 +9,12 @@ namespace ArchPM.Core.Tests
     public class ExtensionTests
     {
         [TestMethod]
-        public void GetValueIfItIsCollection_WhenDictionaryIsValidReturnsValid()
+        public void CalculateProfit_WhenValidReturnValid()
         {
-            Dictionary<String, Object> containerDictionary = new Dictionary<string, object>();
+            Decimal capital = 200M;
+            Decimal profit = capital.CalculateProfit(10);
 
-            List<SmallTable> data = new List<SmallTable>() { new SmallTable
-            {
-                Id = 1,
-                Id2 = 2,
-                Id42 = 42,
-                Name = "small table",
-                Salary = 100m
-            }};
-
-            containerDictionary.Add("test", data);
-
-            var result = containerDictionary.GetValueIfItIsCollection<SmallTable>("test");
-            Assert.IsTrue(result.Count == 1);
-            Assert.IsTrue(result[0] is SmallTable, "result is not SmallTable");
+            Assert.AreEqual(220, profit);
 
         }
     }

@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.Core.Notification
+namespace ArchPM.Data.Api
 {
     /// <summary>
     /// 
     /// </summary>
-    public interface INotification
+    public interface IApiResponseElapsedTime
     {
         /// <summary>
-        /// Notifies the specified message.
+        /// Gets or sets the et.
         /// </summary>
-        /// <param name="message">The message.</param>
-        void Notify(NotificationMessage message);
+        /// <value>
+        /// The Execution Time
+        /// </value>
+        Int64 ET { get; set; }
     }
 }

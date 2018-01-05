@@ -58,5 +58,28 @@ namespace ArchPM.Core
             yield break;
         }
 
+        /// <summary>
+        /// Checks the path is a directory
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns>
+        /// True: Directory, False:File
+        /// </returns>
+        public static Boolean IsDirectory(String path)
+        {
+            //false means it's a file
+            Boolean result = false;
+            // get the file attributes for file or directory
+            FileAttributes attr = File.GetAttributes(path);
+
+            //detect whether its a directory
+            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
     }
 }
