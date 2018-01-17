@@ -21,7 +21,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         public Task Notify(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][1] {2}", DateTime.Now, Thread.CurrentThread.ManagedThreadId, message);
+            var msg = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), message);
             Console.WriteLine(msg);
             Console.ResetColor();
 
@@ -35,7 +35,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         public Task Notify(Exception ex)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][1] {2}", DateTime.Now, Thread.CurrentThread.ManagedThreadId, ex.GetAllMessages());
+            var msg = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), ex.GetAllMessages());
             Console.WriteLine(msg);
             Console.ResetColor();
             return Task.FromResult(0);
@@ -50,7 +50,7 @@ namespace ArchPM.Core.Notifications.Notifiers
             notificationMessage.ThrowExceptionIfNull();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][1] Destination:{2} | Subject:{3} | Body:{4}", DateTime.Now, Thread.CurrentThread.ManagedThreadId, notificationMessage.Destination, notificationMessage.Subject, notificationMessage.Body);
+            var msg = String.Format("{0} Destination:{1} | Subject:{2} | Body:{3}", DateTime.Now.ToMessageHeaderString(), notificationMessage.Destination, notificationMessage.Subject, notificationMessage.Body);
             Console.WriteLine(msg);
             Console.ResetColor();
 

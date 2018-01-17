@@ -34,6 +34,18 @@ namespace ArchPM.Core.Notifications
         /// <summary>
         /// The result
         /// </summary>
-        Result = 32
+        Result = 32,
+        /// <summary>
+        /// The Log
+        /// </summary>
+        Log = 64,
+        /// <summary>
+        /// The Log2
+        /// </summary>
+        Log2 = 128,
+        /// <summary>
+        /// The Log3
+        /// </summary>
+        Log3 = 256
     }
 }

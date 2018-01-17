@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace ArchPM.Core.Extensions
 {
@@ -27,6 +28,17 @@ namespace ArchPM.Core.Extensions
             return result;
         }
 
+        /// <summary>
+        /// To the message header string.
+        /// </summary>
+        /// <param name="date">The date.</param>
+        /// <returns></returns>
+        public static String ToMessageHeaderString(this DateTime date)
+        {
+            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][1]", DateTime.Now, Thread.CurrentThread.ManagedThreadId);
+
+            return msg;
+        }
 
 
         #region Dictionary
