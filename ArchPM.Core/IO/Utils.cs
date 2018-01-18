@@ -9,14 +9,17 @@ using System.Threading.Tasks;
 
 namespace ArchPM.Core.IO
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Utils
     {
         /// <summary>
         /// Waits file to be ready or returns null
         /// </summary>
-        /// <param name="fileFullPath"></param>
-        /// <param name="waitMiliseconds"></param>
-        /// <param name="sleepOnCatchMiliseconds"></param>
+        /// <param name="fileFullPath">The file full path.</param>
+        /// <param name="waitMiliseconds">The wait miliseconds.</param>
+        /// <param name="sleepOnCatchMiliseconds">The sleep on catch miliseconds.</param>
         /// <returns></returns>
         public static async Task<FileStream> WaitFileTillReadyToAppend(String fileFullPath, Int32 waitMiliseconds = 10000, Int32 sleepOnCatchMiliseconds = 100)
         {
@@ -48,6 +51,11 @@ namespace ArchPM.Core.IO
             });
         }
 
+        /// <summary>
+        /// Gets the or create directory.
+        /// </summary>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <returns></returns>
         public static DirectoryInfo GetOrCreateDirectory(String directoryPath)
         {
             DirectoryInfo result = null;
@@ -68,8 +76,10 @@ namespace ArchPM.Core.IO
         /// <summary>
         /// Gets or creates if not exist a file given path
         /// </summary>
-        /// <param name="fileFullPath">Fullpath of the file. </param>
-        /// <returns>Open File Stream</returns>
+        /// <param name="fileFullPath">Fullpath of the file.</param>
+        /// <returns>
+        /// Open File Stream
+        /// </returns>
         public static FileStream GetOrCreateFile(String fileFullPath)
         {
             FileMode mode = FileMode.CreateNew;

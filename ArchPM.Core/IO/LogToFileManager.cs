@@ -9,9 +9,24 @@ using System.Threading.Tasks;
 
 namespace ArchPM.Core.IO
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class LogToFileManager
     {
+        /// <summary>
+        /// Gets or sets the log directory path.
+        /// </summary>
+        /// <value>
+        /// The log directory path.
+        /// </value>
         public String LogDirectoryPath { get; set; }
+        /// <summary>
+        /// Gets or sets the log file name with extension.
+        /// </summary>
+        /// <value>
+        /// The log file name with extension.
+        /// </value>
         public String LogFileNameWithExtension { get; set; }
 
         /// <summary>
@@ -20,6 +35,9 @@ namespace ArchPM.Core.IO
         /// <value>Default is 10000ms (10s)</value>
         public Int32 WaitMilliseconds { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogToFileManager"/> class.
+        /// </summary>
         public LogToFileManager()
         {
             this.LogDirectoryPath = Path.Combine(Environment.CurrentDirectory, "Logs");
@@ -30,7 +48,7 @@ namespace ArchPM.Core.IO
         /// <summary>
         /// Writes log message to file. Creates the file if not exist
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message.</param>
         /// <returns></returns>
         public async Task AppendToFile(String message)
         {
