@@ -252,8 +252,9 @@ namespace ArchPM.Core.Extensions
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <param name="showMessageTypeAsHeader">if set to <c>true</c> [show message type as header].</param>
+        /// <param name="messageSeperator"></param>
         /// <returns></returns>
-        public static String GetAllMessages(this Exception ex, Boolean showMessageTypeAsHeader = true)
+        public static String GetAllMessages(this Exception ex, Boolean showMessageTypeAsHeader = true, String messageSeperator = "\r\n")
         {
             String message = "";
             if (showMessageTypeAsHeader)
@@ -262,7 +263,7 @@ namespace ArchPM.Core.Extensions
             message += ex.Message;
 
             if (ex.InnerException != null)
-                message += String.Concat("\r\n ", GetAllMessages(ex.InnerException, showMessageTypeAsHeader));
+                message += String.Concat(messageSeperator, GetAllMessages(ex.InnerException, showMessageTypeAsHeader));
 
             return message;
         }
