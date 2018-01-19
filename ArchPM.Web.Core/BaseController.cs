@@ -70,6 +70,9 @@ namespace ArchPM.Web.Core
             return Json(result);
         }
 
+        /// <summary>
+        /// Sets the no cache.
+        /// </summary>
         protected void SetNoCache()
         {
             Response.Headers.Remove("Cache-Control");

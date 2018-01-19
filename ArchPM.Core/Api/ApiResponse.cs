@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ArchPM.Core;
+﻿using ArchPM.Core.Exceptions;
 using ArchPM.Core.Extensions;
-using ArchPM.Core.Exceptions;
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
 
-namespace ArchPM.Data.Api
+namespace ArchPM.Core.Api
 {
     /// <summary>
     /// To be able to use same format sending json response to client. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="ArchPM.Data.Api.IApiResponse" />
+    /// <seealso cref="ArchPM.Core.Api.IApiResponse" />
     public class ApiResponse<T> : IApiResponse<T>
     {
         /// <summary>

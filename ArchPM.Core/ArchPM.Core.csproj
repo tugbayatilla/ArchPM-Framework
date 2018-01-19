@@ -54,6 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ApiError.cs" />
+    <Compile Include="Api\ApiResponse.cs" />
+    <Compile Include="Api\ApiResponseCodes.cs" />
+    <Compile Include="Api\IApiResponse.cs" />
+    <Compile Include="Api\IApiResponseElapsedTime.cs" />
+    <Compile Include="Api\IApiResponseLog.cs" />
+    <Compile Include="Api\NullApiResponseLog.cs" />
     <Compile Include="IO\LogToFileManager.cs" />
     <Compile Include="IO\Utils.cs" />
     <Compile Include="Notifications\NotificationLocations.cs" />
