@@ -52,6 +52,44 @@ namespace ArchPM.Core.IO
         }
 
         /// <summary>
+        /// Waits the file till ready to read.
+        /// </summary>
+        /// <param name="fileFullPath">The file full path.</param>
+        /// <param name="waitMiliseconds">The wait miliseconds.</param>
+        /// <param name="sleepOnCatchMiliseconds">The sleep on catch miliseconds.</param>
+        /// <returns></returns>
+        public static async Task<FileStream> WaitFileTillReadyToRead(String fileFullPath, Int32 waitMiliseconds = 10000, Int32 sleepOnCatchMiliseconds = 100)
+        {
+            return await Task.Factory.StartNew<FileStream>(() =>
+            {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                while (sw.ElapsedMilliseconds <= waitMiliseconds)
+                {
+                    try
+                    {
+                        // If the file can be opened for exclusive access it means that the file
+                        // is no longer locked by another process.
+                        FileStream inputStream = File.Open(fileFullPath, FileMode.Open, FileAccess.Read, FileShare.None);
+                        if (!inputStream.CanRead)
+                            continue;
+
+                        var len = inputStream.Length > 0;
+
+                        return inputStream;
+                    }
+                    catch
+                    {
+                        Task.Delay(sleepOnCatchMiliseconds);
+                    }
+                }
+                sw.Stop();
+                return null;
+            });
+        }
+
+
+        /// <summary>
         /// Gets the or create directory.
         /// </summary>
         /// <param name="directoryPath">The directory path.</param>

@@ -35,7 +35,7 @@ namespace ArchPM.Core.Extensions
         /// <returns></returns>
         public static String ToMessageHeaderString(this DateTime date)
         {
-            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][1]", DateTime.Now, Thread.CurrentThread.ManagedThreadId);
+            var msg = String.Format("[{0:dd-MM-yyyy HH:mm:ss.fffff}][{1}]", DateTime.Now, Thread.CurrentThread.ManagedThreadId);
 
             return msg;
         }

@@ -60,6 +60,7 @@
     <Compile Include="TextExtensionsTests.cs" />
     <Compile Include="ReflectionExtensionTests.cs" />
     <Compile Include="ExtensionTests.cs" />
+    <Compile Include="LogToFileManagerTests.cs" />
     <Compile Include="UtilsTests.cs" />
     <Compile Include="TraceHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

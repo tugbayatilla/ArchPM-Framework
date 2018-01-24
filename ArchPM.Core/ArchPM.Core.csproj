@@ -61,6 +61,7 @@
     <Compile Include="Api\IApiResponseElapsedTime.cs" />
     <Compile Include="Api\IApiResponseLog.cs" />
     <Compile Include="Api\NullApiResponseLog.cs" />
+    <Compile Include="IO\LogFileTraceListener.cs" />
     <Compile Include="IO\LogToFileManager.cs" />
     <Compile Include="IO\Utils.cs" />
     <Compile Include="Notifications\NotificationLocations.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\INotifier.cs" />
     <Compile Include="Notifications\NotificationManager.cs" />
+    <Compile Include="Notifications\Notifiers\LogTraceNotifier.cs" />
     <Compile Include="Notifications\Notifiers\LogNotifier.cs" />
     <Compile Include="Notifications\NullNotification.cs" />
     <Compile Include="Notifications\Notifiers\ResultNotifier.cs" />
