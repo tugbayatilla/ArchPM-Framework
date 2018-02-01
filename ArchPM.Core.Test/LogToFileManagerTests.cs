@@ -17,23 +17,23 @@ namespace ArchPM.Core.Tests
             Assert.IsTrue(Trace.Listeners.Contains(tracer));
         }
 
-        [TestMethod]
-        public void Write_WhenMessageIsValidThenLogWritesToFile()
-        {
-            LogFileTraceListener tracer = new LogFileTraceListener();
-            DateTime now = DateTime.Now;
-            var msg = $"TIME:{now.ToLongTimeString()}_{Guid.NewGuid()}";
-            tracer.WriteLine(msg);
+        //[TestMethod]
+        //public void Write_WhenMessageIsValidThenLogWritesToFile()
+        //{
+        //    LogFileTraceListener tracer = new LogFileTraceListener();
+        //    DateTime now = DateTime.Now;
+        //    var msg = $"TIME:{now.ToLongTimeString()}_{Guid.NewGuid()}";
+        //    tracer.WriteLine(msg);
 
-            var filePath = Path.Combine(tracer.logToFileManager.LogDirectoryPath, tracer.logToFileManager.LogFileNameWithExtension);
-            var fileStream = IO.Utils.WaitFileTillReadyToRead(filePath);
-            Task.WaitAll(fileStream);
-            using (var sr = new StreamReader(fileStream.Result))
-            {
-                var text = sr.ReadToEnd();
-                Assert.IsTrue(text.Contains(msg));
-            }
+        //    var filePath = Path.Combine(tracer.logToFileManager.LogDirectoryPath, tracer.logToFileManager.LogFileNameWithExtension);
+        //    var fileStream = IO.Utils.WaitFileTillReadyToRead(filePath);
+        //    Task.WaitAll(fileStream);
+        //    using (var sr = new StreamReader(fileStream.Result))
+        //    {
+        //        var text = sr.ReadToEnd();
+        //        Assert.IsTrue(text.Contains(msg));
+        //    }
 
-        }
+        //}
     }
 }
