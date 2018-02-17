@@ -18,11 +18,27 @@ namespace ArchPM.Core
         {
             if (exception == null)
             {
-                exception = new Exception(String.Format("Object is not meant to be!"));
+                exception = new Exception(String.Format("Object is null!"));
             }
             if (predicate.Invoke(obj))
             {
                 throw exception;
+            }
+        }
+
+        /// <summary>
+        /// Throws the exception if.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The object.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="message">The message.</param>
+        /// <exception cref="Exception"></exception>
+        public static void ThrowExceptionIf<T>(this T obj, Func<T, Boolean> predicate, String message)
+        {
+            if (predicate.Invoke(obj))
+            {
+                throw new Exception(message);
             }
         }
 

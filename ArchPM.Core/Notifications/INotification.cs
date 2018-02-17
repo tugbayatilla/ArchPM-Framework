@@ -9,36 +9,44 @@ namespace ArchPM.Core.Notifications
     /// <summary>
     /// Notification and Log 
     /// </summary>
-    public interface INotificationAsync
+    public interface INotification
     {
         /// <summary>
         /// Notify given message to given location or locations
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
-        /// <param name="notificationLocation">The notification location.</param>
-        Task NotifyAsync(NotificationMessage notificationMessage, NotificationLocations notificationLocation);
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        Task Notify(NotificationMessage notificationMessage, params String[] notifyTo);
 
 
         /// <summary>
         /// Notify given message to given location or locations
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="notificationLocation">Default: Console | File</param>
-        Task NotifyAsync(String message, NotificationLocations notificationLocation = NotificationLocations.Console | NotificationLocations.File);
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        Task Notify(String message, params String[] notifyTo);
+
 
         /// <summary>
         /// Notifies the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        /// <param name="notificationLocation">The notification location.</param>
-        Task NotifyAsync(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog);
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        Task Notify(Exception ex, params String[] notifyTo);
 
         /// <summary>
         /// Registers the notifier.
         /// </summary>
-        /// <param name="notificationLocation">The notification location.</param>
+        /// <param name="notifyTo">The notify to.</param>
         /// <param name="notifier">The notifier.</param>
-        void RegisterNotifier(NotificationLocations notificationLocation, INotifierAsync notifier);
+        void RegisterNotifier(String notifyTo, INotifier notifier);
+
+
+
+
     }
 
     

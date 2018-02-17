@@ -8,35 +8,37 @@ namespace ArchPM.Core.Notifications
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotificationAsync" />
-    public class NotificationAsyncManager : INotificationAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotification" />
+    public class NotificationManager : INotification
     {
         /// <summary>
         /// The registered notifiers
         /// </summary>
-        readonly Dictionary<NotificationLocations, List<INotifierAsync>> registeredNotifiers;
+        readonly Dictionary<String, List<INotifier>> registeredNotifiers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationAsyncManager"/> class.
+        /// Initializes a new instance of the <see cref="NotificationManager" /> class.
         /// </summary>
-        public NotificationAsyncManager()
+        public NotificationManager()
         {
-            registeredNotifiers = new Dictionary<NotificationLocations, List<INotifierAsync>>();
+            registeredNotifiers = new Dictionary<String, List<INotifier>>();
         }
 
         /// <summary>
         /// Notify given message to given location or locations
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <param name="notificationLocation">Default: Console | File</param>
+        /// <param name="notifyTo">The notify to.  Use NotifyTo class</param>
         /// <returns></returns>
-        public Task NotifyAsync(string message, NotificationLocations notificationLocation)
+        public Task Notify(string message, params String[] notifyTo)
         {
+            notifyTo.ThrowExceptionIfNull($"{nameof(notifyTo)} is null");
+
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
-                if (notificationLocation.HasFlag(p))
+                if (notifyTo.Contains(p))
                 {
-                    registeredNotifiers[p].ForEach(async x => await x.Notify(message));
+                    registeredNotifiers[p].ForEach(x => x.Notify(message));
                 }
             });
 
@@ -47,14 +49,17 @@ namespace ArchPM.Core.Notifications
         /// Notifies the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        /// <param name="notificationLocation">The notification location.</param>
-        public Task NotifyAsync(Exception ex, NotificationLocations notificationLocation = NotificationLocations.EventLog)
+        /// <param name="notifyTo">The notify to.  Use NotifyTo class</param>
+        /// <returns></returns>
+        public Task Notify(Exception ex, params String[] notifyTo)
         {
+            notifyTo.ThrowExceptionIfNull($"{nameof(notifyTo)} is null");
+
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
-                if (notificationLocation.HasFlag(p))
+                if (notifyTo.Contains(p))
                 {
-                    registeredNotifiers[p].ForEach(async x => await x.Notify(ex));
+                    registeredNotifiers[p].ForEach(x => x.Notify(ex));
                 }
             });
             return Task.FromResult(0);
@@ -64,14 +69,17 @@ namespace ArchPM.Core.Notifications
         /// Notify given message to given location or locations
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
-        /// <param name="notificationLocation">The notification location.</param>
-        public Task NotifyAsync(NotificationMessage notificationMessage, NotificationLocations notificationLocation)
+        /// <param name="notifyTo">The notify to. Use NotifyTo class</param>
+        /// <returns></returns>
+        public Task Notify(NotificationMessage notificationMessage, params String[] notifyTo)
         {
+            notifyTo.ThrowExceptionIfNull($"{nameof(notifyTo)} is null");
+
             registeredNotifiers.Keys.ToList().ForEach(p =>
             {
-                if (notificationLocation.HasFlag(p))
+                if (notifyTo.Contains(p))
                 {
-                    registeredNotifiers[p].ForEach(async x => await x.Notify(notificationMessage));
+                    registeredNotifiers[p].ForEach(x => x.Notify(notificationMessage));
                 }
             });
             return Task.FromResult(0);
@@ -80,16 +88,20 @@ namespace ArchPM.Core.Notifications
         /// <summary>
         /// Registers the notifier.
         /// </summary>
-        /// <param name="notificationLocation">The notification location.</param>
+        /// <param name="notifyTo">The notify to. Use NotifyTo class</param>
         /// <param name="notifier">The notifier.</param>
-        public void RegisterNotifier(NotificationLocations notificationLocation, INotifierAsync notifier)
+        public void RegisterNotifier(String notifyTo, INotifier notifier)
         {
-            if (!registeredNotifiers.ContainsKey(notificationLocation))
+            notifyTo.ThrowExceptionIf(p => String.IsNullOrEmpty(notifyTo), $"{nameof(notifyTo)} is null.");
+            notifier.ThrowExceptionIfNull($"{nameof(notifier)} is null.");
+
+
+            if (!registeredNotifiers.ContainsKey(notifyTo))
             {
-                registeredNotifiers.Add(notificationLocation, new List<INotifierAsync>());
+                registeredNotifiers.Add(notifyTo, new List<INotifier>());
             }
 
-            registeredNotifiers[notificationLocation].Add(notifier);
+            registeredNotifiers[notifyTo].Add(notifier);
         }
     }
 }

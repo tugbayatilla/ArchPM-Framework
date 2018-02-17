@@ -9,7 +9,8 @@ namespace ArchPM.Core.Notifications
     /// <summary>
     /// 
     /// </summary>
-    public interface INotifier
+    [Obsolete("Use INotificationManager. this will be removed later versions.")]
+    public interface INotifierAsync
     {
         /// <summary>
         /// Notifies the specified notification message.

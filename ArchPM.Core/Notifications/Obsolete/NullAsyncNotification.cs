@@ -6,7 +6,8 @@ namespace ArchPM.Core.Notifications
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotificationAsync" />
+    /// <seealso cref="ArchPM.Core.Notifications.INotification" />
+    [Obsolete("Use NullNotificationV2. this will be removed later versions.")]
     public class NullNotification : INotificationAsync
     {
         /// <summary>

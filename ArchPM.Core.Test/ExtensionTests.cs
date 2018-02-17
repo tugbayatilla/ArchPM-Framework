@@ -17,5 +17,15 @@ namespace ArchPM.Core.Tests
             Assert.AreEqual(220, profit);
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "test")]
+        public void ThrowExceptionIfNull_CheckCallerName()
+        {
+            Object test = null;
+            test.ThrowExceptionIfNull();
+        }
+
+
     }
 }

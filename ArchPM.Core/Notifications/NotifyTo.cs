@@ -9,43 +9,27 @@ namespace ArchPM.Core.Notifications
     /// <summary>
     /// 
     /// </summary>
-    public enum NotificationLocations
+    public class NotifyTo
     {
         /// <summary>
         /// The console
         /// </summary>
-        Console = 1,
+        public const String CONSOLE = "Console";
         /// <summary>
         /// The file
         /// </summary>
-        File = 2,
+        public const String FILE = "File";
         /// <summary>
         /// The event log
         /// </summary>
-        EventLog = 4,
+        public const String EVENT_LOG = "EventLog";
         /// <summary>
         /// The mail
         /// </summary>
-        Mail = 8,
+        public const String MAIL = "Mail";
         /// <summary>
         /// The SMS
         /// </summary>
-        SMS = 16,
-        /// <summary>
-        /// The result
-        /// </summary>
-        Result = 32,
-        /// <summary>
-        /// The Log
-        /// </summary>
-        Log = 64,
-        /// <summary>
-        /// The Log2
-        /// </summary>
-        Log2 = 128,
-        /// <summary>
-        /// The Log3
-        /// </summary>
-        Log3 = 256
+        public const String SMS = "SMS";
     }
 }
