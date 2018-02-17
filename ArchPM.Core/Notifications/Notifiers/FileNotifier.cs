@@ -12,8 +12,8 @@ namespace ArchPM.Core.Notifications.Notifiers
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotifierAsync" />
-    public class FileNotifier : INotifierAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotifier" />
+    public class FileNotifier : INotifier
     {
         /// <summary>
         /// Notifies the specified message.

@@ -44,9 +44,6 @@ namespace ArchPM.Core.Notifications
         /// <param name="notifier">The notifier.</param>
         void RegisterNotifier(String notifyTo, INotifier notifier);
 
-
-
-
     }
 
     

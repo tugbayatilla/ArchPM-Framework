@@ -12,8 +12,8 @@ namespace ArchPM.Core.Notifications.Notifiers
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotifierAsync" />
-    public class LogNotifier : INotifierAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotifier" />
+    public class LogNotifier : INotifier
     {
         readonly LogToFileManager manager;
 

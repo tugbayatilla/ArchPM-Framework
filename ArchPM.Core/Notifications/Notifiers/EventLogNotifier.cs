@@ -12,8 +12,8 @@ namespace ArchPM.Core.Notifications.Notifiers
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotifierAsync" />
-    public class EventLogNotifier : INotifierAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotifier" />
+    public class EventLogNotifier : INotifier
     {
         readonly EventLog myLog;
 

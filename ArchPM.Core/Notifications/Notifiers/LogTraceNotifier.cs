@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 namespace ArchPM.Core.Notifications.Notifiers
 {
     /// <summary>
-    /// 
+    /// uses LogFileTraceListener
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotifierAsync" />
-    public class LogTraceNotifier : INotifierAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotifier" />
+    public class LogTraceNotifier : INotifier
     {
         readonly LogToFileManager manager;
         LogFileTraceListener listener;

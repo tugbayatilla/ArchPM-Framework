@@ -11,8 +11,8 @@ namespace ArchPM.Core.Notifications.Notifiers
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.Core.Notifications.INotifierAsync" />
-    public class ConsoleResultNotifier : INotifierAsync
+    /// <seealso cref="ArchPM.Core.Notifications.INotifier" />
+    public class ConsoleResultNotifier : INotifier
     {
 
 

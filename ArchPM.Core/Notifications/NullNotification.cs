@@ -7,7 +7,7 @@ namespace ArchPM.Core.Notifications
     /// 
     /// </summary>
     /// <seealso cref="ArchPM.Core.Notifications.INotification" />
-    public class NullNotificationV2 : INotification
+    public class NullNotification : INotification
     {
         /// <summary>
         /// Notify given message to given location or locations
