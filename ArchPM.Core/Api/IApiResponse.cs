@@ -11,7 +11,6 @@ namespace ArchPM.Core.Api
     /// </summary>
     public interface IApiResponse : IApiResponseElapsedTime
     {
-
         /// <summary>
         /// Gets or sets the requested URL.
         /// </summary>
@@ -48,6 +47,14 @@ namespace ArchPM.Core.Api
         /// The code.
         /// </value>
         String Source { get; }
+
+        /// <summary>
+        /// Gets or sets the try count.
+        /// </summary>
+        /// <value>
+        /// The try count.
+        /// </value>
+        Int32 TryCount { get; set; }
     }
 
     /// <summary>

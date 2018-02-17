@@ -72,11 +72,20 @@ namespace ArchPM.Core.Api
         public string RequestedUrl { get; set; }
 
         /// <summary>
+        /// Gets or sets the try count.
+        /// </summary>
+        /// <value>
+        /// The try count.
+        /// </value>
+        public Int32 TryCount { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ApiResponse{T}"/> class.
         /// </summary>
         public ApiResponse()
         {
             this.Errors = new List<ApiError>();
+            this.TryCount = 0;
         }
 
         /// <summary>
