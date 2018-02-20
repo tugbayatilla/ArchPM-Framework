@@ -86,6 +86,17 @@ namespace ArchPM.Core.Notifications
         }
 
         /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        public Task Notify(string message, string notifyTo = "Console")
+        {
+            return Notify(message, new String[] { notifyTo });
+        }
+
+        /// <summary>
         /// Registers the notifier.
         /// </summary>
         /// <param name="notifyTo">The notify to. Use NotifyTo class</param>

@@ -93,9 +93,9 @@ namespace ArchPM.Core.Api
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>
-        public static ApiResponse<T> CreateException(Exception ex)
+        public static IApiResponse<T> CreateException(Exception ex)
         {
-            ApiResponse<T> obj = new ApiResponse<T>
+            IApiResponse<T> obj = new ApiResponse<T>
             {
                 Result = false,
                 Code = SetErrorCodeBasedOnException(ex),
@@ -141,9 +141,9 @@ namespace ArchPM.Core.Api
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        public static ApiResponse<T> CreateSuccessResponse(T data)
+        public static IApiResponse<T> CreateSuccessResponse(T data)
         {
-            ApiResponse<T> obj = new ApiResponse<T>
+            IApiResponse<T> obj = new ApiResponse<T>
             {
                 Result = true,
                 Code = ApiResponseCodes.OK,

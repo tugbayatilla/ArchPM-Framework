@@ -9,7 +9,7 @@ namespace ArchPM.Core.Api
     /// <summary>
     /// 
     /// </summary>
-    public interface IApiResponse : IApiResponseElapsedTime
+    public interface IApiResponse : IApiResponseElapsedTime, IApiResponseError
     {
         /// <summary>
         /// Gets or sets the requested URL.

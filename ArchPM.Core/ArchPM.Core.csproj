@@ -58,6 +58,7 @@
     <Compile Include="Api\ApiResponseCodes.cs" />
     <Compile Include="Api\IApiResponse.cs" />
     <Compile Include="Api\IApiResponseElapsedTime.cs" />
+    <Compile Include="Api\IApiResponseError.cs" />
     <Compile Include="IO\LogFileTraceListener.cs" />
     <Compile Include="IO\LogToFileManager.cs" />
     <Compile Include="IO\Utils.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Session\NullAuthenticatedUserInfo.cs" />
     <Compile Include="Session\AuthenticatedUserInfoPrincipal.cs" />
     <Compile Include="Session\AuthenticatedUserInfo.cs" />
-    <Compile Include="Extensions\AdvancedExtensions.cs" />
     <Compile Include="Enums\EnumManager.cs" />
     <Compile Include="Enums\EnumResult.cs" />
     <Compile Include="Exceptions\ServiceAdaptorException.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\PropertyDTO.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Validations.cs" />
+    <Compile Include="ExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ArchPM.Core.snk" />

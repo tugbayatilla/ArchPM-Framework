@@ -28,6 +28,14 @@ namespace ArchPM.Core.Notifications
         /// <returns></returns>
         Task Notify(String message, params String[] notifyTo);
 
+        /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        Task Notify(String message, String notifyTo = NotifyTo.CONSOLE);
+
 
         /// <summary>
         /// Notifies the specified ex.

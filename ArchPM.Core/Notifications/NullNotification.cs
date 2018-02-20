@@ -45,6 +45,11 @@ namespace ArchPM.Core.Notifications
             return Task.FromResult(0);
         }
 
+        public Task Notify(string message, string notifyTo = "Console")
+        {
+            return Task.FromResult(0);
+        }
+
         /// <summary>
         /// Registers the notifier.
         /// </summary>

@@ -5,7 +5,7 @@ namespace ArchPM.Core
     /// <summary>
     /// 
     /// </summary>
-    public static class Validations
+    public static class ExtensionMethods
     {
         /// <summary>
         /// Throws the exception if.
