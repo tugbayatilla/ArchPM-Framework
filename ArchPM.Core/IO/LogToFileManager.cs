@@ -1,4 +1,5 @@
 ﻿using ArchPM.Core.Extensions;
+using ArchPM.Core.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,9 +50,10 @@ namespace ArchPM.Core.IO
         /// Writes log message to file. Creates the file if not exist
         /// </summary>
         /// <param name="message">The message.</param>
+        /// <param name="notifyAs">The notify as.</param>
         /// <param name="isNewLine">if set to <c>true</c> [is new line].</param>
         /// <returns></returns>
-        public async Task AppendToFile(String message, Boolean isNewLine = true)
+        public async Task AppendToFile(String message, NotifyAs notifyAs = NotifyAs.Message, Boolean isNewLine = true)
         {
             //creates directory if not exist
             Utils.GetOrCreateDirectory(LogDirectoryPath);
@@ -68,7 +70,7 @@ namespace ArchPM.Core.IO
                 {
                     using (StreamWriter streamWriter = new StreamWriter(fileStream))
                     {
-                        message = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), message);
+                        message = String.Format("{0}[{1}] {2}", DateTime.Now.ToMessageHeaderString(), notifyAs.GetName(), message);
                         if (isNewLine)
                         {
                             streamWriter.WriteLine(message);

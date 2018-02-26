@@ -26,6 +26,8 @@ namespace ArchPM.Core.Notifications.Notifiers
             {
                 Source = "NotImplemented"
             };
+
+            this.Id = Guid.NewGuid();
         }
 
         /// <summary>
@@ -38,16 +40,20 @@ namespace ArchPM.Core.Notifications.Notifiers
         }
 
         /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid Id { get; private set; }
+
+        /// <summary>
         /// Notifies the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         public Task Notify(string message)
         {
-            // Write an informational entry to the event log.    
-            var msg = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), message);
-            myLog.WriteEntry(msg, EventLogEntryType.Information);
-
-            return Task.FromResult(0);
+            return Notify(message, NotifyAs.Message);
         }
 
         /// <summary>
@@ -56,10 +62,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <param name="ex">The ex.</param>
         public Task Notify(Exception ex)
         {
-            // Write an informational entry to the event log.    
-            var msg = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), ex.GetAllMessages());
-            myLog.WriteEntry(msg, EventLogEntryType.Error);
-            return Task.FromResult(0);
+            return Notify(ex, NotifyAs.Error);
         }
 
         /// <summary>
@@ -68,10 +71,86 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <param name="notificationMessage">The notification message.</param>
         public Task Notify(NotificationMessage notificationMessage)
         {
+            return Notify(notificationMessage, NotifyAs.Message);
+        }
+
+        /// <summary>
+        /// Notifies the specified notification message.
+        /// </summary>
+        /// <param name="notificationMessage">The notification message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(NotificationMessage notificationMessage, NotifyAs notifyAs)
+        {
             notificationMessage.ThrowExceptionIfNull();
-            var msg = String.Format("{0} Destination:{1} | Subject:{2} | Body:{3}", DateTime.Now.ToMessageHeaderString(), notificationMessage.Destination, notificationMessage.Subject, notificationMessage.Body);
-            myLog.WriteEntry(msg, EventLogEntryType.Error);
+            var msg = String.Format("{0}[{4}] Destination:{1} | Subject:{2} | Body:{3}", 
+                DateTime.Now.ToMessageHeaderString(), 
+                notificationMessage.Destination, 
+                notificationMessage.Subject, 
+                notificationMessage.Body,
+                notifyAs.GetName());
+
+            var eventLogEntryType = ConvertNotifyAsToEventLogEntryType(notifyAs);
+
+            myLog.WriteEntry(msg, eventLogEntryType);
             return Task.FromResult(0);
         }
+
+        /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(string message, NotifyAs notifyAs)
+        {
+            var eventLogEntryType = ConvertNotifyAsToEventLogEntryType(notifyAs);
+
+            // Write an informational entry to the event log.    
+            var msg = $"{DateTime.Now.ToMessageHeaderString()}[{notifyAs.GetName()}] {message}";
+            myLog.WriteEntry(msg, eventLogEntryType);
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Notifies the specified ex.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(Exception ex, NotifyAs notifyAs)
+        {
+            var eventLogEntryType = ConvertNotifyAsToEventLogEntryType(notifyAs);
+
+            // Write an informational entry to the event log.    
+            var msg = $"{DateTime.Now.ToMessageHeaderString()}[{notifyAs.GetName()}] { ex.GetAllMessages()}";
+            myLog.WriteEntry(msg, eventLogEntryType);
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Converts the type of the notify as to event log entry.
+        /// </summary>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        EventLogEntryType ConvertNotifyAsToEventLogEntryType(NotifyAs notifyAs)
+        {
+            var eventLogEntryType = EventLogEntryType.Error;
+            switch (notifyAs)
+            {
+                case NotifyAs.Message:
+                    eventLogEntryType = EventLogEntryType.Information;
+                    break;
+                case NotifyAs.Warning:
+                    eventLogEntryType = EventLogEntryType.Warning;
+                    break;
+                case NotifyAs.Error:
+                default:
+                    break;
+            }
+
+            return eventLogEntryType;
+        }
+
     }
 }

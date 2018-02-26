@@ -71,9 +71,9 @@
     <Compile Include="Notifications\Notifiers\FileNotifier.cs" />
     <Compile Include="Notifications\Notifiers\LogTraceNotifier.cs" />
     <Compile Include="Notifications\Notifiers\LogNotifier.cs" />
+    <Compile Include="Notifications\NotifyAs.cs" />
     <Compile Include="Notifications\NotifyTo.cs" />
     <Compile Include="Notifications\NullNotification.cs" />
-    <Compile Include="Notifications\Notifiers\ResultNotifier.cs" />
     <Compile Include="Session\NullAuthenticatedUserInfo.cs" />
     <Compile Include="Session\AuthenticatedUserInfoPrincipal.cs" />
     <Compile Include="Session\AuthenticatedUserInfo.cs" />

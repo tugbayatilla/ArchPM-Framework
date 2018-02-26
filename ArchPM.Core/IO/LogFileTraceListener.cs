@@ -31,7 +31,7 @@ namespace ArchPM.Core.IO
         /// <param name="message">A message to write.</param>
         public override async void Write(string message)
         {
-            await logToFileManager.AppendToFile(message, false);
+            await logToFileManager.AppendToFile(message, Notifications.NotifyAs.Message, false);
         }
 
         /// <summary>

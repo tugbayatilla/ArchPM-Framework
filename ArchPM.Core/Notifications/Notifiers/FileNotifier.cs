@@ -16,12 +16,78 @@ namespace ArchPM.Core.Notifications.Notifiers
     public class FileNotifier : INotifier
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileNotifier"/> class.
+        /// </summary>
+        public FileNotifier()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid Id { get; private set; }
+
+        /// <summary>
         /// Notifies the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         public Task Notify(string message)
         {
-            var msg = String.Format("{0} {1}", DateTime.Now.ToMessageHeaderString(), message);
+            return Notify(message, NotifyAs.Message);
+        }
+
+        /// <summary>
+        /// Notifies the specified ex.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        public Task Notify(Exception ex)
+        {
+            return Notify(ex, NotifyAs.Error);
+        }
+
+        /// <summary>
+        /// Notifies the specified notification message.
+        /// </summary>
+        /// <param name="notificationMessage">The notification message.</param>
+        public Task Notify(NotificationMessage notificationMessage)
+        {
+            return Notify(notificationMessage, NotifyAs.Message);
+        }
+
+        /// <summary>
+        /// Notifies the specified notification message.
+        /// </summary>
+        /// <param name="notificationMessage">The notification message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(NotificationMessage notificationMessage, NotifyAs notifyAs)
+        {
+            notificationMessage.ThrowExceptionIfNull();
+            var msg = String.Format("{0}[{4}] Destination:{1} | Subject:{2} | Body:{3}", 
+                DateTime.Now.ToMessageHeaderString(), 
+                notificationMessage.Destination, 
+                notificationMessage.Subject, 
+                notificationMessage.Body,
+                notifyAs.GetName());
+
+            Trace.WriteLine(msg);
+
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(string message, NotifyAs notifyAs)
+        {
+            var msg = $"{DateTime.Now.ToMessageHeaderString()}[{notifyAs.GetName()}] {message}";
             Trace.WriteLine(msg);
 
             return Task.FromResult(0);
@@ -31,22 +97,11 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// Notifies the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        public Task Notify(Exception ex)
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(Exception ex, NotifyAs notifyAs)
         {
-            return Notify(ex.GetAllMessages());
-        }
-
-        /// <summary>
-        /// Notifies the specified notification message.
-        /// </summary>
-        /// <param name="notificationMessage">The notification message.</param>
-        public Task Notify(NotificationMessage notificationMessage)
-        {
-            notificationMessage.ThrowExceptionIfNull();
-            var msg = String.Format("{0} Destination:{1} | Subject:{2} | Body:{3}", DateTime.Now.ToMessageHeaderString(), notificationMessage.Destination, notificationMessage.Subject, notificationMessage.Body);
-            Trace.WriteLine(msg);
-
-            return Task.FromResult(0);
+            return Notify(ex.GetAllMessages(), notifyAs);
         }
     }
 }

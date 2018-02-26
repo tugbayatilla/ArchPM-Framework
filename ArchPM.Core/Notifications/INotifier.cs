@@ -12,19 +12,32 @@ namespace ArchPM.Core.Notifications
     public interface INotifier
     {
         /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        Guid Id { get; }
+        /// <summary>
         /// Notifies the specified notification message.
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
-        Task Notify(NotificationMessage notificationMessage);
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        Task Notify(NotificationMessage notificationMessage, NotifyAs notifyAs);
         /// <summary>
         /// Notifies the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
-        Task Notify(String message);
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        Task Notify(String message, NotifyAs notifyAs);
         /// <summary>
         /// Notifies the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        Task Notify(Exception ex);
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        Task Notify(Exception ex, NotifyAs notifyAs);
     }
 }

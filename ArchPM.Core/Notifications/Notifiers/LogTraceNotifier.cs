@@ -23,7 +23,6 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// </summary>
         public LogTraceNotifier() : this(new IO.LogToFileManager())
         {
-
         }
 
         /// <summary>
@@ -34,19 +33,29 @@ namespace ArchPM.Core.Notifications.Notifiers
         {
             manager.ThrowExceptionIfNull();
             this.manager = manager;
+            this.Id = Guid.NewGuid();
 
             listener = new LogFileTraceListener();
         }
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Notifies the specified notification message.
         /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
         /// <returns></returns>
-        public async Task Notify(NotificationMessage notificationMessage)
+        public Task Notify(NotificationMessage notificationMessage)
         {
             notificationMessage.ThrowExceptionIfNull();
             listener.WriteLine(notificationMessage.Body);
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -54,9 +63,10 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// </summary>
         /// <param name="message">The message.</param>
         /// <returns></returns>
-        public async Task Notify(string message)
+        public Task Notify(string message)
         {
             listener.WriteLine(message);
+            return Task.FromResult(0);
         }
 
         /// <summary>
@@ -64,11 +74,43 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>
-        public async Task Notify(Exception ex)
+        public Task Notify(Exception ex)
         {
             listener.WriteLine(ex.GetAllMessages(true," "));
+            return Task.FromResult(0);
         }
 
+        /// <summary>
+        /// Notifies the specified notification message.
+        /// </summary>
+        /// <param name="notificationMessage">The notification message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(NotificationMessage notificationMessage, NotifyAs notifyAs)
+        {
+            return Notify(notificationMessage, NotifyAs.Message);
+        }
 
+        /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(string message, NotifyAs notifyAs)
+        {
+            return Notify(message, NotifyAs.Message);
+        }
+
+        /// <summary>
+        /// Notifies the specified ex.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(Exception ex, NotifyAs notifyAs)
+        {
+            return Notify(ex, NotifyAs.Error);
+        }
     }
 }

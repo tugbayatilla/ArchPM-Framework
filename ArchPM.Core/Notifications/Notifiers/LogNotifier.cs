@@ -32,7 +32,16 @@ namespace ArchPM.Core.Notifications.Notifiers
         {
             manager.ThrowExceptionIfNull();
             this.manager = manager;
+            this.Id = Guid.NewGuid();
         }
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// Notifies the specified notification message.
@@ -41,8 +50,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <returns></returns>
         public async Task Notify(NotificationMessage notificationMessage)
         {
-            notificationMessage.ThrowExceptionIfNull();
-            await manager.AppendToFile(notificationMessage.Body);
+            await Notify(notificationMessage, NotifyAs.Message);
         }
 
         /// <summary>
@@ -52,7 +60,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <returns></returns>
         public async Task Notify(string message)
         {
-            await manager.AppendToFile(message);
+            await Notify(message, NotifyAs.Message);
         }
 
         /// <summary>
@@ -62,9 +70,42 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <returns></returns>
         public async Task Notify(Exception ex)
         {
-            await manager.AppendToFile(ex.GetAllMessages(true," "));
+            await Notify(ex, NotifyAs.Error);
         }
 
+        /// <summary>
+        /// Notifies the specified notification message.
+        /// </summary>
+        /// <param name="notificationMessage">The notification message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public async Task Notify(NotificationMessage notificationMessage, NotifyAs notifyAs)
+        {
+            notificationMessage.ThrowExceptionIfNull();
 
+            await manager.AppendToFile(notificationMessage.Body, notifyAs);
+        }
+
+        /// <summary>
+        /// Notifies the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public async Task Notify(string message, NotifyAs notifyAs)
+        {
+            await manager.AppendToFile(message, notifyAs);
+        }
+
+        /// <summary>
+        /// Notifies the specified ex.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public async Task Notify(Exception ex, NotifyAs notifyAs)
+        {
+            await manager.AppendToFile(ex.GetAllMessages(true, " "), notifyAs);
+        }
     }
 }
