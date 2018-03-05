@@ -189,5 +189,26 @@ namespace ArchPM.Core.Notifications
                 }
             }
         }
+
+        /// <summary>
+        /// Notify given message to given location or locations
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        public Task Notify(object entity, NotifyAs notifyAs, params string[] notifyTo)
+        {
+            notifyTo.ThrowExceptionIfNull($"{nameof(notifyTo)} is null");
+
+            registeredNotifiers.Keys.ToList().ForEach(p =>
+            {
+                if (notifyTo.Contains(p))
+                {
+                    registeredNotifiers[p].ForEach(x => x.Notify(entity, notifyAs));
+                }
+            });
+            return Task.FromResult(0);
+        }
     }
 }

@@ -39,5 +39,13 @@ namespace ArchPM.Core.Notifications
         /// <param name="notifyAs">The notify as.</param>
         /// <returns></returns>
         Task Notify(Exception ex, NotifyAs notifyAs);
+
+        /// <summary>
+        /// Notifies the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        Task Notify(Object entity, NotifyAs notifyAs);
     }
 }

@@ -67,10 +67,10 @@ namespace ArchPM.Core.Notifications.Notifiers
             notificationMessage.ThrowExceptionIfNull();
 
             Console.ForegroundColor = ConsoleColor.Green;
-            var msg = String.Format("{0}[{4}] Destination:{1} | Subject:{2} | Body:{3}", 
-                DateTime.Now.ToMessageHeaderString(), 
-                notificationMessage.Destination, 
-                notificationMessage.Subject, 
+            var msg = String.Format("{0}[{4}] Destination:{1} | Subject:{2} | Body:{3}",
+                DateTime.Now.ToMessageHeaderString(),
+                notificationMessage.Destination,
+                notificationMessage.Subject,
                 notificationMessage.Body,
                 notifyAs.GetName());
 
@@ -109,6 +109,24 @@ namespace ArchPM.Core.Notifications.Notifiers
             Console.WriteLine(msg);
             Console.ResetColor();
             return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Notifies the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(object entity, NotifyAs notifyAs)
+        {
+            var properties = entity.Properties().Where(p => p.IsPrimitive);
+            StringBuilder sb = new StringBuilder();
+            properties.ForEach(p => {
+                sb.Append($"{p.Name}:{p.Value} | ");
+            });
+
+            var message = sb.ToString();
+            return Notify(message, notifyAs);
         }
     }
 }

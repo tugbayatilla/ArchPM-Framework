@@ -103,5 +103,23 @@ namespace ArchPM.Core.Notifications.Notifiers
         {
             return Notify(ex.GetAllMessages(), notifyAs);
         }
+
+        /// <summary>
+        /// Notifies the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(object entity, NotifyAs notifyAs)
+        {
+            var properties = entity.Properties().Where(p => p.IsPrimitive);
+            StringBuilder sb = new StringBuilder();
+            properties.ForEach(p => {
+                sb.Append($"{p.Name}:{p.Value} | ");
+            });
+
+            var message = sb.ToString();
+            return Notify(message, notifyAs);
+        }
     }
 }

@@ -107,5 +107,23 @@ namespace ArchPM.Core.Notifications.Notifiers
         {
             await manager.AppendToFile(ex.GetAllMessages(true, " "), notifyAs);
         }
+
+        /// <summary>
+        /// Notifies the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <returns></returns>
+        public Task Notify(object entity, NotifyAs notifyAs)
+        {
+            var properties = entity.Properties().Where(p => p.IsPrimitive);
+            StringBuilder sb = new StringBuilder();
+            properties.ForEach(p => {
+                sb.Append($"{p.Name}:{p.Value} | ");
+            });
+
+            var message = sb.ToString();
+            return Notify(message, notifyAs);
+        }
     }
 }

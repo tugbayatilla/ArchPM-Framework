@@ -105,6 +105,18 @@ namespace ArchPM.Core.Notifications
         }
 
         /// <summary>
+        /// Notify given message to given location or locations
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        public Task Notify(object entity, NotifyAs notifyAs, params string[] notifyTo)
+        {
+            return Task.FromResult(0);
+        }
+
+        /// <summary>
         /// Registers the notifier.
         /// </summary>
         /// <param name="notifyTo">The notify to.  Use NotifyTo class</param>

@@ -14,6 +14,15 @@ namespace ArchPM.Core.Notifications
         /// <summary>
         /// Notify given message to given location or locations
         /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <param name="notifyAs">The notify as.</param>
+        /// <param name="notifyTo">The notify to.</param>
+        /// <returns></returns>
+        Task Notify(Object entity, NotifyAs notifyAs, params String[] notifyTo);
+
+        /// <summary>
+        /// Notify given message to given location or locations
+        /// </summary>
         /// <param name="notificationMessage">The notification message.</param>
         /// <param name="notifyTo">The notify to.</param>
         /// <returns></returns>
