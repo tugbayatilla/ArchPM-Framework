@@ -614,18 +614,45 @@ namespace ArchPM.Core.Extensions
             foreach (var type in types)
             {
                 if (!type.IsClass) continue;
-                if (type.GetInterfaces().Contains(typeof(T)) || type.BaseType.Name == typeof(T).Name)
+                if (type.IsAbstract) continue;
+                if (type.Name.Contains("<") || type.Name.Contains(">")) continue;
+                if (type.GetInterfaces().Contains(typeof(T)) || RecursivlyCheckBaseType(type, typeof(T)))
                 {
                     Type result = type;
                     if (type.ContainsGenericParameters)
                     {
-                        result = type.MakeGenericType(typeof(T).GenericTypeArguments);
+                        result = type.MakeGenericType(type.GenericTypeArguments);
                     }
 
                     var provider = (T)Activator.CreateInstance(result, constructorArguments);
 
                     yield return provider;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Recursivlies the type of the check base.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="checkType">Type of the check.</param>
+        /// <returns></returns>
+        static Boolean RecursivlyCheckBaseType(Type type, Type checkType)
+        {
+            if (type != null)
+            {
+                if (type == checkType)
+                {
+                    return true;
+                }
+                else
+                {
+                    return RecursivlyCheckBaseType(type.BaseType, checkType);
+                }
+            }
+            else
+            {
+                return false;
             }
         }
 
