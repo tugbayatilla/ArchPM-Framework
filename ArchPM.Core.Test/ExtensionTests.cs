@@ -26,6 +26,24 @@ namespace ArchPM.Core.Tests
             test.ThrowExceptionIfNull();
         }
 
+        [TestMethod]
+        public void TryToConvertWhenIntegerAsStringThenReturnsValid()
+        {
+            String value = "3";
+
+            var result = value.TryToConvert(typeof(int), 1);
+            Assert.AreEqual(3, result);
+        }
+
+        [TestMethod]
+        public void TryToConvertWhenInValidIntegerAsStringThenReturnsDefaultValue()
+        {
+            String value = "-";
+
+            var result = value.TryToConvert(typeof(int), 1);
+            Assert.AreEqual(1, result);
+        }
+
 
     }
 }
