@@ -732,6 +732,22 @@ namespace ArchPM.Core.Extensions
             return result;
         }
 
+        /// <summary>
+        /// Tries the convert to given type
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Object TryToConvert(this Object obj, Type type)
+        {
+            Object defaultValue = null;
+            if (type.IsValueType)
+            {
+                defaultValue  = Activator.CreateInstance(type);
+            }
+
+            return TryToConvert(obj, type, defaultValue);
+        }
 
         /// <summary>
         /// Gets the provider.

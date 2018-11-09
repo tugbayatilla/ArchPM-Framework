@@ -44,6 +44,24 @@ namespace ArchPM.Core.Tests
             Assert.AreEqual(1, result);
         }
 
+        [TestMethod]
+        public void TryToConvertWhenInValidIntegerAsStringWithoutDefaultValueThenReturnsDefaultValue()
+        {
+            String value = "-";
+
+            var result = value.TryToConvert(typeof(int));
+            Assert.AreEqual(0, result);
+        }
+
+        [TestMethod]
+        public void TryToConvertWhenInValidDatetimeAsStringWithoutDefaultValueThenReturnsDefaultValue()
+        {
+            String value = "-";
+
+            var result = value.TryToConvert(typeof(DateTime));
+            Assert.AreEqual(default(DateTime), result);
+        }
+
 
     }
 }
