@@ -388,6 +388,45 @@ namespace ArchPM.Core.Extensions
             }
         }
 
+        /// <summary>
+        /// Entities the properties.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="predicate">predicate</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">entity</exception>
+        public static IEnumerable<PropertyDTO> PropertiesAll<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            PropertyInfo[] properties = entity.GetType().GetProperties();
+
+            foreach (var property in properties)
+            {
+                var entityProperty = entity.ConvertPropertyInfoToPropertyDTO(property);
+                entityProperty.Attributes = property.GetCustomAttributes();
+
+                if (predicate != null)
+                {
+                    if (predicate(entityProperty))
+                    {
+                        yield return entityProperty;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    yield return entityProperty;
+                }
+
+            }
+        }
+
         static List<String> listNames = new List<string>() { "IEnumerable`1", "Enumerable", "List`1", "WhereSelectListIterator`2" };
         static Boolean IsList(this Type type)
         {

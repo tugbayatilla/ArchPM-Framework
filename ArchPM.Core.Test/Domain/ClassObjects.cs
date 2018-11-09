@@ -159,4 +159,16 @@ namespace ArchPM.Core.Tests
     {
 
     }
+
+    class ParentClass
+    {
+        public ChildClass1 Child1 { get; set; }
+        public List<ChildClass1> Child1s { get; set; }
+    }
+
+    class ChildClass1
+    {
+        public int Id { get; set; }
+    }
+
 }
