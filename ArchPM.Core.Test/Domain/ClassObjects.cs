@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -137,5 +138,25 @@ namespace ArchPM.Core.Tests
         Dark = 0,
         Alone = 1,
         Cat = 2
+    }
+
+    class AttributedClass1
+    {
+        [TestAttribute1]
+        public String AttributedProperty1 { get; set; }
+        [TestAttribute1]
+        public Int32 AttributedProperty2 { get; set; }
+
+        public Int32 UnAttributedProperty1 { get; set; }
+        public DateTime UnAttributedProperty2 { get; set; }
+
+        [Obsolete]
+        public DateTime SystemAttributedProperty1 { get; set; }
+
+    }
+
+    class TestAttribute1 : Attribute
+    {
+
     }
 }

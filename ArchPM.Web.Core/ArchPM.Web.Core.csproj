@@ -31,9 +31,6 @@
     <DocumentationFile>bin\Release\ArchPM.Web.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchPM.Core, Version=0.0.8.35495, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArchPM.Core.0.0.8\lib\net45\ArchPM.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -58,6 +55,10 @@
     <Compile Include="Managers\SessionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
+      <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
+      <Name>ArchPM.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ArchPM.Data\ArchPM.Data.csproj">
       <Project>{860A1505-8866-4513-83CC-0B4D8AF332AC}</Project>
       <Name>ArchPM.Data</Name>

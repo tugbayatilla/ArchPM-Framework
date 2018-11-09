@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Domain\ClassObjects.cs" />
     <Compile Include="EnumTests.cs" />
+    <Compile Include="PropertiesTests.cs" />
     <Compile Include="TextExtensionsTests.cs" />
     <Compile Include="ExtensionTests.cs" />
     <Compile Include="LogToFileManagerTests.cs" />

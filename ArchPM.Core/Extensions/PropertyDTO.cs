@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace ArchPM.Core.Extensions
@@ -64,10 +66,16 @@ namespace ArchPM.Core.Extensions
         public Boolean IsPrimitive { get; internal set; }
        
         /// <summary>
-        /// 
+        /// Gets the property whether is enum or not
         /// </summary>
         [XmlIgnore]
         public Boolean IsEnum { get; internal set; }
+
+        /// <summary>
+        /// Gets defined attribute types
+        /// </summary>
+        [XmlIgnore]
+        public IEnumerable<Attribute> Attributes { get; internal set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

@@ -346,9 +346,10 @@ namespace ArchPM.Core.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entity">The entity.</param>
+        /// <param name="predicate">predicate</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">entity</exception>
-        public static IEnumerable<PropertyDTO> Properties<T>(this T entity)
+        public static IEnumerable<PropertyDTO> Properties<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -366,8 +367,24 @@ namespace ArchPM.Core.Extensions
                 }
 
                 var entityProperty = entity.ConvertPropertyInfoToPropertyDTO(property);
+                entityProperty.Attributes = property.GetCustomAttributes();
 
-                yield return entityProperty;
+                if (predicate != null)
+                {
+                    if (predicate(entityProperty))
+                    {
+                        yield return entityProperty;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    yield return entityProperty;
+                }
+
             }
         }
 
