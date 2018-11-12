@@ -48,7 +48,7 @@ namespace ArchPM.Core.Tests
         }
 
         [TestMethod]
-        public void XXX()
+        public void PropertiesAllGetsAllPropertiesIncludingClasses()
         {
             ParentClass parent = new ParentClass();
             parent.Child1 = new ChildClass1();

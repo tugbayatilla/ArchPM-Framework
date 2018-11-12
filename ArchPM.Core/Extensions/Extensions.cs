@@ -1,6 +1,7 @@
 ﻿using ArchPM.Core.Enums;
 using ArchPM.Core.Exceptions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -427,12 +428,26 @@ namespace ArchPM.Core.Extensions
             }
         }
 
-        static List<String> listNames = new List<string>() { "IEnumerable`1", "Enumerable", "List`1", "WhereSelectListIterator`2" };
-        static Boolean IsList(this Type type)
+        /// <summary>
+        /// The defined list names
+        /// </summary>
+        public static List<String> DefinedListNames = new List<string>() {
+            nameof(ArrayList), "LinkedList`1", nameof(Queue), "Queue`1", nameof(Stack), "Stack`1",
+            "ICollection`1", "ICollection", "IEnumerable", "IEnumerable`1", "Enumerable",
+            "IReadOnlyCollection`1", "IReadOnlyList`1", "IList`1","IList","List`1", "WhereSelectListIterator`2" };
+
+        /// <summary>
+        /// Determines whether this instance is list.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified type is list; otherwise, <c>false</c>.
+        /// </returns>
+        public static Boolean IsList(this Type type)
         {
             return
-                (type.ReflectedType != null && listNames.Contains(type.ReflectedType.Name)
-              || listNames.Contains(type.Name));
+                (type.ReflectedType != null && DefinedListNames.Contains(type.ReflectedType.Name)
+              || DefinedListNames.Contains(type.Name));
         }
 
         /// <summary>
