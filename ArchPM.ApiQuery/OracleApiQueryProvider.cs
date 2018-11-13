@@ -1,4 +1,5 @@
-﻿using Oracle.DataAccess.Client;
+﻿using ArchPM.Core;
+using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,7 +20,15 @@ namespace ArchPM.ApiQuery
             this.ConnectionStringName = connectionStringName;
         }
 
-        public string ConnectionString => ConfigurationManager.ConnectionStrings[this.ConnectionStringName].ConnectionString;
+        public string ConnectionString
+        {
+            get
+            {
+                ConfigurationManager.ConnectionStrings[this.ConnectionStringName]
+                    .ThrowExceptionIfNull("Database connection string is not valid!");
+                return ConfigurationManager.ConnectionStrings[this.ConnectionStringName].ConnectionString;
+            }
+        }
         public string ConnectionStringName { get; set; }
 
 

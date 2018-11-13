@@ -10,9 +10,9 @@ namespace ArchPM.ApiQuery.Tests
     /// Summary description for MultiListTests
     /// </summary>
     [TestClass]
-    public class ComplexObjectTests
+    public class DatabaseProviderTests
     {
-        public ComplexObjectTests()
+        public DatabaseProviderTests()
         {
             //
             // TODO: Add constructor logic here
@@ -60,7 +60,7 @@ namespace ArchPM.ApiQuery.Tests
         #endregion
 
         [TestMethod]
-        public void ComplexObjectRequestWhenValidRequestThenReturnsValidResponse()
+        public void WhenConnectionStringInValidThenThrowException()
         {
             var request = new ComplexObjectRequest
             {
@@ -68,16 +68,16 @@ namespace ArchPM.ApiQuery.Tests
             };
 
             var engine = new ApiQueryEngine<ComplexObjectRequest, ComplexObjectResponse>(
-                new OracleApiQueryProvider("OracleConnection"));
+                new OracleApiQueryProvider("asd"));
 
             var responseTask = engine.Execute(request);
             var response = responseTask.GetAwaiter().GetResult();
-            Assert.AreEqual("200", response.Code, response.Message);
-            Assert.IsNotNull(response.Data, "response.Data is null");
-            Assert.IsNotNull(response.Data.Complex, "response.Data.Complex is null");
-            Assert.IsNotNull(response.Data.List2, "response.Data.List2 is null");
-            Assert.IsTrue(response.Data.Complex.Sample3Id > 0, response.Message);
-            Assert.IsTrue(response.Data.List2.Count > 0, response.Message);
+            Assert.AreEqual("900", response.Code, response.Message);
+
+            Assert.IsNull(response.Data, "response.Data is null");
+            Assert.IsTrue(response.Errors.Count == 1);
+            Assert.AreEqual("Database connection string is not valid!", response.Message);
+
         }
     }
 }

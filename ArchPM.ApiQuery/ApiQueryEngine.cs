@@ -59,7 +59,7 @@ namespace ArchPM.ApiQuery
                             switch (request.ResponseType)
                             {
                                 case QueryResponseTypes.AsValue:
-                                    break;
+                                    throw new NotSupportedException("Next version, it is coming...");
                                 case QueryResponseTypes.AsObject:
                                     command.ExecuteNonQuery();
                                     data = ObjectManager.FillObject(responseType, command);

@@ -22,7 +22,7 @@ namespace ArchPM.ApiQuery.Tests
                 new OracleApiQueryProvider("OracleConnection"));
 
             var responseTask = engine.Execute(request);
-            var response = responseTask.Result;
+            var response = responseTask.GetAwaiter().GetResult();
             Assert.AreEqual("200", response.Code, response.Message);
             Assert.IsNotNull(response.Data, response.Message);
             Assert.AreEqual(1, response.Data.NumberValueNotNull, response.Message);
