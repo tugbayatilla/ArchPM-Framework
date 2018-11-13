@@ -33,6 +33,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dummy", "Dummy", "{5511B1AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.Win32", "ArchPM.Win32\ArchPM.Win32.csproj", "{F4E8600D-AC03-4152-9FEC-7B85AAAAD772}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.ApiQuery", "ArchPM.ApiQuery\ArchPM.ApiQuery.csproj", "{3AE38A9B-BC44-460B-AF7B-358F702D5A2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.ApiQuery.Tests", "ArchPM.ApiQuery.Tests\ArchPM.ApiQuery.Tests.csproj", "{D7883C81-2B04-4278-97D7-4868606E4E9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,14 @@ Global
 		{F4E8600D-AC03-4152-9FEC-7B85AAAAD772}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E8600D-AC03-4152-9FEC-7B85AAAAD772}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E8600D-AC03-4152-9FEC-7B85AAAAD772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE38A9B-BC44-460B-AF7B-358F702D5A2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AE38A9B-BC44-460B-AF7B-358F702D5A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE38A9B-BC44-460B-AF7B-358F702D5A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AE38A9B-BC44-460B-AF7B-358F702D5A2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7883C81-2B04-4278-97D7-4868606E4E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7883C81-2B04-4278-97D7-4868606E4E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7883C81-2B04-4278-97D7-4868606E4E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7883C81-2B04-4278-97D7-4868606E4E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
