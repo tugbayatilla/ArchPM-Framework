@@ -47,6 +47,20 @@ namespace ArchPM.Core.Tests
             Assert.AreEqual("SystemAttributedProperty1", properties[0].Name);
         }
 
+        [TestMethod]
+        public void PropertiesAllGetsAllPropertiesIncludingClasses()
+        {
+            ParentClass parent = new ParentClass();
+            parent.Child1 = new ChildClass1();
+            parent.Child1s = new System.Collections.Generic.List<ChildClass1>();
+
+            var properties = parent.PropertiesAll().ToList();
+
+            properties.ForEach(p => {
+                Console.WriteLine(p.Name);
+            });
+        }
+
 
     }
 }

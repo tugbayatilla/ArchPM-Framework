@@ -21,13 +21,13 @@ namespace ArchPM.Core.Extensions
         public String Name { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets the value.
         /// </summary>
         /// <value>
         /// The value.
         /// </value>
         [XmlElement(IsNullable = true)]
-        public Object Value { get; set; }
+        public Object Value { get; internal set; }
 
         /// <summary>
         /// Gets the type of the value.
@@ -48,13 +48,13 @@ namespace ArchPM.Core.Extensions
         public Type ValueTypeOf { get; internal set; }
 
         /// <summary>
-        /// Gets and Sets a value indicating whether this <see cref="PropertyDTO"/> is nullable.
+        /// Gets a value indicating whether this <see cref="PropertyDTO"/> is nullable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if nullable; otherwise, <c>false</c>.
         /// </value>
         [XmlAttribute]
-        public Boolean Nullable { get; set; }
+        public Boolean Nullable { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="PropertyDTO" /> is .net primitive type such as string, int, decimal etc.

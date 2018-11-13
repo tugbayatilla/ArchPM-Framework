@@ -1,6 +1,7 @@
 ﻿using ArchPM.Core.Enums;
 using ArchPM.Core.Exceptions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -388,12 +389,65 @@ namespace ArchPM.Core.Extensions
             }
         }
 
-        static List<String> listNames = new List<string>() { "IEnumerable`1", "Enumerable", "List`1", "WhereSelectListIterator`2" };
-        static Boolean IsList(this Type type)
+        /// <summary>
+        /// Entities the properties.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="predicate">predicate</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">entity</exception>
+        public static IEnumerable<PropertyDTO> PropertiesAll<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            PropertyInfo[] properties = entity.GetType().GetProperties();
+
+            foreach (var property in properties)
+            {
+                var entityProperty = entity.ConvertPropertyInfoToPropertyDTO(property);
+                entityProperty.Attributes = property.GetCustomAttributes();
+
+                if (predicate != null)
+                {
+                    if (predicate(entityProperty))
+                    {
+                        yield return entityProperty;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    yield return entityProperty;
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// The defined list names
+        /// </summary>
+        public static List<String> DefinedListNames = new List<string>() {
+            nameof(ArrayList), "LinkedList`1", nameof(Queue), "Queue`1", nameof(Stack), "Stack`1",
+            "ICollection`1", "ICollection", "IEnumerable", "IEnumerable`1", "Enumerable",
+            "IReadOnlyCollection`1", "IReadOnlyList`1", "IList`1","IList","List`1", "WhereSelectListIterator`2" };
+
+        /// <summary>
+        /// Determines whether this instance is list.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified type is list; otherwise, <c>false</c>.
+        /// </returns>
+        public static Boolean IsList(this Type type)
         {
             return
-                (type.ReflectedType != null && listNames.Contains(type.ReflectedType.Name)
-              || listNames.Contains(type.Name));
+                (type.ReflectedType != null && DefinedListNames.Contains(type.ReflectedType.Name)
+              || DefinedListNames.Contains(type.Name));
         }
 
         /// <summary>
