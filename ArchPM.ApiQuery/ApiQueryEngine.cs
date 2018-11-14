@@ -1,6 +1,7 @@
 ﻿using ArchPM.Core;
 using ArchPM.Core.Api;
 using ArchPM.Core.Enums;
+using ArchPM.Core.Exceptions;
 using ArchPM.Core.Extensions;
 using Oracle.DataAccess.Client;
 using System;

@@ -35,6 +35,7 @@ namespace ArchPM.ApiQuery
                     //property definition
                     if (!String.IsNullOrEmpty(attr.On))
                     {
+                        //if value is null, you can't change value's property so we need to continue
                         if(property.Value == null)
                         {
                             continue;
@@ -96,9 +97,9 @@ namespace ArchPM.ApiQuery
 
                     if (result)
                     {
-                        if(!String.IsNullOrEmpty(attr.ErrorMesssage))
+                        if(String.IsNullOrEmpty(attr.ErrorMesssage))
                         {
-                            attr.ErrorMesssage = $"Failed When executing " + Expression.Lambda(paramExp).Body.ToString();
+                            attr.ErrorMesssage = $"Failed because of " + Expression.Lambda(realParamExp).Body.ToString();
                         }
 
                         throw new ValidationException(attr.ErrorMesssage);

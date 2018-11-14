@@ -62,7 +62,7 @@ namespace ArchPM.ApiQuery.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void ValidateWhenStringLenghtGreaterThen50ThenThrowsException()
+        public void ValidateWhenStringLenghtGreaterThan50ThenThrowsException()
         {
             ValidationSampleObject obj = new ValidationSampleObject()
             {
@@ -73,7 +73,7 @@ namespace ArchPM.ApiQuery.Tests
         }
 
         [TestMethod]
-        public void ValidateWhenStringLenghtLessThen50ThenValid()
+        public void ValidateWhenStringLenghtLessThan50ThenValid()
         {
             ValidationSampleObject obj = new ValidationSampleObject()
             {
@@ -81,6 +81,26 @@ namespace ArchPM.ApiQuery.Tests
             };
 
             obj.Validate();
+        }
+
+        [TestMethod]
+        public void ValidateWhenStringLenghtGreaterThan50ThenReturn910Message()
+        {
+            var request = new ValidationSampleObject()
+            {
+                StringPropertyAs50Chars = "123456789012345678901234567890123456789012345678901",//51chars,
+            };
+
+            var engine = new ApiQueryEngine<ValidationSampleObject, Int32>(
+                new OracleApiQueryProvider("OracleConnection"));
+
+            var responseTask = engine.Execute(request);
+            var response = responseTask.GetAwaiter().GetResult();
+            Assert.AreEqual("910", response.Code, response.Message);
+            Assert.IsNull(response.Data, response.Message);
+
+            Console.WriteLine(response.Message);   
+
         }
 
 
