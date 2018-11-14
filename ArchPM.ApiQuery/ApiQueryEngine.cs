@@ -60,39 +60,52 @@ namespace ArchPM.ApiQuery
                     {
                         connection.ConnectionString = databaseProvider.ConnectionString;
                         connection.Open();
-
-                        using (DbCommand command = databaseProvider.GenerateCommand())
+                        using (DbTransaction transaction = connection.BeginTransaction())
                         {
-                            command.Connection = connection;
-                            command.CommandType = CommandType.StoredProcedure;
-                            command.CommandText = request.ProcedureName;
-
-                            //command paramaters
-                            var commandParameters = CreateCommandParameters(request).ToArray();
-                            command.Parameters.AddRange(commandParameters);
-
-                            Object data = null;
-                            var responseType = typeof(Res);
-                            switch (request.ResponseType)
+                            try
                             {
-                                case QueryResponseTypes.AsValue:
+                                using (DbCommand command = databaseProvider.GenerateCommand())
+                                {
+                                    command.Connection = connection;
+                                    command.CommandType = CommandType.StoredProcedure;
+                                    command.CommandText = request.ProcedureName;
+                                    command.Transaction = transaction;
+
+                                    //command paramaters
+                                    var commandParameters = CreateCommandParameters(request).ToArray();
+                                    command.Parameters.AddRange(commandParameters);
+
+                                    //execute command
                                     command.ExecuteNonQuery();
-                                    data = ObjectManager.ReturnValue(responseType, command);
-                                    break;
-                                case QueryResponseTypes.AsObject:
-                                    command.ExecuteNonQuery();
-                                    data = ObjectManager.FillObject(responseType, command);
-                                    break;
-                                case QueryResponseTypes.AsList:
-                                    command.ExecuteNonQuery();
-                                    data = ObjectManager.FillSingleList(responseType, command);
-                                    break;
-                                default:
-                                    throw new Exception($"Unknown ResponseType: {request.ResponseType}");
+
+                                    Object data = null;
+                                    var responseType = typeof(Res);
+                                    switch (request.ResponseType)
+                                    {
+                                        case QueryResponseTypes.AsValue:
+                                            data = ObjectManager.ReturnValue(responseType, command);
+                                            break;
+                                        case QueryResponseTypes.AsObject:
+                                            data = ObjectManager.FillObject(responseType, command);
+                                            break;
+                                        case QueryResponseTypes.AsList:
+                                            data = ObjectManager.FillSingleList(responseType, command);
+                                            break;
+                                        default:
+                                            throw new Exception($"Unknown ResponseType: {request.ResponseType}");
+                                    }
+
+                                    //commit transaction
+                                    transaction.Commit();
+                                    result = ApiResponse<Res>.CreateSuccessResponse((Res)data);
+
+                                }
                             }
-
-                            result = ApiResponse<Res>.CreateSuccessResponse((Res)data);
-
+                            catch (Exception ex1)
+                            {
+                                transaction.Rollback();
+                                throw ex1;
+                            }
                         }
                     }
 
@@ -168,6 +181,7 @@ namespace ArchPM.ApiQuery
                 if (request.ResponseType == QueryResponseTypes.AsList)
                 {
                     var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>(); //list??
+                    resAttribute.ThrowExceptionIfNull($"{nameof(OutputApiQueryFieldAttribute)} must be used on {typeof(Res).GetGenericArguments()[0].Name}!");
                     var oracleParameter = new OracleParameter
                     {
                         ParameterName = resAttribute.Name,
@@ -209,7 +223,7 @@ namespace ArchPM.ApiQuery
         protected void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
         {
             //already filtered and can be only one queryFieldAttribute
-            var attr = prm.Attributes.Where(p=>p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
+            var attr = prm.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
 
             var dbType = OracleDbType.Varchar2;
             if (!attr.DbType.HasValue)

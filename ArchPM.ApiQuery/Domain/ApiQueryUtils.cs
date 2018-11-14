@@ -93,9 +93,9 @@ namespace ArchPM.ApiQuery
                     result = OracleDbType.Varchar2;
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                result = OracleDbType.Varchar2;
+                throw new Exception($"Failed at {nameof(ConvertFromSystemTypeToOracleDbType)}", ex);
             }
 
             return result;

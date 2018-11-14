@@ -30,5 +30,20 @@ namespace ArchPM.ApiQuery.Tests.Model
         public Int32? NumberValueNull { get; set; }
     }
 
+    class SingleListResponseNoAttribute
+    {
+        [OutputApiQueryField("STRING_VALUE_NOTNULL")]
+        public String StringValueNotNull { get; set; }
+
+        [OutputApiQueryField("STRING_VALUE_NULL")]
+        public String StringValueNull { get; set; }
+
+        [OutputApiQueryField("NUMBER_VALUE_NOTNULL")]
+        public Int32 NumberValueNotNull { get; set; }
+
+        [OutputApiQueryField("NUMBER_VALUE_NULL")]
+        public Int32? NumberValueNull { get; set; }
+    }
+
 
 }

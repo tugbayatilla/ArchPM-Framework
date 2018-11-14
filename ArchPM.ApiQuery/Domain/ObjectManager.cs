@@ -47,7 +47,7 @@ namespace ArchPM.ApiQuery
                 {
                     //set command return value to response 
 
-                    var record = Activator.CreateInstance(recordType); //fistan: primitite type olabilir
+                    var record = Activator.CreateInstance(recordType); 
                     var responseProperties = record.Properties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                     foreach (var responseProperty in responseProperties)
                     {

@@ -28,7 +28,7 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="dbType">Type of the database.</param>
-        public ApiQueryFieldAttribute(String name, ApiDbType dbType) : this(name) //fistan: delete me later
+        public ApiQueryFieldAttribute(String name, ApiDbType dbType) : this(name)
         {
             this.DbType = dbType;
         }
