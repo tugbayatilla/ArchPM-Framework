@@ -12,8 +12,20 @@ using System.Threading.Tasks;
 
 namespace ArchPM.ApiQuery
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ObjectManager
     {
+        /// <summary>
+        /// Fills the single list.
+        /// </summary>
+        /// <param name="listType">Type of the list.</param>
+        /// <param name="dbCommand">The database command.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// FillSingleList
+        /// </exception>
         public static Object FillSingleList(Type listType, DbCommand dbCommand)
         {
             try
@@ -39,7 +51,7 @@ namespace ArchPM.ApiQuery
                     var responseProperties = record.Properties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                     foreach (var responseProperty in responseProperties)
                     {
-                        var attr = responseProperty.Attributes.First() as ApiQueryFieldAttribute;
+                        var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
                         var value = dr[attr.Name] == (Object)DBNull.Value
                             ? null
                             : dr[attr.Name].TryToConvert(responseProperty.ValueTypeOf);
@@ -60,6 +72,13 @@ namespace ArchPM.ApiQuery
             }
         }
 
+        /// <summary>
+        /// Fills the object.
+        /// </summary>
+        /// <param name="resultType">Type of the result.</param>
+        /// <param name="dbCommand">The database command.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">FillObject</exception>
         public static Object FillObject(Type resultType, DbCommand dbCommand)
         {
             try
@@ -71,7 +90,76 @@ namespace ArchPM.ApiQuery
                 foreach (var responseProperty in responseProperties)
                 {
                     //can be a single ApiQueryFieldAttribute attribute so we can use First method
-                    var attr = responseProperty.Attributes.First() as ApiQueryFieldAttribute;
+                    var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
+
+                    //when property is primitive - int, string etc.
+                    if (responseProperty.IsPrimitive)
+                    {
+                        //collect value from dbcommand handles null values and if not returns default value of given type
+                        var val = dbCommand.Parameters[attr.Name].Value;
+                        var value = val == (Object)DBNull.Value || val.ToString() == "null"
+                            ? null
+                            : val.ToString().TryToConvert(responseProperty.ValueTypeOf);
+
+                        // set value to property
+                        PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
+                        propertyInfo.SetValue(result, value, null);
+                    }
+                    else //when property is complex
+                    {
+                        //when property is list
+                        if (responseProperty.ValueTypeOf.IsList())
+                        {
+                            //define list type
+                            var listType = responseProperty.ValueTypeOf;
+
+                            var data = ObjectManager.FillSingleList(listType, dbCommand);
+                            // set value to property
+                            PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
+                            propertyInfo.SetValue(result, Convert.ChangeType(data, propertyInfo.PropertyType), null);
+                        }
+                        else //when property is class
+                        {
+                            var objectType = responseProperty.ValueTypeOf;
+
+                            var data = ObjectManager.FillClassPropertyInClass(objectType, dbCommand);
+
+                            // set value to property
+                            PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
+                            propertyInfo.SetValue(result, Convert.ChangeType(data, propertyInfo.PropertyType), null);
+                        }
+                    }
+
+
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"[{ nameof(FillObject) }] {MethodBase.GetCurrentMethod().Name} failed!", ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns the value.
+        /// </summary>
+        /// <param name="resultType">Type of the result.</param>
+        /// <param name="dbCommand">The database command.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">FillObject</exception>
+        public static Object ReturnValue(Type resultType, DbCommand dbCommand)
+        {
+            try
+            {
+
+                var result = Activator.CreateInstance(resultType);
+
+                //collect only properties having ApiQueryFieldAttribute
+                var responseProperties = result.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                foreach (var responseProperty in responseProperties)
+                {
+                    //can be a single ApiQueryFieldAttribute attribute so we can use First method
+                    var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
 
                     //when property is primitive - int, string etc.
                     if (responseProperty.IsPrimitive)
@@ -122,12 +210,16 @@ namespace ArchPM.ApiQuery
         }
 
 
+
         /// <summary>
-        /// Fill class property in class 
+        /// Fill class property in class
         /// </summary>
-        /// <param name="objectType"></param>
-        /// <param name="dbCommand"></param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="dbCommand">The database command.</param>
         /// <returns></returns>
+        /// <exception cref="Exception">
+        /// FillClassPropertyInClass
+        /// </exception>
         static Object FillClassPropertyInClass(Type objectType, DbCommand dbCommand)
         {
             try
@@ -150,7 +242,8 @@ namespace ArchPM.ApiQuery
                     var responseProperties = record.Properties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                     foreach (var responseProperty in responseProperties)
                     {
-                        var attr = responseProperty.Attributes.First() as ApiQueryFieldAttribute;
+                        var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
+
                         var value = dr[attr.Name] == (Object)DBNull.Value
                             ? null
                             : dr[attr.Name].TryToConvert(responseProperty.ValueTypeOf);
@@ -170,11 +263,14 @@ namespace ArchPM.ApiQuery
         }
 
         /// <summary>
-        /// 
+        /// Fills the values in class.
         /// </summary>
-        /// <param name="objectType"></param>
-        /// <param name="dbCommand"></param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="dbCommand">The database command.</param>
         /// <returns></returns>
+        /// <exception cref="Exception">
+        /// FillValuesInClass
+        /// </exception>
         static Object FillValuesInClass(Type objectType, DbCommand dbCommand)
         {
             try
@@ -189,7 +285,7 @@ namespace ArchPM.ApiQuery
                 var responseProperties = record.Properties(p => p.Attributes.Any(x => x.GetType() == typeof(ApiQueryFieldAttribute)));
                 foreach (var responseProperty in responseProperties)
                 {
-                    var attr = responseProperty.Attributes.First() as ApiQueryFieldAttribute;
+                    var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
                     var val = dbCommand.Parameters[attr.Name].Value;
                     var value = val == (Object)DBNull.Value
                         ? null

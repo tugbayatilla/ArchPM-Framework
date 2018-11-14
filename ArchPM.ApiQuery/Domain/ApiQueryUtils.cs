@@ -9,8 +9,16 @@ using System.Threading.Tasks;
 
 namespace ArchPM.ApiQuery
 {
-    static class Utils
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class ApiQueryUtils
     {
+        /// <summary>
+        /// Gets the API query field attribute on class.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static ApiQueryFieldAttribute GetApiQueryFieldAttributeOnClass<T>()
         {
             Type type = typeof(T);
@@ -22,6 +30,11 @@ namespace ArchPM.ApiQuery
             return resAttribute;
         }
 
+        /// <summary>
+        /// Converts the type of from system type to oracle database.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static OracleDbType ConvertFromSystemTypeToOracleDbType(String name)
         {
             OracleDbType result = OracleDbType.Varchar2;
@@ -29,7 +42,7 @@ namespace ArchPM.ApiQuery
             {
                 if (name == "Decimal")
                 {
-                    result=  OracleDbType.Decimal;
+                    result = OracleDbType.Decimal;
                 }
                 else if (name == "Double")
                 {
@@ -88,6 +101,22 @@ namespace ArchPM.ApiQuery
             return result;
         }
 
+        /// <summary>
+        /// Gets the name of the procedure.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
+        public static String GetProcedureName(String text)
+        {
+            String result = text;
 
+            var lastIndexOfDot = text.LastIndexOf('.');
+            if (lastIndexOfDot != -1)
+            {
+                result = text.Substring(lastIndexOfDot + 1);
+            }
+
+            return result;
+        }
     }
 }

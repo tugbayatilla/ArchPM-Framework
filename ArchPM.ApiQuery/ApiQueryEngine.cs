@@ -15,16 +15,33 @@ using System.Threading.Tasks;
 
 namespace ArchPM.ApiQuery
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="Req">The type of the eq.</typeparam>
+    /// <typeparam name="Res">The type of the es.</typeparam>
     public class ApiQueryEngine<Req, Res>
         where Req : ApiQueryRequest
         where Res : new()
     {
+        /// <summary>
+        /// The database provider
+        /// </summary>
         readonly IApiQueryDatabaseProvider databaseProvider;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiQueryEngine{Req, Res}"/> class.
+        /// </summary>
+        /// <param name="databaseProvider">The database provider.</param>
         public ApiQueryEngine(IApiQueryDatabaseProvider databaseProvider)
         {
             this.databaseProvider = databaseProvider;
         }
 
+        /// <summary>
+        /// Executes the specified request.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
         public async Task<IApiResponse<Res>> Execute(Req request)
         {
             return await Task<IApiResponse<Res>>.Factory.StartNew(() =>
@@ -59,7 +76,9 @@ namespace ArchPM.ApiQuery
                             switch (request.ResponseType)
                             {
                                 case QueryResponseTypes.AsValue:
-                                    throw new NotSupportedException("Next version, it is coming...");
+                                    command.ExecuteNonQuery();
+                                    data = ObjectManager.ReturnValue(responseType, command);
+                                    break;
                                 case QueryResponseTypes.AsObject:
                                     command.ExecuteNonQuery();
                                     data = ObjectManager.FillObject(responseType, command);
@@ -93,7 +112,11 @@ namespace ArchPM.ApiQuery
             });
         }
 
-        void SetResponseTypeToRequestIfNotDefined(Req request)
+        /// <summary>
+        /// Sets the response type to request if not defined.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        protected void SetResponseTypeToRequestIfNotDefined(Req request)
         {
             //set request response type if not exist
             if (!request.ResponseType.HasValue)
@@ -113,7 +136,13 @@ namespace ArchPM.ApiQuery
             }
         }
 
-        public List<OracleParameter> CreateCommandParameters(Req request)
+        /// <summary>
+        /// Creates the command parameters.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">CreateCommandParameters</exception>
+        protected List<OracleParameter> CreateCommandParameters(Req request)
         {
             var result = new List<OracleParameter>();
 
@@ -138,7 +167,7 @@ namespace ArchPM.ApiQuery
 
                 if (request.ResponseType == QueryResponseTypes.AsList)
                 {
-                    var resAttribute = Utils.GetApiQueryFieldAttributeOnClass<Res>(); //list??
+                    var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>(); //list??
                     var oracleParameter = new OracleParameter
                     {
                         ParameterName = resAttribute.Name,
@@ -151,36 +180,43 @@ namespace ArchPM.ApiQuery
                 }
 
                 //single value return
-                //retValue.ParameterName must be prodecure or function name and be the first parameters
+                //must be first: retValue.ParameterName must be prodecure or function name and be the first parameters
                 if (request.ResponseType == QueryResponseTypes.AsValue)
                 {
-                    var retValue = result.Cast<OracleParameter>().FirstOrDefault(p => p.Direction == ParameterDirection.ReturnValue);
-                    if (retValue != null)
+                    var responseType = typeof(Res);
+                    var oracleParameter = new OracleParameter
                     {
-                        result.Remove(retValue);
-                        result.Insert(0, retValue);//must be first 
-                    }
+                        ParameterName = ApiQueryUtils.GetProcedureName(request.ProcedureName),
+                        OracleDbType = ApiQueryUtils.ConvertFromSystemTypeToOracleDbType(responseType.Name),
+                        Direction = ParameterDirection.ReturnValue,
+                    };
+                    result.Insert(0, oracleParameter);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed at CreateCommandParameters!", ex);
+                throw new Exception($"Failed at {nameof(CreateCommandParameters)}!", ex);
             }
 
             return result;
         }
 
-        void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
+        /// <summary>
+        /// Adds the parameter to result list.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="prm">The PRM.</param>
+        protected void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
         {
             //already filtered and can be only one queryFieldAttribute
-            var attr = prm.Attributes.First() as ApiQueryFieldAttribute;
+            var attr = prm.Attributes.Where(p=>p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
 
             var dbType = OracleDbType.Varchar2;
             if (!attr.DbType.HasValue)
             {
                 if (prm.IsPrimitive)
                 {
-                    dbType = Utils.ConvertFromSystemTypeToOracleDbType(prm.ValueType);
+                    dbType = ApiQueryUtils.ConvertFromSystemTypeToOracleDbType(prm.ValueType);
                 }
                 else
                 {
@@ -208,6 +244,7 @@ namespace ArchPM.ApiQuery
 
             result.Add(oracleParameter);
         }
+
 
     }
 }

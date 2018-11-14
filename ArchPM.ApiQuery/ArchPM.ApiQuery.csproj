@@ -56,15 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiQueryEngine.cs" />
+    <Compile Include="Domain\ApiQueryFieldThrowExceptionWhenAttribute.cs" />
     <Compile Include="Domain\ApiQueryRequest.cs" />
     <Compile Include="Domain\Constants.cs" />
     <Compile Include="Domain\IApiQueryDatabaseProvider.cs" />
     <Compile Include="Domain\ObjectManager.cs" />
-    <Compile Include="Domain\OracleApiQueryProvider.cs" />
     <Compile Include="OracleApiQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\ApiQueryFieldAttribute.cs" />
-    <Compile Include="Domain\Utils.cs" />
+    <Compile Include="Domain\ApiQueryUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace ArchPM.ApiQuery
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum ApiQueryFieldOperators
+    {
+        Not = 1,
+        EqualTo = 2,
+        GreaterThan = 4,
+        LessThan = 8,
+    }
+
     public enum QueryResponseTypes
     {
         /// <summary>
