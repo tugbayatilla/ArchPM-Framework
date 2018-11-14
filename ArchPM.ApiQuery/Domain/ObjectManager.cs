@@ -32,7 +32,7 @@ namespace ArchPM.ApiQuery
             {
                 if (!(listType.IsList()))
                 {
-                    throw new Exception($"{listType.Name} list orarak tanimli degil, list'e donmeli!");
+                    throw new Exception($"{listType.Name} is not defined as List, must return List");
                 }
 
                 var recordType = listType.GetGenericArguments()[0];
@@ -147,60 +147,26 @@ namespace ArchPM.ApiQuery
         /// <param name="dbCommand">The database command.</param>
         /// <returns></returns>
         /// <exception cref="Exception">FillObject</exception>
-        public static Object ReturnValue(Type resultType, DbCommand dbCommand)
+        public static Object ReturnValue(Type resultType, DbCommand dbCommand, String returnValueName)
         {
             try
             {
 
                 var result = Activator.CreateInstance(resultType);
 
-                //collect only properties having ApiQueryFieldAttribute
-                var responseProperties = result.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
-                foreach (var responseProperty in responseProperties)
+                if (resultType.IsPrimitive)
                 {
-                    //can be a single ApiQueryFieldAttribute attribute so we can use First method
-                    var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
+                    var parameterName = ApiQueryUtils.GetProcedureName(returnValueName);
 
-                    //when property is primitive - int, string etc.
-                    if (responseProperty.IsPrimitive)
-                    {
-                        //collect value from dbcommand handles null values and if not returns default value of given type
-                        var val = dbCommand.Parameters[attr.Name].Value;
-                        var value = val == (Object)DBNull.Value || val.ToString() == "null"
-                            ? null
-                            : val.ToString().TryToConvert(responseProperty.ValueTypeOf);
+                    //collect value from dbcommand handles null values and if not returns default value of given type
+                    var val = dbCommand.Parameters[parameterName].Value;
+                    var value = val == (Object)DBNull.Value || val.ToString() == "null"
+                        ? null
+                        : val.ToString().TryToConvert(resultType);
 
-                        // set value to property
-                        PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
-                        propertyInfo.SetValue(result, value, null);
-                    }
-                    else //when property is complex
-                    {
-                        //when property is list
-                        if (responseProperty.ValueTypeOf.IsList())
-                        {
-                            //define list type
-                            var listType = responseProperty.ValueTypeOf;
-
-                            var data = ObjectManager.FillSingleList(listType, dbCommand);
-                            // set value to property
-                            PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
-                            propertyInfo.SetValue(result, Convert.ChangeType(data, propertyInfo.PropertyType), null);
-                        }
-                        else //when property is class
-                        {
-                            var objectType = responseProperty.ValueTypeOf;
-
-                            var data = ObjectManager.FillClassPropertyInClass(objectType, dbCommand);
-
-                            // set value to property
-                            PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
-                            propertyInfo.SetValue(result, Convert.ChangeType(data, propertyInfo.PropertyType), null);
-                        }
-                    }
-
-
+                    result = value;
                 }
+
                 return result;
             }
             catch (Exception ex)

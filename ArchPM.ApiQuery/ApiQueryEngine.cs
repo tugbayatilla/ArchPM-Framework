@@ -83,7 +83,7 @@ namespace ArchPM.ApiQuery
                                     switch (request.ResponseType)
                                     {
                                         case QueryResponseTypes.AsValue:
-                                            data = ObjectManager.ReturnValue(responseType, command);
+                                            data = ObjectManager.ReturnValue(responseType, command, request.ProcedureName);
                                             break;
                                         case QueryResponseTypes.AsObject:
                                             data = ObjectManager.FillObject(responseType, command);
