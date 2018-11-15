@@ -11,7 +11,7 @@ namespace ArchPM.ApiQuery
     /// </summary>
     /// <seealso cref="System.Attribute" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class ApiQueryFieldAttribute : Attribute
+    public abstract class ApiQueryFieldAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiQueryFieldAttribute"/> class.
@@ -21,16 +21,6 @@ namespace ArchPM.ApiQuery
         {
             this.Name = name;
             this.Direction = ApiDbParameterDirection.Input;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiQueryFieldAttribute"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="dbType">Type of the database.</param>
-        public ApiQueryFieldAttribute(String name, ApiDbType dbType) : this(name)
-        {
-            this.DbType = dbType;
         }
 
         /// <summary>
@@ -79,15 +69,6 @@ namespace ArchPM.ApiQuery
         {
             this.Direction = ApiDbParameterDirection.Output;
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OutputApiQueryFieldAttribute"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="dbType">Type of the database.</param>
-        public OutputApiQueryFieldAttribute(String name, ApiDbType dbType) : base(name, dbType)
-        {
-        }
     }
 
     /// <summary>
@@ -104,15 +85,6 @@ namespace ArchPM.ApiQuery
         public InputApiQueryFieldAttribute(String name) : base(name)
         {
             this.Direction = ApiDbParameterDirection.Input;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InputApiQueryFieldAttribute"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="dbType">Type of the database.</param>
-        public InputApiQueryFieldAttribute(String name, ApiDbType dbType) : base(name, dbType)
-        {
         }
     }
 }
