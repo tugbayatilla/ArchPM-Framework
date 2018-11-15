@@ -71,5 +71,9 @@
     <None Include="ArchPM.ApiQuery.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+    <Content Include="TEST.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
