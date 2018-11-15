@@ -12,7 +12,7 @@ namespace ArchPM.Core.Tests
         public void PropertiesWhenAttributeDefinedAttributesPropertyWorks()
         {
             AttributedClass1 class1 = new AttributedClass1();
-            var attributes = class1.Properties().SelectMany(p => p.Attributes);
+            var attributes = class1.CollectProperties().SelectMany(p => p.Attributes);
 
             Assert.AreEqual(3, attributes.Count());
         }
@@ -21,7 +21,7 @@ namespace ArchPM.Core.Tests
         public void PropertiesWhenAttributeDefinedOnPropertiesOndefinedAttributesCanBeCollected()
         {
             AttributedClass1 class1 = new AttributedClass1();
-            var properties = class1.Properties(p => p.Attributes.Any(x => x.GetType() == typeof(TestAttribute1))).ToList();
+            var properties = class1.CollectProperties(p => p.Attributes.Any(x => x.GetType() == typeof(TestAttribute1))).ToList();
 
             properties.ForEach(p=> {
                 Console.WriteLine(p.Name);
@@ -37,7 +37,7 @@ namespace ArchPM.Core.Tests
         public void PropertiesWhenSystemAttributeDefinedOnPropertiesReturnsSystemProperty()
         {
             AttributedClass1 class1 = new AttributedClass1();
-            var properties = class1.Properties(p => p.Attributes.Any(x => x.GetType() == typeof(ObsoleteAttribute))).ToList();
+            var properties = class1.CollectProperties(p => p.Attributes.Any(x => x.GetType() == typeof(ObsoleteAttribute))).ToList();
 
             properties.ForEach(p => {
                 Console.WriteLine(p.Name);
@@ -54,7 +54,7 @@ namespace ArchPM.Core.Tests
             parent.Child1 = new ChildClass1();
             parent.Child1s = new System.Collections.Generic.List<ChildClass1>();
 
-            var properties = parent.PropertiesAll().ToList();
+            var properties = parent.CollectProperties().ToList();
 
             properties.ForEach(p => {
                 Console.WriteLine(p.Name);

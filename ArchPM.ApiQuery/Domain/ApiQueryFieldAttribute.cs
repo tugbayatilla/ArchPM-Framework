@@ -71,11 +71,20 @@ namespace ArchPM.ApiQuery
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Class, AllowMultiple = false)]
     public class OutputApiQueryFieldAttribute : ApiQueryFieldAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OutputApiQueryFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public OutputApiQueryFieldAttribute(String name) : base(name)
         {
             this.Direction = ApiDbParameterDirection.Output;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OutputApiQueryFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
         public OutputApiQueryFieldAttribute(String name, ApiDbType dbType) : base(name, dbType)
         {
         }
@@ -88,11 +97,20 @@ namespace ArchPM.ApiQuery
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class InputApiQueryFieldAttribute : ApiQueryFieldAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputApiQueryFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public InputApiQueryFieldAttribute(String name) : base(name)
         {
             this.Direction = ApiDbParameterDirection.Input;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InputApiQueryFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
         public InputApiQueryFieldAttribute(String name, ApiDbType dbType) : base(name, dbType)
         {
         }

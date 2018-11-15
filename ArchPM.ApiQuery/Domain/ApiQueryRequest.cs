@@ -10,14 +10,33 @@ using System.Threading.Tasks;
 
 namespace ArchPM.ApiQuery
 {
+    /// <summary>
+    /// Api Query Request Base Class
+    /// </summary>
     public abstract class ApiQueryRequest
     {
+        /// <summary>
+        /// Gets the name of the procedure.
+        /// </summary>
+        /// <value>
+        /// The name of the procedure.
+        /// </value>
         public abstract String ProcedureName { get; }
+        /// <summary>
+        /// Gets or sets the type of the response.
+        /// </summary>
+        /// <value>
+        /// The type of the response.
+        /// </value>
         public virtual QueryResponseTypes? ResponseType { get; set; }
 
+        /// <summary>
+        /// Validates this instance.
+        /// </summary>
+        /// <exception cref="ValidationException"></exception>
         public virtual void Validate()
         {
-            var properties = this.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldThrowExceptionWhenAttribute));
+            var properties = this.CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldThrowExceptionWhenAttribute));
 
             foreach (var property in properties)
             {

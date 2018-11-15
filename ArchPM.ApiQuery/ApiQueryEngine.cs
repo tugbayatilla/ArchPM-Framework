@@ -23,7 +23,6 @@ namespace ArchPM.ApiQuery
     /// <typeparam name="Res">The type of the es.</typeparam>
     public class ApiQueryEngine<Req, Res>
         where Req : ApiQueryRequest
-        where Res : new()
     {
         /// <summary>
         /// The database provider
@@ -165,9 +164,8 @@ namespace ArchPM.ApiQuery
 
             try
             {
-                Res response = new Res();
-                var inputParameters = request.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
-                var outputParameters = response.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                var inputParameters = request.CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                var outputParameters = typeof(Res).CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
 
                 foreach (var prm in inputParameters)
                 {
@@ -184,7 +182,7 @@ namespace ArchPM.ApiQuery
 
                 if (request.ResponseType == QueryResponseTypes.AsList)
                 {
-                    var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>(); //list??
+                    var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>(); 
                     resAttribute.ThrowExceptionIfNull($"{nameof(OutputApiQueryFieldAttribute)} must be used on {typeof(Res).GetGenericArguments()[0].Name}!");
                     var oracleParameter = new OracleParameter
                     {

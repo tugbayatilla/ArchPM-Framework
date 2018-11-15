@@ -48,7 +48,7 @@ namespace ArchPM.ApiQuery
                     //set command return value to response 
 
                     var record = Activator.CreateInstance(recordType); 
-                    var responseProperties = record.Properties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                    var responseProperties = record.CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                     foreach (var responseProperty in responseProperties)
                     {
                         var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
@@ -86,7 +86,7 @@ namespace ArchPM.ApiQuery
                 var result = Activator.CreateInstance(resultType);
 
                 //collect only properties having ApiQueryFieldAttribute
-                var responseProperties = result.PropertiesAll(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                var responseProperties = result.CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                 foreach (var responseProperty in responseProperties)
                 {
                     //can be a single ApiQueryFieldAttribute attribute so we can use First method
@@ -145,6 +145,7 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="resultType">Type of the result.</param>
         /// <param name="dbCommand">The database command.</param>
+        /// <param name="returnValueName">Name of the return value.</param>
         /// <returns></returns>
         /// <exception cref="Exception">FillObject</exception>
         public static Object ReturnValue(Type resultType, DbCommand dbCommand, String returnValueName)
@@ -186,7 +187,7 @@ namespace ArchPM.ApiQuery
         /// <exception cref="Exception">
         /// FillClassPropertyInClass
         /// </exception>
-        static Object FillClassPropertyInClass(Type objectType, DbCommand dbCommand)
+        internal static Object FillClassPropertyInClass(Type objectType, DbCommand dbCommand)
         {
             try
             {
@@ -205,7 +206,7 @@ namespace ArchPM.ApiQuery
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     //set command return value to response 
-                    var responseProperties = record.Properties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
+                    var responseProperties = record.CollectProperties(p => p.Attributes.Any(x => x is ApiQueryFieldAttribute));
                     foreach (var responseProperty in responseProperties)
                     {
                         var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
@@ -237,7 +238,7 @@ namespace ArchPM.ApiQuery
         /// <exception cref="Exception">
         /// FillValuesInClass
         /// </exception>
-        static Object FillValuesInClass(Type objectType, DbCommand dbCommand)
+        internal static Object FillValuesInClass(Type objectType, DbCommand dbCommand)
         {
             try
             {
@@ -248,7 +249,7 @@ namespace ArchPM.ApiQuery
 
                 //set command return value to response 
                 var record = Activator.CreateInstance(objectType);
-                var responseProperties = record.Properties(p => p.Attributes.Any(x => x.GetType() == typeof(ApiQueryFieldAttribute)));
+                var responseProperties = record.CollectProperties(p => p.Attributes.Any(x => x.GetType() == typeof(ApiQueryFieldAttribute)));
                 foreach (var responseProperty in responseProperties)
                 {
                     var attr = responseProperty.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;

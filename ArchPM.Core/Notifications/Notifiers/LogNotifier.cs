@@ -116,7 +116,7 @@ namespace ArchPM.Core.Notifications.Notifiers
         /// <returns></returns>
         public Task Notify(object entity, NotifyAs notifyAs)
         {
-            var properties = entity.Properties().Where(p => p.IsPrimitive);
+            var properties = entity.CollectProperties().Where(p => p.IsPrimitive);
             StringBuilder sb = new StringBuilder();
             properties.ForEach(p => {
                 sb.Append($"{p.Name}:{p.Value} | ");

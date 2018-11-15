@@ -430,25 +430,41 @@ namespace ArchPM.Core.Extensions
             }
         }
 
-
         /// <summary>
         /// Collects the properties.
         /// </summary>
         /// <param name="entityType">Type of the entity.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">entity</exception>
+        /// <exception cref="ArgumentNullException">entityType</exception>
         public static IEnumerable<PropertyDTO> CollectProperties(this Type entityType, Func<PropertyDTO, Boolean> predicate = null)
         {
             if (entityType == null)
+                throw new ArgumentNullException("entityType");
+
+            var entity = Activator.CreateInstance(entityType);
+
+            return CollectProperties(entity, predicate);
+        }
+
+        /// <summary>
+        /// Collects the properties.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">entity</exception>
+        public static IEnumerable<PropertyDTO> CollectProperties<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
+        {
+            if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            PropertyInfo[] properties = entityType.GetProperties();
-            var entity = Activator.CreateInstance(entityType);
+            PropertyInfo[] properties = entity.GetType().GetProperties();
 
             foreach (var property in properties)
             {
-                var entityProperty = entityType.ConvertPropertyInfoToPropertyDTO(property);
+                var entityProperty = entity.ConvertPropertyInfoToPropertyDTO(property);
                 entityProperty.Attributes = property.GetCustomAttributes();
 
                 if (predicate != null)
@@ -469,6 +485,7 @@ namespace ArchPM.Core.Extensions
 
             }
         }
+
 
         /// <summary>
         /// The defined list names
@@ -723,13 +740,13 @@ namespace ArchPM.Core.Extensions
             return (T)result;
         }
 
+
         /// <summary>
-        /// Tries the convert to given type
+        /// Tries to convert.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj">The expression.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="type">The type.</param>
         /// <param name="defaultValue">The default value.</param>
-        /// <param name="type">Expected Return value type</param>
         /// <returns></returns>
         public static Object TryToConvert(this Object obj, Type type, Object defaultValue)
         {
