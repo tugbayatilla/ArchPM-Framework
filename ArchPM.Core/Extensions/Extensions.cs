@@ -350,6 +350,7 @@ namespace ArchPM.Core.Extensions
         /// <param name="predicate">predicate</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">entity</exception>
+        [Obsolete("this will be removed version 0.4.0. Use CollectProperties instead!")]
         public static IEnumerable<PropertyDTO> Properties<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
         {
             if (entity == null)
@@ -397,6 +398,7 @@ namespace ArchPM.Core.Extensions
         /// <param name="predicate">predicate</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">entity</exception>
+        [Obsolete("this will be removed version 0.4.0. Use CollectProperties instead!")]
         public static IEnumerable<PropertyDTO> PropertiesAll<T>(this T entity, Func<PropertyDTO, Boolean> predicate = null)
         {
             if (entity == null)
@@ -407,6 +409,46 @@ namespace ArchPM.Core.Extensions
             foreach (var property in properties)
             {
                 var entityProperty = entity.ConvertPropertyInfoToPropertyDTO(property);
+                entityProperty.Attributes = property.GetCustomAttributes();
+
+                if (predicate != null)
+                {
+                    if (predicate(entityProperty))
+                    {
+                        yield return entityProperty;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    yield return entityProperty;
+                }
+
+            }
+        }
+
+
+        /// <summary>
+        /// Collects the properties.
+        /// </summary>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">entity</exception>
+        public static IEnumerable<PropertyDTO> CollectProperties(this Type entityType, Func<PropertyDTO, Boolean> predicate = null)
+        {
+            if (entityType == null)
+                throw new ArgumentNullException("entity");
+
+            PropertyInfo[] properties = entityType.GetProperties();
+            var entity = Activator.CreateInstance(entityType);
+
+            foreach (var property in properties)
+            {
+                var entityProperty = entityType.ConvertPropertyInfoToPropertyDTO(property);
                 entityProperty.Attributes = property.GetCustomAttributes();
 
                 if (predicate != null)

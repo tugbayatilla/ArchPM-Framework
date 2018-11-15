@@ -43,17 +43,20 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns></returns>
-        public async Task<IApiResponse<Res>> Execute(Req request)
+        public async Task<ApiResponse<Res>> Execute(Req request)
         {
-            return await Task<IApiResponse<Res>>.Factory.StartNew(() =>
+            return await Task<ApiResponse<Res>>.Factory.StartNew(() =>
             {
                 Stopwatch sw = new Stopwatch();
-                IApiResponse<Res> result = null;
+                ApiResponse<Res> result = null;
                 try
                 {
                     sw.Start();
+
+                    request.ThrowExceptionIfNull($"Request '{typeof(Req).Name}' cannot be null");
                     //validate request object
                     request.Validate();
+
 
                     SetResponseTypeToRequestIfNotDefined(request);
 
@@ -98,7 +101,7 @@ namespace ArchPM.ApiQuery
 
                                     //commit transaction
                                     transaction.Commit();
-                                    result = ApiResponse<Res>.CreateSuccessResponse((Res)data);
+                                    result = ApiResponse<Res>.CreateSuccess((Res)data);
 
                                 }
                             }
@@ -113,7 +116,7 @@ namespace ArchPM.ApiQuery
                 }
                 catch (Exception ex)
                 {
-                    result = ApiResponse<Res>.CreateException(ex);
+                    result = ApiResponse<Res>.CreateFail(ex);
                 }
                 finally
                 {
@@ -130,7 +133,7 @@ namespace ArchPM.ApiQuery
         /// Sets the response type to request if not defined.
         /// </summary>
         /// <param name="request">The request.</param>
-        protected void SetResponseTypeToRequestIfNotDefined(Req request)
+        internal void SetResponseTypeToRequestIfNotDefined(Req request)
         {
             //set request response type if not exist
             if (!request.ResponseType.HasValue)
@@ -156,7 +159,7 @@ namespace ArchPM.ApiQuery
         /// <param name="request">The request.</param>
         /// <returns></returns>
         /// <exception cref="Exception">CreateCommandParameters</exception>
-        protected List<OracleParameter> CreateCommandParameters(Req request)
+        internal List<OracleParameter> CreateCommandParameters(Req request)
         {
             var result = new List<OracleParameter>();
 
@@ -221,7 +224,7 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="result">The result.</param>
         /// <param name="prm">The PRM.</param>
-        protected void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
+        internal void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
         {
             //already filtered and can be only one queryFieldAttribute
             var attr = prm.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
@@ -259,7 +262,6 @@ namespace ArchPM.ApiQuery
 
             result.Add(oracleParameter);
         }
-
 
     }
 }

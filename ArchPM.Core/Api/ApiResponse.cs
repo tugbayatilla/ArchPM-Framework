@@ -69,7 +69,7 @@ namespace ArchPM.Core.Api
         /// <value>
         /// The requested URL.
         /// </value>
-        public string RequestedUrl { get; set; }
+        public String RequestedUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the try count.
@@ -93,6 +93,7 @@ namespace ArchPM.Core.Api
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>
+        [Obsolete("this will be removed version 0.4.0. Use CreateFail instead!")]
         public static IApiResponse<T> CreateException(Exception ex)
         {
             IApiResponse<T> obj = new ApiResponse<T>
@@ -107,6 +108,70 @@ namespace ArchPM.Core.Api
             {
                 obj.Errors.Add(new ApiError() { Message = ex.Message });
             });
+
+            return obj;
+        }
+        
+       /// <summary>
+        /// Creates the success response.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        [Obsolete("this will be removed version 0.4.0. Use CreateSuccess instead!")]
+        public static IApiResponse<T> CreateSuccessResponse(T data)
+        {
+            IApiResponse<T> obj = new ApiResponse<T>
+            {
+                Result = true,
+                Code = ApiResponseCodes.OK,
+                Data = data,
+                Errors = null
+            };
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Creates the exception.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="getDetailedErrors">if set to <c>true</c> [get seperate errors].</param>
+        /// <returns></returns>
+        public static ApiResponse<T> CreateFail(Exception ex, Boolean getDetailedErrors = true)
+        {
+            var obj = new ApiResponse<T>
+            {
+                Result = false,
+                Code = SetErrorCodeBasedOnException(ex),
+                Data = default(T),
+                Message = ex.GetAllMessages(false)
+            };
+
+            if (getDetailedErrors)
+            {
+                ex.GetAllExceptions().ForEach(p =>
+                {
+                    obj.Errors.Add(new ApiError() { Message = ex.Message, DetailedMessage = ex.StackTrace });
+                });
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// Creates the success.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static ApiResponse<T> CreateSuccess(T data)
+        {
+            var obj = new ApiResponse<T>
+            {
+                Result = true,
+                Code = ApiResponseCodes.OK,
+                Data = data,
+                Errors = null
+            };
 
             return obj;
         }
@@ -136,23 +201,6 @@ namespace ArchPM.Core.Api
             }
         }
 
-        /// <summary>
-        /// Creates the success response.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
-        public static IApiResponse<T> CreateSuccessResponse(T data)
-        {
-            IApiResponse<T> obj = new ApiResponse<T>
-            {
-                Result = true,
-                Code = ApiResponseCodes.OK,
-                Data = data,
-                Errors = null
-            };
-
-            return obj;
-        }
 
     }
 }

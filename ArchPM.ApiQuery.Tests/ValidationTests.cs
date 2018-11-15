@@ -97,7 +97,7 @@ namespace ArchPM.ApiQuery.Tests
             var responseTask = engine.Execute(request);
             var response = responseTask.GetAwaiter().GetResult();
             Assert.AreEqual("910", response.Code, response.Message);
-            Assert.IsNull(response.Data, response.Message);
+            Assert.AreEqual(0, response.Data);
 
             Console.WriteLine(response.Message);   
 
