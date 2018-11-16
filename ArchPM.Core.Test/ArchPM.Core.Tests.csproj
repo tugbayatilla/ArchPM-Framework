@@ -61,7 +61,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Domain\ApiObjects.cs" />
     <Compile Include="Domain\ClassObjects.cs" />
+    <Compile Include="ApiTests.cs" />
     <Compile Include="EnumTests.cs" />
     <Compile Include="GetPropertiesTests.cs" />
     <Compile Include="PropertiesTests.cs" />

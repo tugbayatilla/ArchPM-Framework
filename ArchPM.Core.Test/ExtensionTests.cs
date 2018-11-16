@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using ArchPM.Core.Extensions;
 using System.Collections;
+using ArchPM.Core.Api;
 
 namespace ArchPM.Core.Tests
 {
@@ -129,11 +130,12 @@ namespace ArchPM.Core.Tests
         }
 
         [TestMethod]
-        public void IsDotnetPrimitiveWhenClassFailed()
+        public void IsDotnetPrimitiveWhenGenericObjectThenReturnFalse()
         {
 
             Assert.IsFalse(typeof(AllLowerWithUnderscoreClass).IsDotNetPirimitive(), $"{nameof(AllLowerWithUnderscoreClass)} is not dotnet primitive!");
-
+            Assert.IsFalse(typeof(ApiResponse<Int32>).IsDotNetPirimitive(), $"{nameof(ApiResponse<Int32>)} is not dotnet primitive!");
+            Assert.IsFalse(typeof(List<Int32>).IsDotNetPirimitive(), $"{nameof(List<Int32>)} is not dotnet primitive!");
 
         }
     }

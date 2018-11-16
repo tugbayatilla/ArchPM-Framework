@@ -540,7 +540,7 @@ namespace ArchPM.Core.Extensions
                 entityProperty.ValueTypeOf = Nullable.GetUnderlyingType(property.PropertyType);
                 entityProperty.Nullable = true;
             }
-
+           
             //when datetime gets the default value
             if (entityProperty.Value != null && entityProperty.ValueTypeOf == typeof(DateTime) && (DateTime)entityProperty.Value == default(DateTime))
             {
@@ -554,6 +554,15 @@ namespace ArchPM.Core.Extensions
             }
             entityProperty.IsPrimitive = entityProperty.ValueTypeOf.IsDotNetPirimitive();
             entityProperty.IsEnum = IsEnumOrIsBaseEnum(entityProperty.ValueTypeOf);
+            entityProperty.IsList = entityProperty.ValueTypeOf.IsList();
+            if(entityProperty.IsList)
+            {
+                entityProperty.Nullable = true;
+            }
+            if(!property.IsGenericNullable() && !entityProperty.IsPrimitive)
+            {
+                entityProperty.Nullable = true;
+            }
 
             return entityProperty;
         }
@@ -582,8 +591,7 @@ namespace ArchPM.Core.Extensions
         {
             if (acceptNullables)
             {
-                var nullable = systemType.GetGenericArguments().Count() > 0;
-                if(nullable)
+                if(systemType.Name == "Nullable`1")
                 {
                     var nullableSystemType = systemType.GetGenericArguments()[0];
                     return IsDotNetPirimitive(nullableSystemType, false);

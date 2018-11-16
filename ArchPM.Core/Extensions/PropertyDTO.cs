@@ -72,6 +72,15 @@ namespace ArchPM.Core.Extensions
         public Boolean IsEnum { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is list.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is list; otherwise, <c>false</c>.
+        /// </value>
+        [XmlIgnore]
+        public Boolean IsList { get; internal set; }
+
+        /// <summary>
         /// Gets defined attribute types
         /// </summary>
         [XmlIgnore]

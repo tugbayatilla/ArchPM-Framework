@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ApiHelpAttribute.cs" />
+    <Compile Include="Api\ApiHelpResponse.cs" />
     <Compile Include="Api\ApiError.cs" />
     <Compile Include="Api\ApiResponse.cs" />
     <Compile Include="Api\ApiResponseCodes.cs" />
