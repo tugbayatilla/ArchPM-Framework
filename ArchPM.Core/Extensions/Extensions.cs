@@ -574,11 +574,22 @@ namespace ArchPM.Core.Extensions
         /// Determines whether [is dot net pirimitive].
         /// </summary>
         /// <param name="systemType">Type of the system.</param>
+        /// <param name="acceptNullables">if set to <c>true</c> [accept nullables].</param>
         /// <returns>
         ///   <c>true</c> if [is dot net pirimitive] [the specified system type]; otherwise, <c>false</c>.
         /// </returns>
-        public static Boolean IsDotNetPirimitive(this Type systemType)
+        public static Boolean IsDotNetPirimitive(this Type systemType, Boolean acceptNullables = true)
         {
+            if (acceptNullables)
+            {
+                var nullable = systemType.GetGenericArguments().Count() > 0;
+                if(nullable)
+                {
+                    var nullableSystemType = systemType.GetGenericArguments()[0];
+                    return IsDotNetPirimitive(nullableSystemType, false);
+                }
+            }
+
             if (systemType == typeof(String)
                 || systemType == typeof(Char)
                 || systemType == typeof(Byte)
@@ -599,9 +610,15 @@ namespace ArchPM.Core.Extensions
                 || systemType == typeof(ushort)
                 || systemType == typeof(sbyte)
                 || IsEnumOrIsBaseEnum(systemType))
+            {
+                
+
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
         /// <summary>
