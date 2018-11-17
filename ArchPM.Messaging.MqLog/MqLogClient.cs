@@ -7,7 +7,6 @@ using ArchPM.Core;
 using ArchPM.Core.Extensions;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.MqLog.Infrastructure;
-using ArchPM.Core.Extensions.Advanced;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 
@@ -59,7 +58,7 @@ namespace ArchPM.Messaging.MqLog
             }
             catch (Exception ex)
             {
-                this.BasicLog.Log(ex);
+                this.Notification.Notify(ex);
                 this.CatchedExceptions.Add(ex);
                 throw new Exception("[MqLogClient] MsmqManager is failed while initializing. check TraceLog", ex);
             }
@@ -132,17 +131,17 @@ namespace ArchPM.Messaging.MqLog
 
                     this.Push(LOG_LABEL, messageDto);
 
-                    this.BasicLog.Log(String.Format("[MqLogClient] '{0}' Pushed", messageDto.TBYEntityName));
+                    this.Notification.Notify(String.Format("[MqLogClient] '{0}' Pushed", messageDto.TBYEntityName));
 
                     result = true;
                 }
                 catch (Exception ex)
                 {
-                    this.BasicLog.Log(String.Format("[MqLogClient] LOG FAILED! {0}", ex.GetAllMessages()));
+                    this.Notification.Notify(String.Format("[MqLogClient] LOG FAILED! {0}", ex.GetAllMessages()));
 
                     if (entity is GlobalMqLogException)
                     {
-                        this.BasicLog.Log(ex);
+                        this.Notification.Notify(ex);
                         this.CatchedExceptions.Add(ex);
                     }
                     else
@@ -186,7 +185,7 @@ namespace ArchPM.Messaging.MqLog
                 }
                 catch (Exception ex)
                 {
-                    this.BasicLog.Log(ex);
+                    this.Notification.Notify(ex);
                     this.CatchedExceptions.Add(ex);
                 }
 
@@ -219,13 +218,13 @@ namespace ArchPM.Messaging.MqLog
                             base.Push(LOG_LABEL, item);
                         }
                         trans.Commit();
-                        this.BasicLog.Log(String.Format("[MqLogClient] Transaction Committed! PackageId:{0}", packageId));
+                        this.Notification.Notify(String.Format("[MqLogClient] Transaction Committed! PackageId:{0}", packageId));
                     }
                 }
                 catch (Exception ex)
                 {
                     trans.Abort();
-                    this.BasicLog.Log(ex);
+                    this.Notification.Notify(ex);
                     this.CatchedExceptions.Add(ex);
                     taskResult = false;
                 }
@@ -252,11 +251,11 @@ namespace ArchPM.Messaging.MqLog
                 try
                 {
                     var itemCount = packageContainer.RemovePackage(packageId);
-                    this.BasicLog.Log(String.Format("[MqLogClient] Transaction Rollback! Total {1} items Removed!  roContainerId:{0}", packageId, itemCount));
+                    this.Notification.Notify(String.Format("[MqLogClient] Transaction Rollback! Total {1} items Removed!  roContainerId:{0}", packageId, itemCount));
                 }
                 catch (Exception ex)
                 {
-                    this.BasicLog.Log(ex);
+                    this.Notification.Notify(ex);
                     this.CatchedExceptions.Add(ex);
                     taskResult = false;
                 }
@@ -283,12 +282,12 @@ namespace ArchPM.Messaging.MqLog
                 try
                 {
                     var itemCount = packageContainer.RemoveExpiredPackages(this.TransactionalLogExpirationTimespan);
-                    this.BasicLog.Log(String.Format("[MqLogClient] Expired Transactions Rollback! Total {0} items Removed!", itemCount));
+                    this.Notification.Notify(String.Format("[MqLogClient] Expired Transactions Rollback! Total {0} items Removed!", itemCount));
                     taskResult = true;
                 }
                 catch (Exception ex)
                 {
-                    this.BasicLog.Log(ex);
+                    this.Notification.Notify(ex);
                     this.CatchedExceptions.Add(ex);
                 }
 

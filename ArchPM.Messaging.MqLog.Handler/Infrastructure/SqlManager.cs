@@ -7,10 +7,9 @@ using System.Text;
 using ArchPM.Core;
 using ArchPM.Core.Extensions;
 using ArchPM.Messaging.MqLog.Infrastructure;
-using ArchPM.Core.Extensions.Advanced;
 using ArchPM.Messaging.MqLog.Handler;
-using ArchPM.Core.Logging.BasicLogging;
 using ArchPM.Core.Enums;
+using ArchPM.Core.Notifications;
 
 namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
 {
@@ -36,12 +35,12 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
         /// <param name="config">The configuration.</param>
         public SqlManager(Repository repository, MqLogDbConfig config)
         {
-            this.BasicLog = new NullBasicLog();
+            this.Notification = new NullNotification();
             this.repository = repository;
             this.config = config;
         }
 
-        public IBasicLog BasicLog { get; set; }
+        public INotification Notification { get; set; }
 
         /// <summary>
         /// Gets the name of the database.
@@ -80,7 +79,7 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
                 String createTableScript = GenerateCreateTableScript(dto);
                 repository.Execute(createTableScript);
 
-                this.BasicLog.Log(String.Format("[SQL] Table Created. {0} ", tableName));
+                this.Notification.Notify(String.Format("[SQL] Table Created. {0} ", tableName));
             }
         }
 
@@ -153,7 +152,7 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
                 {
                     sb.AppendFormat("{0},", item.Name);
                 }
-                this.BasicLog.Log(sb.ToString());
+                this.Notification.Notify(sb.ToString());
             }
         }
 
@@ -167,7 +166,7 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
             var command = CreateInsertCommand(dto);
 
             repository.Execute(script, command);
-            this.BasicLog.Log(String.Format("[SQL] {0} DONE on {1}", dto.TBYMessageType, dto.TBYEntityName));
+            this.Notification.Notify(String.Format("[SQL] {0} DONE on {1}", dto.TBYMessageType, dto.TBYEntityName));
         }
 
         /// <summary>
@@ -188,7 +187,7 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
             temp.TBYMessageCreateTime = dto.TBYMessageCreateTime;
             temp.TBYMessageType = MqLogMessageTypes.Exception;
             temp.TBYEntityName = "TBYGLOBALEXCEPTION";
-            temp.Properties = exception.Properties().ToList();
+            temp.Properties = exception.CollectProperties().ToList();
 
             return temp;
         }
@@ -239,7 +238,7 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
 
             Boolean result = repository.CheckTableExistance(tableName);
             if (!result)
-                this.BasicLog.Log(String.Format("[SQL] Table is not exist: {0}", tableName));
+                this.Notification.Notify(String.Format("[SQL] Table is not exist: {0}", tableName));
 
             return result;
         }
@@ -360,11 +359,11 @@ namespace ArchPM.Messaging.MqLog.DbBusiness.Infrastructure
         {
             var result = new List<PropertyDTO>();
 
-            var staticProperties = dto.Properties();
+            var staticProperties = dto.CollectProperties();
             result.AddRange(staticProperties);
 
             //all fields must be set as null
-            dto.Properties.ForEach(p => p.Nullable = true);
+            //dto.Properties.ForEach(p => p.Nullable = true);//fistan
 
             result.AddRange(dto.Properties);
 

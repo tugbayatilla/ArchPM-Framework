@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchPM.Core, Version=0.0.5.23458, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArchPM.Core.0.0.5\lib\net45\ArchPM.Core.dll</HintPath>
+    <Reference Include="ArchPM.Core, Version=0.3.3.36127, Culture=neutral, PublicKeyToken=a7c5f15bb1b78c45, processorArchitecture=MSIL">
+      <HintPath>..\packages\ArchPM.Core.0.3.3\lib\net45\ArchPM.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>

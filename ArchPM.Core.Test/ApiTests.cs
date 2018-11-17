@@ -9,6 +9,74 @@ namespace ArchPM.Core.Tests
     [TestClass]
     public class ApiTests
     {
+        [TestMethod]
+        public void ApiHelpAttributeDefinedOnlyOnClass_NoInputNoOutput_Valid()
+        {
+            var response = new Api.ApiHelpResponse(typeof(ApiHelpAttributeDefinedOnlyOnClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(2, response.Actions.Count);
+        }
+
+        [TestMethod]
+        public void ApiHelpAttributeDefinedOnlyOnClass_2MethodsContaining()
+        {
+            var response = new Api.ApiHelpResponse(typeof(ApiHelpAttributeDefinedOnlyOnClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(2, response.Actions.Count);
+        }
+
+
+
+        [TestMethod]
+        public void InputParameterAsNullablePropertiesContainingClass_InputClassPropertyTypeHavingQuestionMark()
+        {
+            var response = new Api.ApiHelpResponse(typeof(InputParameterAsNullablePropertiesContainingClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(1, response.Actions.Count);
+            Assert.AreEqual(0, response.Actions[0].OutputParameters.Count);
+            Assert.AreEqual(1, response.Actions[0].InputParameters.Count);
+            Assert.AreEqual("input", response.Actions[0].InputParameters[0].Name);
+            Assert.AreEqual("HavingNullablePropertyClass", response.Actions[0].InputParameters[0].Type);
+            Assert.AreEqual(1, response.Actions[0].InputParameters[0].Parameters.Count);
+            Assert.AreEqual("NullableInt32", response.Actions[0].InputParameters[0].Parameters[0].Name);
+            Assert.AreEqual("Int32?", response.Actions[0].InputParameters[0].Parameters[0].Type);
+
+        }
+
+
+        [TestMethod]
+        public void NullableMethodContainerClass_VoidOutputIsValid()
+        {
+            var response = new Api.ApiHelpResponse(typeof(NullableValueTypesContainingClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(1, response.Actions.Count);
+            Assert.AreEqual(0, response.Actions[0].OutputParameters.Count);
+
+        }
+
+        [TestMethod]
+        public void NullableMethodContainerClass_InputTypesHavingQuestionMark()
+        {
+            var response = new Api.ApiHelpResponse(typeof(NullableValueTypesContainingClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(1, response.Actions.Count);
+            Assert.AreEqual(2, response.Actions[0].InputParameters.Count);
+            Assert.AreEqual("input1", response.Actions[0].InputParameters[0].Name);
+            Assert.AreEqual("Int32?", response.Actions[0].InputParameters[0].Type);
+            Assert.AreEqual("input2", response.Actions[0].InputParameters[1].Name);
+            Assert.AreEqual("DateTime?", response.Actions[0].InputParameters[1].Type);
+
+        }
 
         [TestMethod]
         public void HelpWhenCalledThenReturns6Methods()
@@ -37,15 +105,15 @@ namespace ArchPM.Core.Tests
 
             var inputPrm = item.InputParameters[0];
             {
-                Assert.IsTrue(inputPrm.Name == "request");
-                Assert.IsTrue(inputPrm.Type == "ComplexRequest");
+                Assert.AreEqual("request", inputPrm.Name);
+                Assert.AreEqual("ComplexRequest", inputPrm.Type);
 
-                Assert.IsTrue(inputPrm.Parameters[0].Name == "Id");
-                Assert.IsTrue(inputPrm.Parameters[0].Type == "String");
-                Assert.IsTrue(inputPrm.Parameters[1].Name == "Simple");
-                Assert.IsTrue(inputPrm.Parameters[1].Type == "SimpleRequest");
-                Assert.IsTrue(inputPrm.Parameters[2].Name == "ComplexRequest1");
-                Assert.IsTrue(inputPrm.Parameters[2].Type == "ComplexRequest");
+                Assert.AreEqual("Id", inputPrm.Parameters[0].Name);
+                Assert.AreEqual("String", inputPrm.Parameters[0].Type);
+                Assert.AreEqual("Simple", inputPrm.Parameters[1].Name);
+                Assert.AreEqual("SimpleRequest", inputPrm.Parameters[1].Type);
+                Assert.AreEqual("ComplexRequest1", inputPrm.Parameters[2].Name);
+                Assert.AreEqual("ComplexRequest", inputPrm.Parameters[2].Type);
             }
 
         }
@@ -131,7 +199,7 @@ namespace ArchPM.Core.Tests
             Assert.AreEqual("ComplexRequest here!", response.Actions[0].InputParameters[0].Comment);
             Assert.AreEqual("Name here!", response.Actions[0].OutputParameters[0].Parameters[5].Parameters[0].Comment);
         }
-        
+
 
 
     }

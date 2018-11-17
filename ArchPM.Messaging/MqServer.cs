@@ -5,10 +5,9 @@ using System.Messaging;
 using System.Threading.Tasks;
 using ArchPM.Core;
 using ArchPM.Core.Extensions;
+using ArchPM.Core.Notifications;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.Infrastructure.EventArg;
-using ArchPM.Core.Extensions.Advanced;
-using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging
 {
@@ -53,7 +52,7 @@ namespace ArchPM.Messaging
         /// </summary>
         public event EventHandler<MessageReceivedEventArgs> OnMessageOperated = delegate { };
 
-        public IBasicLog BasicLog { get; set; }
+        public INotification Notification { get; set; }
 
         /// <summary>
         /// Gets and Sets the timer elapsed. Default: 30min
@@ -72,7 +71,7 @@ namespace ArchPM.Messaging
                 if (this.timer != null)
                 {
                     this.timer.Interval = (Double)value;
-                    this.BasicLog.Log(String.Format("[MqServer] Timer ElapsedTime Changed '{0}' to '{1}'", old, value));
+                    this.Notification.Notify(String.Format("[MqServer] Timer ElapsedTime Changed '{0}' to '{1}'", old, value));
                 }
             }
         }
@@ -85,7 +84,7 @@ namespace ArchPM.Messaging
         /// <param name="configs">The configs.</param>
         public MqServer(params MqConfig[] configs)
         {
-            this.BasicLog = new NullBasicLog();
+            this.Notification = new NullNotification();
 
             configs.NotEmpty();
             checkConfigurations(configs);
@@ -113,7 +112,7 @@ namespace ArchPM.Messaging
         {
             if (this.Running)
             {
-                this.BasicLog.Log(String.Format("[MqServer] MqServer is already running..."));
+                this.Notification.Notify(String.Format("[MqServer] MqServer is already running..."));
                 return;
             }
 
@@ -133,17 +132,17 @@ namespace ArchPM.Messaging
 
             //start timer
             this.timer.Start();
-            this.BasicLog.Log(String.Format("[MqServer] Timer for MqReader is started! Interval is {0}", this.TimerElapsed));
+            this.Notification.Notify(String.Format("[MqServer] Timer for MqReader is started! Interval is {0}", this.TimerElapsed));
 
             this.Running = true;
-            this.BasicLog.Log(String.Format("[MqServer] MqServer is started!"));
+            this.Notification.Notify(String.Format("[MqServer] MqServer is started!"));
         }
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
-            this.BasicLog.Log(String.Format("[MqServer] Disposing..."));
+            this.Notification.Notify(String.Format("[MqServer] Disposing..."));
 
             foreach (var reader in this.mqReaders)
             {
@@ -168,7 +167,7 @@ namespace ArchPM.Messaging
         {
             try
             {
-                this.BasicLog.Log(String.Format("[MqServer] Error While Receiving! Queue '{0}' at '{1}'! Because: {2}",
+                this.Notification.Notify(String.Format("[MqServer] Error While Receiving! Queue '{0}' at '{1}'! Because: {2}",
                                    e.Config.QueueName
                                    , e.Config.GetServerName()
                                    , e.Exception.GetAllMessages()));
@@ -184,7 +183,7 @@ namespace ArchPM.Messaging
         /// <param name="e">The e.</param>
         void reader_OnReaderStopped(object sender, MqConfig e)
         {
-            this.BasicLog.Log(String.Format("[MqServer] Reader Stopped! Queue '{0}' at '{1}'!",
+            this.Notification.Notify(String.Format("[MqServer] Reader Stopped! Queue '{0}' at '{1}'!",
                                e.QueueName
                                , e.GetServerName()));
         }
@@ -203,13 +202,13 @@ namespace ArchPM.Messaging
                 {
                     case MessageReceivedBusinessHandlerResultTypes.Success:
                         {
-                            this.BasicLog.Log(String.Format("[MqServer] Success Command Received! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqServer] Success Command Received! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName()));
 
                             if (e.MessageObject.IsTransactional)
                             {
                                 e.MessageObject.Transaction.Commit();
-                                this.BasicLog.Log(String.Format("[MqServer] Transaction Committed! Queue '{0}' at '{1}'!",
+                                this.Notification.Notify(String.Format("[MqServer] Transaction Committed! Queue '{0}' at '{1}'!",
                                    e.Config.QueueName, e.Config.GetServerName()));
                             }
 
@@ -218,7 +217,7 @@ namespace ArchPM.Messaging
                         break;
                     case MessageReceivedBusinessHandlerResultTypes.Retry:
                         {
-                            this.BasicLog.Log(String.Format("[MqServer] Retry Command Received! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqServer] Retry Command Received! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName()));
 
                             this.ResendMessage(e.Config, e.MessageObject.Message);
@@ -226,7 +225,7 @@ namespace ArchPM.Messaging
                         break;
                     case MessageReceivedBusinessHandlerResultTypes.DeleteAllRelated:
                         {
-                            this.BasicLog.Log(String.Format("[MqServer] DeleteAllRelated Command Received! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqServer] DeleteAllRelated Command Received! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName()));
 
                             RemoveAllSameLabelMessages(e.Config, e.MessageObject.Message);
@@ -234,7 +233,7 @@ namespace ArchPM.Messaging
                         break;
                     case MessageReceivedBusinessHandlerResultTypes.RemoveMessage:
                         {
-                            this.BasicLog.Log(String.Format("[MqServer] RemoveMessage Command Received! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqServer] RemoveMessage Command Received! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName()));
 
                             RemoveMessage(e.Config, e.MessageObject.Message);
@@ -263,7 +262,7 @@ namespace ArchPM.Messaging
                         String message = String.Format("[MqServer] Async Handler Exception! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName());
                         Exception tempEx = new Exception(message, ex);
-                        this.BasicLog.Log(tempEx);
+                        this.Notification.Notify(tempEx);
                     }
                     finally
                     {
@@ -293,7 +292,7 @@ namespace ArchPM.Messaging
                     String message = String.Format("[MqServer] Sync Handler Exception! Queue '{0}' at '{1}'!",
                                 e.Config.QueueName, e.Config.GetServerName());
                     Exception tempEx = new Exception(message, ex);
-                    this.BasicLog.Log(tempEx);
+                    this.Notification.Notify(tempEx);
 
                     //fistan: burasi onemli. business'ten sync durumunda hatali bir durum geldiginde peek durumu oldugundan surekli donguye giriyor.
                     //ya hatali paket silinecek ya da kadir'in onerisi ile tum paketler silinecek.
@@ -323,7 +322,7 @@ namespace ArchPM.Messaging
             foreach (var item in stoppedReaders)
             {
                 item.StartReading();
-                this.BasicLog.Log(String.Format("[MqServer] Restarting Readers! Queue '{0}' at '{1}'!",
+                this.Notification.Notify(String.Format("[MqServer] Restarting Readers! Queue '{0}' at '{1}'!",
                     item.Config.QueueName, item.Config.GetServerName()));
             }
         }
@@ -405,7 +404,7 @@ namespace ArchPM.Messaging
                 mqClient.RemoveMessage(sameLabelMessage);
             }
 
-            this.BasicLog.Log(String.Format("[MqServer] All Related Messages(Sharing Same Label:'{2}') are Removed! Queue '{0}' at '{1}'!",
+            this.Notification.Notify(String.Format("[MqServer] All Related Messages(Sharing Same Label:'{2}') are Removed! Queue '{0}' at '{1}'!",
                 config.QueueName,
                 config.GetServerName()
               , message.Label));

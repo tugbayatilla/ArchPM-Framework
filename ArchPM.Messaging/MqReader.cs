@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Messaging;
 using ArchPM.Core;
+using ArchPM.Core.Notifications;
 using ArchPM.Messaging.Infrastructure;
 using ArchPM.Messaging.Infrastructure.EventArg;
-using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging
 {
@@ -42,7 +42,7 @@ namespace ArchPM.Messaging
         /// </value>
         public Boolean Reading { get; private set; }
 
-        public IBasicLog BasicLog { get; set; }
+        public INotification Notification { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MqReader"/> class.
@@ -50,7 +50,7 @@ namespace ArchPM.Messaging
         /// <param name="config">The configuration.</param>
         public MqReader(MqConfig config)
         {
-            this.BasicLog = new NullBasicLog();
+            this.Notification = new NullNotification();
 
             this.Config = config;
         }
@@ -63,7 +63,7 @@ namespace ArchPM.Messaging
         {
             if (this.Reading)
             {
-                this.BasicLog.Log(String.Format("[MqReader] Reader is Already Reading! Queue '{0}' at '{1}'!",
+                this.Notification.Notify(String.Format("[MqReader] Reader is Already Reading! Queue '{0}' at '{1}'!",
                     Config.QueueName
                    , Config.GetServerName()));
 
@@ -71,11 +71,11 @@ namespace ArchPM.Messaging
             }
             else
             {
-                this.BasicLog.Log(String.Format("[MqReader] Reader is Started Reading! Queue '{0}' at '{1}'!",
+                this.Notification.Notify(String.Format("[MqReader] Reader is Started Reading! Queue '{0}' at '{1}'!",
                     Config.QueueName
                    , Config.GetServerName()));
 
-                this.BasicLog.Log(String.Format("[MqReader] Queue ActivePath: '{0}'", Config.ActivePath));
+                this.Notification.Notify(String.Format("[MqReader] Queue ActivePath: '{0}'", Config.ActivePath));
 
                 this.Reading = true;
             }
@@ -96,7 +96,7 @@ namespace ArchPM.Messaging
 
                         if (!Config.IsRemoteQueue() && !MessageQueue.Exists(activePath))
                         {
-                            this.BasicLog.Log(String.Format("[MqReader] Queue is NOT Exist! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqReader] Queue is NOT Exist! Queue '{0}' at '{1}'!",
                                 Config.QueueName
                               , Config.GetServerName()));
 
@@ -131,7 +131,7 @@ namespace ArchPM.Messaging
                         }
                         else
                         {
-                            this.BasicLog.Log(String.Format("[MqReader] Cannot Read Queue! Queue '{0}' at '{1}'!",
+                            this.Notification.Notify(String.Format("[MqReader] Cannot Read Queue! Queue '{0}' at '{1}'!",
                                 Config.QueueName
                                , Config.GetServerName()));
                             break; //stoping the reader
@@ -140,12 +140,12 @@ namespace ArchPM.Messaging
                 }
                 catch (Exception ex)
                 {
-                    this.BasicLog.Log(ex);
+                    this.Notification.Notify(ex);
                     OnErrorWhileReceiving(this, new ErrorWhileReceivingEventArgs() { Exception = ex, Config = Config });
                 }
             }
             this.Reading = false;
-            this.BasicLog.Log(String.Format("[MqReader] Reader Stopped! Queue '{0}' at '{1}'!",
+            this.Notification.Notify(String.Format("[MqReader] Reader Stopped! Queue '{0}' at '{1}'!",
                                Config.QueueName
                                , Config.GetServerName()));
             OnReaderStopped(this, Config);
@@ -169,7 +169,7 @@ namespace ArchPM.Messaging
                 if (transaction != null)
                 {
                     message = queue.Receive(transaction);
-                    this.BasicLog.Log(String.Format("[MqReader] Message Received with Transaction! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                    this.Notification.Notify(String.Format("[MqReader] Message Received with Transaction! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                        Config.QueueName
                       , Config.GetServerName()
                       , message.Label
@@ -178,7 +178,7 @@ namespace ArchPM.Messaging
                 else
                 {
                     message = queue.Receive();
-                    this.BasicLog.Log(String.Format("[MqReader] Message Received! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                    this.Notification.Notify(String.Format("[MqReader] Message Received! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                        Config.QueueName
                       , Config.GetServerName()
                       , message.Label
@@ -189,7 +189,7 @@ namespace ArchPM.Messaging
             else
             {
                 message = queue.Peek();
-                this.BasicLog.Log(String.Format("[MqReader] Message Peeked! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                this.Notification.Notify(String.Format("[MqReader] Message Peeked! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                         Config.QueueName
                        , Config.GetServerName()
                        , message.Label

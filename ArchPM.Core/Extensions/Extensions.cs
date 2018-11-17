@@ -441,6 +441,10 @@ namespace ArchPM.Core.Extensions
         {
             if (entityType == null)
                 throw new ArgumentNullException("entityType");
+            if (entityType.Name == "Void")
+                return new List<PropertyDTO>();
+            if (entityType.Module.Name == "mscorlib.dll")
+                return new List<PropertyDTO>();
 
             var entity = Activator.CreateInstance(entityType);
 

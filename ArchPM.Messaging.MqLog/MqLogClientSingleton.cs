@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ArchPM.Core;
+using ArchPM.Core.Notifications;
 using ArchPM.Messaging.MqLog.Infrastructure;
-using ArchPM.Core.Logging.BasicLogging;
 
 namespace ArchPM.Messaging.MqLog
 {
@@ -33,7 +33,7 @@ namespace ArchPM.Messaging.MqLog
         /// </value>
         public Boolean Initialized { get; private set; }
 
-        public IBasicLog BasicLog { get; set; }
+        public INotification Notification { get; set; }
 
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace ArchPM.Messaging.MqLog
         /// </summary>
         private MqLogClientSingleton()
         {
-            this.BasicLog = new NullBasicLog();
+            this.Notification = new NullNotification();
 
             this.Initialized = false;
         }
@@ -72,7 +72,7 @@ namespace ArchPM.Messaging.MqLog
 
             var result = await this.Client.DeleteLogAsync<T>(entity);
 
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] DeleteLog result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] DeleteLog result:{0}", result));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ArchPM.Messaging.MqLog
             checkInitialize();
             var result = await this.Client.ExceptionLogAsync<T>(entity);
 
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] ExceptionLog result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] ExceptionLog result:{0}", result));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace ArchPM.Messaging.MqLog
         {
             checkInitialize();
             var result = await this.Client.InsertLogAsync<T>(entity);
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] InsertLogAsync result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] InsertLogAsync result:{0}", result));
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace ArchPM.Messaging.MqLog
         {
             checkInitialize();
             var result = await this.Client.UpdateLogAsync<T>(entity);
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] UpdateLogAsync result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] UpdateLogAsync result:{0}", result));
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace ArchPM.Messaging.MqLog
         {
             checkInitialize();
             var result = await this.Client.AddInPackage<T>(containerId, entity, messageType);
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] TransactionalLog result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] TransactionalLog result:{0}", result));
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace ArchPM.Messaging.MqLog
         {
             checkInitialize();
             var result = await this.Client.PackageCommit(containerId);
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] Commit result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] Commit result:{0}", result));
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace ArchPM.Messaging.MqLog
         {
             checkInitialize();
             var result = await this.Client.PackageRollback(containerId);
-            this.BasicLog.Log(String.Format("[MqLogClientSingleton] Rollback result:{0}", result));
+            this.Notification.Notify(String.Format("[MqLogClientSingleton] Rollback result:{0}", result));
         }
         #endregion
 

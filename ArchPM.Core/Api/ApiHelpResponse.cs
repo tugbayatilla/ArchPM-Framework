@@ -27,7 +27,7 @@ namespace ArchPM.Core.Api
         /// The actions.
         /// </value>
         public List<ApiHelpAction> Actions { get; set; }
-        
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiHelpResponse"/> class.
@@ -57,9 +57,20 @@ namespace ArchPM.Core.Api
             ApiHelpResponse response = this;
             Service = type.Name;
 
-            MethodInfo[] allMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
-            //collect only methods having ApiHelpAttribute
-            var methods = allMethods.Where(p => p.GetCustomAttributes(typeof(ApiHelpAttribute)).Any());
+            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance).ToList();
+            var typeAttribute = type.GetCustomAttribute(typeof(ApiHelpAttribute));
+
+            //when apiHelp defined on class, get all methods
+            //exclude system methods
+            if (typeAttribute != null)
+            {
+                methods = methods.Where(p => p.Module.Name != "mscorlib.dll").ToList();
+            }
+            else
+            {
+                //collect only methods having ApiHelpAttribute
+                methods = methods.Where(p => p.GetCustomAttributes(typeof(ApiHelpAttribute)).Any()).ToList();
+            }
 
             foreach (var method in methods)
             {
@@ -91,37 +102,49 @@ namespace ArchPM.Core.Api
         /// <param name="args">The parameters.</param>
         internal void Fill(ParameterInfo parameter, List<ApiHelpParameter> args)
         {
+            if (parameter == null)
+                return;
+
             var prm = new ApiHelpParameter();
             Type prmType = parameter.ParameterType;
             prmType = SkipTaskType(prmType);
+
+            if (prmType.Name == "Void")
+                return;
 
             if (prmType.IsGenericType)
             {
                 prm.Name = prmType.Name;
                 prm.Type = $"{prmType.Name.Replace("`1", "")}<{prmType.GetGenericArguments()[0].Name}>";
-                prm.Nullable = true;
             }
+
+            //value type
             if (prmType.IsDotNetPirimitive())
             {
                 prm.Name = parameter.Name;
                 prm.Type = prmType.Name;
-                prm.Nullable = true;
+
+                //if nullable
+                if (prmType.GetGenericArguments().Count() > 0)
+                {
+                    prm.Type = prmType.GetGenericArguments()[0].Name;
+                    //if not string, all nullable valuetypes have ?
+                    if (prmType != typeof(String))
+                    {
+                        prm.Type += "?";
+                    }
+                }
             }
-            //value type and nullable
-            if (prmType.IsDotNetPirimitive() && prmType.GetGenericArguments().Count() > 0)
-            {
-                prm.Name = prmType.Name;
-                prm.Type = prmType.GetGenericArguments()[0].Name;
-                prm.Nullable = true;
-            }
+
+            //when simple class
             if (!prmType.IsDotNetPirimitive() && !prmType.IsList())
             {
                 prm.Name = parameter.Name ?? prmType.Name;
                 prm.Type = prmType.Name;
-                prm.Nullable = true;
             }
 
-            if(prmType.GetCustomAttributes().FirstOrDefault(p=>p is ApiHelpAttribute) is ApiHelpAttribute attr)
+            //when having ApiHelp Attribute
+            if (prmType.GetCustomAttributes().FirstOrDefault(p => p is ApiHelpAttribute) is ApiHelpAttribute attr)
             {
                 prm.Comment = attr.Comment;
             }
@@ -136,8 +159,6 @@ namespace ArchPM.Core.Api
                 }
             }
 
-            //add in input parameters
-            //args.Add(prm);
         }
 
         /// <summary>
@@ -156,8 +177,14 @@ namespace ArchPM.Core.Api
             {
                 Name = propertyDTO.Name,
                 Type = propertyDTO.ValueType,
-                Nullable = propertyDTO.Nullable
+
             };
+
+            if (propertyDTO.IsPrimitive && propertyDTO.Nullable && propertyDTO.ValueTypeOf != typeof(String))
+            {
+                inprm.Type += "?";
+            }
+
             if (propertyDTO.IsList)
             {
                 inprm.Type = $"{propertyDTO.ValueType.Replace("`1", "")}<{propertyDTO.ValueTypeOf.GetGenericArguments()[0].Name}>";
@@ -212,7 +239,7 @@ namespace ArchPM.Core.Api
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(ApiHelpResponse)}:{this.Service}";
+            return $"{nameof(ApiHelpResponse)}=>[{this.Service}]";
         }
     }
 
@@ -267,7 +294,7 @@ namespace ArchPM.Core.Api
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(ApiHelpAction)}:{this.Name}";
+            return $"{nameof(ApiHelpAction)}=>[{this.Name}]";
         }
     }
 
@@ -283,6 +310,7 @@ namespace ArchPM.Core.Api
         /// The name.
         /// </value>
         public String Name { get; set; }
+        
         /// <summary>
         /// Gets or sets the type.
         /// </summary>
@@ -290,13 +318,7 @@ namespace ArchPM.Core.Api
         /// The type.
         /// </value>
         public String Type { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="ApiHelpParameter"/> is nullable.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if nullable; otherwise, <c>false</c>.
-        /// </value>
-        public Boolean Nullable { get; set; }
+        
         /// <summary>
         /// Gets or sets the comment.
         /// </summary>
@@ -321,7 +343,7 @@ namespace ArchPM.Core.Api
         /// </returns>
         public override string ToString()
         {
-            return $"{nameof(ApiHelpParameter)}:{this.Name}:{this.Type}:{this.Nullable}";
+            return $"{nameof(ApiHelpParameter)}=>[{this.Name}:{this.Type}]";
         }
     }
 }

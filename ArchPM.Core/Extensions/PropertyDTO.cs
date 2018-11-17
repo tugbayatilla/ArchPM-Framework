@@ -48,13 +48,13 @@ namespace ArchPM.Core.Extensions
         public Type ValueTypeOf { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="PropertyDTO"/> is nullable.
+        /// Gets or sets a value indicating whether this <see cref="PropertyDTO"/> is nullable.
         /// </summary>
         /// <value>
         ///   <c>true</c> if nullable; otherwise, <c>false</c>.
         /// </value>
         [XmlAttribute]
-        public Boolean Nullable { get; internal set; }
+        public Boolean Nullable { get; set; } //there is a reason to make set as public
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="PropertyDTO" /> is .net primitive type such as string, int, decimal etc.

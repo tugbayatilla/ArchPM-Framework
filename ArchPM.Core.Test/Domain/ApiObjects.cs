@@ -7,6 +7,45 @@ using System.Threading.Tasks;
 
 namespace ArchPM.Core.Tests.Domain
 {
+    [ApiHelp]
+    public class ApiHelpAttributeDefinedOnlyOnClass
+    {
+        public void MethodNotHavingApiHelpAttribute1()
+        {
+
+        }
+
+        public void MethodNotHavingApiHelpAttribute2()
+        {
+
+        }
+
+    }
+
+
+    public class InputParameterAsNullablePropertiesContainingClass
+    {
+        [ApiHelp]
+        public void InputNullableValueTypesMethod(HavingNullablePropertyClass input)
+        {
+
+        }
+
+        public class HavingNullablePropertyClass
+        {
+            public Int32? NullableInt32 { get; set; }
+        }
+    }
+
+    public class NullableValueTypesContainingClass
+    {
+        [ApiHelp]
+        public void InputNullableValueTypesMethod(Int32? input1, DateTime? input2)
+        {
+
+        }
+    }
+
     [ApiHelp(Comment = "ComplexRequest here!")]
     public class ComplexRequest
     {

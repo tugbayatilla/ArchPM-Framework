@@ -5,7 +5,7 @@ using System.Messaging;
 using System.ServiceProcess;
 using ArchPM.Core;
 using ArchPM.Core.Extensions;
-using ArchPM.Core.Logging.BasicLogging;
+using ArchPM.Core.Notifications;
 
 namespace ArchPM.Messaging
 {
@@ -22,7 +22,7 @@ namespace ArchPM.Messaging
         /// </value>
         public MqConfig Config { get; private set; }
 
-        public IBasicLog BasicLog { get; set; }
+        public INotification Notification { get; set; }
 
         /// <summary>
         /// the Constructor of the
@@ -33,7 +33,7 @@ namespace ArchPM.Messaging
         {
             try
             {
-                this.BasicLog = new NullBasicLog();
+                this.Notification = new NullNotification();
                 config.ThrowExceptionIfNull("[MqClient] MsmqConfig is null. Need at least one MqConfig Instance");
                 this.Config = config;
 
@@ -43,7 +43,7 @@ namespace ArchPM.Messaging
             }
             catch (Exception ex)
             {
-                this.BasicLog.Log(ex);
+                this.Notification.Notify(ex);
                 throw new Exception("[MqClient] MsmqManager is Failed While Initializing. Check TraceLog", ex);
             }
         }
@@ -77,7 +77,7 @@ namespace ArchPM.Messaging
                     Int32 tempCount = 1;
                     foreach (var message in tempList)
                     {
-                        this.BasicLog.Log(String.Format("[MqClient] Message Sent with MessageQueueTransaction [{4} of {5}]! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                        this.Notification.Notify(String.Format("[MqClient] Message Sent with MessageQueueTransaction [{4} of {5}]! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                                this.Config.QueueName
                                , this.Config.GetServerName()
                                , message.Label
@@ -105,7 +105,7 @@ namespace ArchPM.Messaging
                             //send message to queue
                             queue.Send(message);
 
-                            this.BasicLog.Log(String.Format("[MqClient] Message Sent! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                            this.Notification.Notify(String.Format("[MqClient] Message Sent! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                                 this.Config.QueueName
                                 , this.Config.GetServerName()
                                 , message.Label
@@ -117,7 +117,7 @@ namespace ArchPM.Messaging
                 },
                 exception: (ex) =>
                 {
-                    this.BasicLog.Log(String.Format("[MqClient] Message Send FAILED! Queue '{0}' at '{1}', Because {2}",
+                    this.Notification.Notify(String.Format("[MqClient] Message Send FAILED! Queue '{0}' at '{1}', Because {2}",
                             this.Config.QueueName
                             , this.Config.GetServerName()
                             , ex.GetAllMessages()));
@@ -133,7 +133,7 @@ namespace ArchPM.Messaging
             message.AppSpecific += 1;
             if (message.AppSpecific >= Config.ErrorTryCount)
             {
-                this.BasicLog.Log(String.Format("[MqClient] Max TryCount Reached [{4} of {5}]! Message Resend Stopped! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                this.Notification.Notify(String.Format("[MqClient] Max TryCount Reached [{4} of {5}]! Message Resend Stopped! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                                 this.Config.QueueName
                                 , this.Config.GetServerName()
                                 , message.Label
@@ -153,7 +153,7 @@ namespace ArchPM.Messaging
                     {
                         //send message to queue
                         queue.Send(message, transaction);
-                        this.BasicLog.Log(String.Format("[MqClient] Message Resend with transaction! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                        this.Notification.Notify(String.Format("[MqClient] Message Resend with transaction! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                                 this.Config.QueueName
                                 , this.Config.GetServerName()
                                 , message.Label
@@ -163,7 +163,7 @@ namespace ArchPM.Messaging
                     direct: (queue) =>
                     {
                         queue.Send(message);
-                        this.BasicLog.Log(String.Format("[MqClient] Message Resend! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                        this.Notification.Notify(String.Format("[MqClient] Message Resend! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                                 this.Config.QueueName
                                 , this.Config.GetServerName()
                                 , message.Label
@@ -171,7 +171,7 @@ namespace ArchPM.Messaging
                     },
                     exception: (ex) =>
                     {
-                        this.BasicLog.Log(String.Format("[MqClient] Message Resend FAILED! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]. Because {4}",
+                        this.Notification.Notify(String.Format("[MqClient] Message Resend FAILED! Queue '{0}' at '{1}', [Message:(Label:'{2}' || MESSAGEID: '{3}')]. Because {4}",
                                 this.Config.QueueName
                                 , this.Config.GetServerName()
                                 , message.Label
@@ -199,7 +199,7 @@ namespace ArchPM.Messaging
                     {
                         queue.ReceiveById(message.Id, transaction);
 
-                        this.BasicLog.Log(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                        this.Notification.Notify(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                             this.Config.QueueName
                             , this.Config.GetServerName()
                             , message.Label
@@ -208,7 +208,7 @@ namespace ArchPM.Messaging
                     direct: (queue) =>
                     {
                         queue.ReceiveById(message.Id);
-                        this.BasicLog.Log(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
+                        this.Notification.Notify(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]",
                             this.Config.QueueName
                            , this.Config.GetServerName()
                            , message.Label
@@ -216,7 +216,7 @@ namespace ArchPM.Messaging
                     },
                     exception: (ex) =>
                     {
-                        this.BasicLog.Log(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]. Because {4}",
+                        this.Notification.Notify(String.Format("[MqClient] Message Removed! Queue '{0}' at '{1}' with transaction, [Message:(Label:'{2}' || MESSAGEID: '{3}')]. Because {4}",
                              this.Config.QueueName
                            , this.Config.GetServerName()
                            , message.Label
@@ -310,7 +310,7 @@ namespace ArchPM.Messaging
                 queue.Label = Config.QueueLabel;
                 setPermissions(queue);
 
-                this.BasicLog.Log(String.Format("[MqClient] Local Queue is Created! Queue '{0}' at '{1}'!",
+                this.Notification.Notify(String.Format("[MqClient] Local Queue is Created! Queue '{0}' at '{1}'!",
                                  this.Config.QueueName
                                , this.Config.GetServerName()));
             }
@@ -319,7 +319,7 @@ namespace ArchPM.Messaging
                 Exception temp = new Exception(String.Format("[MqClient] createLocalMessageQueueIfNotExist Failed! Queue '{0}' at '{1}'", 
                     this.Config.QueueName
                   , this.Config.GetServerName()), ex);
-                this.BasicLog.Log(temp);
+                this.Notification.Notify(temp);
                 throw temp;
             }
             
@@ -338,7 +338,7 @@ namespace ArchPM.Messaging
                     MessageQueueAccessRights.FullControl,
                     AccessControlEntryType.Allow);
 
-                this.BasicLog.Log(String.Format("[MqClient] Permission set to 'Everyone' as FullControl! Queue '{0}' at '{1}'!"
+                this.Notification.Notify(String.Format("[MqClient] Permission set to 'Everyone' as FullControl! Queue '{0}' at '{1}'!"
                     , this.Config.QueueName
                     , this.Config.GetServerName()));
 
@@ -347,7 +347,7 @@ namespace ArchPM.Messaging
                     MessageQueueAccessRights.FullControl,
                     AccessControlEntryType.Allow);
 
-                this.BasicLog.Log(String.Format("[MqClient] Permission set to 'ANONYMOUS LOGON' as FullControl! Queue '{0}' at '{1}'!"
+                this.Notification.Notify(String.Format("[MqClient] Permission set to 'ANONYMOUS LOGON' as FullControl! Queue '{0}' at '{1}'!"
                     , this.Config.QueueName
                     , this.Config.GetServerName()));
 
@@ -357,7 +357,7 @@ namespace ArchPM.Messaging
                 Exception temp = new Exception(String.Format("[MqClient] setPermissions Failed! Queue '{0}' at '{1}'",
                     this.Config.QueueName
                   , this.Config.GetServerName()), ex);
-                this.BasicLog.Log(temp);
+                this.Notification.Notify(temp);
                 throw temp;
             }
             
