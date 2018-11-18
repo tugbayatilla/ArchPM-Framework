@@ -2,9 +2,9 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ArchPM.ApiQuery.Tests.Model;
+using ArchPM.ApiQuery.OracleAdaptor.Tests.Model;
 
-namespace ArchPM.ApiQuery.Tests
+namespace ArchPM.ApiQuery.OracleAdaptor.Tests
 {
     /// <summary>
     /// Summary description for MultiListTests
@@ -43,7 +43,7 @@ namespace ArchPM.ApiQuery.Tests
             };
 
             var engine = new ApiQueryEngine<ComplexObjectRequest, ComplexObjectResponse>(
-                new OracleApiQueryProvider("OracleConnection"));
+                new OracleApiQueryAdaptor("OracleConnection"));
 
             var responseTask = engine.Execute(request);
             var response = responseTask.GetAwaiter().GetResult();

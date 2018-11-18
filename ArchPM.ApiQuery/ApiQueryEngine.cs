@@ -3,7 +3,6 @@ using ArchPM.Core.Api;
 using ArchPM.Core.Enums;
 using ArchPM.Core.Exceptions;
 using ArchPM.Core.Extensions;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,16 +24,20 @@ namespace ArchPM.ApiQuery
         where Req : ApiQueryRequest
     {
         /// <summary>
-        /// The database provider
+        /// The database adaptor
         /// </summary>
-        readonly IApiQueryDatabaseProvider databaseProvider;
+        readonly IApiQueryDatabaseAdaptor databaseAdaptor;
+        readonly ObjectManager objectManager;
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiQueryEngine{Req, Res}"/> class.
         /// </summary>
-        /// <param name="databaseProvider">The database provider.</param>
-        public ApiQueryEngine(IApiQueryDatabaseProvider databaseProvider)
+        /// <param name="databaseAdaptor">The database provider.</param>
+        public ApiQueryEngine(IApiQueryDatabaseAdaptor databaseAdaptor)
         {
-            this.databaseProvider = databaseProvider;
+            databaseAdaptor.ThrowExceptionIfNull("databaseAdaptor must be given!");
+
+            this.databaseAdaptor = databaseAdaptor;
+            this.objectManager = new ObjectManager(databaseAdaptor);
         }
 
         /// <summary>
@@ -59,15 +62,15 @@ namespace ArchPM.ApiQuery
 
                     SetResponseTypeToRequestIfNotDefined(request);
 
-                    using (DbConnection connection = databaseProvider.CreateConnection())
+                    using (DbConnection connection = databaseAdaptor.CreateDbConnection())
                     {
-                        connection.ConnectionString = databaseProvider.ConnectionString;
+                        connection.ConnectionString = databaseAdaptor.ConnectionString;
                         connection.Open();
                         using (DbTransaction transaction = connection.BeginTransaction())
                         {
                             try
                             {
-                                using (DbCommand command = databaseProvider.GenerateCommand())
+                                using (DbCommand command = databaseAdaptor.CreateDbCommandCommand())
                                 {
                                     command.Connection = connection;
                                     command.CommandType = CommandType.StoredProcedure;
@@ -86,13 +89,13 @@ namespace ArchPM.ApiQuery
                                     switch (request.ResponseType)
                                     {
                                         case QueryResponseTypes.AsValue:
-                                            data = ObjectManager.ReturnValue(responseType, command, request.ProcedureName);
+                                            data = objectManager.ReturnValue(responseType, command, request.ProcedureName);
                                             break;
                                         case QueryResponseTypes.AsObject:
-                                            data = ObjectManager.FillObject(responseType, command);
+                                            data = objectManager.FillObject(responseType, command);
                                             break;
                                         case QueryResponseTypes.AsList:
-                                            data = ObjectManager.FillSingleList(responseType, command);
+                                            data = objectManager.FillSingleList(responseType, command);
                                             break;
                                         default:
                                             throw new Exception($"Unknown ResponseType: {request.ResponseType}");
@@ -158,9 +161,9 @@ namespace ArchPM.ApiQuery
         /// <param name="request">The request.</param>
         /// <returns></returns>
         /// <exception cref="Exception">CreateCommandParameters</exception>
-        internal List<OracleParameter> CreateCommandParameters(Req request)
+        internal List<DbParameter> CreateCommandParameters(Req request)
         {
-            var result = new List<OracleParameter>();
+            var result = new List<DbParameter>();
 
             try
             {
@@ -182,17 +185,12 @@ namespace ArchPM.ApiQuery
 
                 if (request.ResponseType == QueryResponseTypes.AsList)
                 {
-                    var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>(); 
+                    var resAttribute = ApiQueryUtils.GetApiQueryFieldAttributeOnClass<Res>();
                     resAttribute.ThrowExceptionIfNull($"{nameof(OutputApiQueryFieldAttribute)} must be used on {typeof(Res).GetGenericArguments()[0].Name}!");
-                    var oracleParameter = new OracleParameter
-                    {
-                        ParameterName = resAttribute.Name,
-                        OracleDbType = OracleDbType.RefCursor,
-                        Direction = (ParameterDirection)resAttribute.Direction,
-                        Size = resAttribute.Size ?? 0
-                    };
+                    resAttribute.Direction.ThrowExceptionIf(p => !p.HasValue, $"{resAttribute.Direction} must have a value!");
+                    var parameter = databaseAdaptor.CreateDbParameter(resAttribute.Name, DbType.Object, (ParameterDirection)resAttribute.Direction, resAttribute.Size ?? 0);
 
-                    result.Add(oracleParameter);
+                    result.Add(parameter);
                 }
 
                 //single value return
@@ -200,13 +198,11 @@ namespace ArchPM.ApiQuery
                 if (request.ResponseType == QueryResponseTypes.AsValue)
                 {
                     var responseType = typeof(Res);
-                    var oracleParameter = new OracleParameter
-                    {
-                        ParameterName = ApiQueryUtils.GetProcedureName(request.ProcedureName),
-                        OracleDbType = ApiQueryUtils.ConvertFromSystemTypeToOracleDbType(responseType.Name),
-                        Direction = ParameterDirection.ReturnValue,
-                    };
-                    result.Insert(0, oracleParameter);
+                    var name = ApiQueryUtils.GetProcedureName(request.ProcedureName);
+                    var dbType = ApiQueryUtils.ConvertFromSystemTypeToDbType(responseType.Name);
+
+                    var parameter = databaseAdaptor.CreateDbParameter(name, dbType, ParameterDirection.ReturnValue);
+                    result.Insert(0, parameter);
                 }
             }
             catch (Exception ex)
@@ -222,43 +218,37 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="result">The result.</param>
         /// <param name="prm">The PRM.</param>
-        internal void AddParameterToResultList(List<OracleParameter> result, PropertyDTO prm)
+        internal void AddParameterToResultList(List<DbParameter> result, PropertyDTO prm)
         {
             //already filtered and can be only one queryFieldAttribute
             var attr = prm.Attributes.Where(p => p is ApiQueryFieldAttribute).First() as ApiQueryFieldAttribute;
 
-            var dbType = OracleDbType.Varchar2;
+            var dbType = DbType.String;
             if (!attr.DbType.HasValue)
             {
                 if (prm.IsPrimitive)
                 {
-                    dbType = ApiQueryUtils.ConvertFromSystemTypeToOracleDbType(prm.ValueType);
+                    dbType = ApiQueryUtils.ConvertFromSystemTypeToDbType(prm.ValueType);
                 }
                 else
                 {
-                    dbType = OracleDbType.RefCursor;
+                    dbType = DbType.Object;
                 }
             }
 
-            var oracleParameter = new OracleParameter
-            {
-                ParameterName = attr.Name,
-                OracleDbType = dbType,
-                Direction = (ParameterDirection)attr.Direction,
-                Value = prm.Value ?? (Object)DBNull.Value
-            };
+            var parameter = databaseAdaptor.CreateDbParameter(attr.Name, dbType, (ParameterDirection)attr.Direction, prm.Value ?? (Object)DBNull.Value);
 
-            oracleParameter.IsNullable = prm.Nullable;
+            parameter.IsNullable = prm.Nullable;
 
             if (prm.ValueTypeOf == typeof(String))
             {
                 if (prm.Value != null)
-                    oracleParameter.Size = ((String)prm.Value).Length;
+                    parameter.Size = ((String)prm.Value).Length;
                 else
-                    oracleParameter.Size = attr.Size ?? 4000; //oracle max varchar2 lenght
+                    parameter.Size = attr.Size ?? 4000; //oracle max varchar2 lenght
             }
 
-            result.Add(oracleParameter);
+            result.Add(parameter);
         }
 
     }

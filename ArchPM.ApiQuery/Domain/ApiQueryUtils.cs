@@ -1,7 +1,7 @@
 ﻿using ArchPM.Core.Extensions;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -35,67 +35,17 @@ namespace ArchPM.ApiQuery
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static OracleDbType ConvertFromSystemTypeToOracleDbType(String name)
+        public static DbType ConvertFromSystemTypeToDbType(String name)
         {
-            OracleDbType result = OracleDbType.Varchar2;
-            try
+            DbType result;
+
+            if(Enum.IsDefined(typeof(DbType), name))
             {
-                if (name == "Decimal")
-                {
-                    result = OracleDbType.Decimal;
-                }
-                else if (name == "Double")
-                {
-                    result = OracleDbType.Double;
-                }
-                else if (name == "Int16")
-                {
-                    result = OracleDbType.Int16;
-                }
-                else if (name == "Int32")
-                {
-                    result = OracleDbType.Int32;
-                }
-                else if (name == "Int64")
-                {
-                    result = OracleDbType.Int64;
-                }
-                else if (name == "UInt16")
-                {
-                    result = OracleDbType.Int16;
-                }
-                else if (name == "UInt32")
-                {
-                    result = OracleDbType.Int32;
-                }
-                else if (name == "UInt64")
-                {
-                    result = OracleDbType.Int64;
-                }
-                else if (name == "Single")
-                {
-                    result = OracleDbType.Single;
-                }
-                else if (name == "Byte")
-                {
-                    result = OracleDbType.Byte;
-                }
-                else if (name == "DateTime")
-                {
-                    result = OracleDbType.Date;
-                }
-                else if (name == "Boolean")
-                {
-                    result = OracleDbType.Int32;
-                }
-                else if (name == "String")
-                {
-                    result = OracleDbType.Varchar2;
-                }
+                result = (DbType)Enum.Parse(typeof(DbType), name);
             }
-            catch(Exception ex)
+            else
             {
-                throw new Exception($"Failed at {nameof(ConvertFromSystemTypeToOracleDbType)}", ex);
+                result = DbType.Object;
             }
 
             return result;

@@ -11,7 +11,7 @@ namespace ArchPM.ApiQuery
     /// <summary>
     /// 
     /// </summary>
-    public interface IApiQueryDatabaseProvider
+    public interface IApiQueryDatabaseAdaptor
     {
         /// <summary>
         /// Gets or sets the name of the connection string.
@@ -31,11 +31,16 @@ namespace ArchPM.ApiQuery
         /// Generates the command.
         /// </summary>
         /// <returns></returns>
-        DbCommand GenerateCommand();
+        DbCommand CreateDbCommandCommand();
         /// <summary>
         /// Creates the connection.
         /// </summary>
         /// <returns></returns>
-        DbConnection CreateConnection();
+        DbConnection CreateDbConnection();
+
+        DbDataAdapter CreateDbDataAdaptor(DbCommand command);
+
+        DbParameter CreateDbParameter(String name, DbType dbType, ParameterDirection direction, Object value, Int32 size = 0);
+        DbParameter CreateDbParameter(String name, DbType dbType, ParameterDirection direction, Int32 size = 0);
     }
 }

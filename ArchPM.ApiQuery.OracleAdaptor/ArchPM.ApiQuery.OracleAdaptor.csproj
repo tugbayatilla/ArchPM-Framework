@@ -1,20 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9E31CD0E-A2FD-484C-BE24-35E9A7B6340C}</ProjectGuid>
+    <ProjectGuid>{AC06F093-DAA0-4D6C-A3DB-D2E98BA5C106}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ArchPM.Messaging</RootNamespace>
-    <AssemblyName>ArchPM.Messaging</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>ArchPM.ApiQuery.OracleAdaptor</RootNamespace>
+    <AssemblyName>ArchPM.ApiQuery.OracleAdaptor</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,12 +29,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ArchPM.ApiQuery.OracleAdaptor.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ArchPM.ApiQuery.OracleAdaptor.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,34 +52,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\DefaultMessageReceivedCommandHandler.cs" />
-    <Compile Include="Infrastructure\EventArg\ErrorWhileReceivingEventArgs.cs" />
-    <Compile Include="Infrastructure\EventArg\MessageReceivedEventArgs.cs" />
-    <Compile Include="Infrastructure\MessageObject.cs" />
-    <Compile Include="Infrastructure\MessageReceivedBusinessHandler.cs" />
-    <Compile Include="Infrastructure\MessageReceivedBusinessHandlerResultTypes.cs" />
-    <Compile Include="Infrastructure\TempObjectPackage.cs" />
-    <Compile Include="Infrastructure\TempObjectPackageContainer.cs" />
-    <Compile Include="Infrastructure\TimerElapsedTimes.cs" />
-    <Compile Include="MqClient.cs" />
-    <Compile Include="MqConfig.cs" />
-    <Compile Include="MqReader.cs" />
-    <Compile Include="MqServer.cs" />
+    <Compile Include="OracleAdaptorUtils.cs" />
+    <Compile Include="OracleApiQueryAdaptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransactionType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="ArchPM.ApiQuery.OracleAdaptor.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ArchPM.ApiQuery\ArchPM.ApiQuery.csproj">
+      <Project>{3ae38a9b-bc44-460b-af7b-358f702d5a2f}</Project>
+      <Name>ArchPM.ApiQuery</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
       <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
       <Name>ArchPM.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchPM.Core, Version=0.3.3.36127, Culture=neutral, PublicKeyToken=a7c5f15bb1b78c45, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArchPM.Core.0.3.3\lib\net45\ArchPM.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Messaging" />
@@ -57,6 +54,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
+      <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
+      <Name>ArchPM.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ArchPM.Messaging.MqLog\ArchPM.Messaging.MqLog.csproj">
       <Project>{576a3e71-3b19-4e0f-b812-3bac7c02988c}</Project>
       <Name>ArchPM.Messaging.MqLog</Name>
@@ -65,9 +66,6 @@
       <Project>{9e31cd0e-a2fd-484c-be24-35e9a7b6340c}</Project>
       <Name>ArchPM.Messaging</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

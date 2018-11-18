@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ArchPM.ApiQuery.Tests.Model;
+using ArchPM.ApiQuery.OracleAdaptor.Tests.Model;
 using ArchPM.Core.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ArchPM.ApiQuery.Tests
+namespace ArchPM.ApiQuery.OracleAdaptor.Tests
 {
     [TestClass]
     public class GetObjectTests
@@ -19,7 +19,7 @@ namespace ArchPM.ApiQuery.Tests
             };
 
             var engine = new ApiQueryEngine<GetObjectRequest, GetObjectResponse>(
-                new OracleApiQueryProvider("OracleConnection"));
+                new OracleApiQueryAdaptor("OracleConnection"));
 
             var responseTask = engine.Execute(request);
             var response = responseTask.GetAwaiter().GetResult();

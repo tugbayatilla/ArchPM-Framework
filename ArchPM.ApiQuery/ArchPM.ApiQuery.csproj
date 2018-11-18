@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ArchPM.ApiQuery</RootNamespace>
     <AssemblyName>ArchPM.ApiQuery</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,12 +39,6 @@
     <AssemblyOriginatorKeyFile>ArchPM.ApiQuery.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ArchPM.Core, Version=0.3.3.36127, Culture=neutral, PublicKeyToken=a7c5f15bb1b78c45, processorArchitecture=MSIL">
-      <HintPath>..\packages\ArchPM.Core.0.3.3\lib\net45\ArchPM.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Oracle.DataAccess, Version=2.112.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
-      <HintPath>..\packages\Oracle.DataAccess.x86.2.112.1.0\lib\Oracle.DataAccess.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -59,9 +54,8 @@
     <Compile Include="Domain\ApiQueryFieldThrowExceptionWhenAttribute.cs" />
     <Compile Include="Domain\ApiQueryRequest.cs" />
     <Compile Include="Domain\Constants.cs" />
-    <Compile Include="Domain\IApiQueryDatabaseProvider.cs" />
+    <Compile Include="Domain\IApiQueryDatabaseAdaptor.cs" />
     <Compile Include="Domain\ObjectManager.cs" />
-    <Compile Include="OracleApiQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\ApiQueryFieldAttribute.cs" />
     <Compile Include="Domain\ApiQueryUtils.cs" />
@@ -69,11 +63,16 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ArchPM.ApiQuery.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
     <Content Include="TEST.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ArchPM.Core\ArchPM.Core.csproj">
+      <Project>{c3f8fc44-3d6f-485b-842d-8be24528ae25}</Project>
+      <Name>ArchPM.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

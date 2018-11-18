@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ArchPM.ApiQuery")]
+[assembly: AssemblyTitle("ArchPM.ApiQuery.OracleAdaptor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tugbay ATILLA")]
-[assembly: AssemblyProduct("ArchPM.ApiQuery")]
+[assembly: AssemblyProduct("ArchPM.ApiQuery.OracleAdaptor")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3ae38a9b-bc44-460b-af7b-358f702d5a2f")]
+[assembly: Guid("ac06f093-daa0-4d6c-a3db-d2e98ba5c106")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,6 +32,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyKeyFile("ArchPM.ApiQuery.snk")]
+[assembly: AssemblyVersion("0.0.1")]
+[assembly: AssemblyFileVersion("0.0.1.0")]
+//[assembly: InternalsVisibleTo("ArchPM.ApiQuery.OracleAdaptor.Tests")]
+[assembly: AssemblyKeyFile("ArchPM.ApiQuery.OracleAdaptor.snk")]

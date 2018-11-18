@@ -2,17 +2,18 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ArchPM.ApiQuery.Tests.Model;
+using ArchPM.ApiQuery.OracleAdaptor.Tests.Model;
+using ArchPM.Core.Exceptions;
 
-namespace ArchPM.ApiQuery.Tests
+namespace ArchPM.ApiQuery.OracleAdaptor.Tests
 {
     /// <summary>
     /// Summary description for MultiListTests
     /// </summary>
     [TestClass]
-    public class UtilsTests
+    public class validationTests
     {
-        public UtilsTests()
+        public validationTests()
         {
             //
             // TODO: Add constructor logic here
@@ -60,20 +61,48 @@ namespace ArchPM.ApiQuery.Tests
         #endregion
 
         [TestMethod]
-        public void GetProcedureNameWhenInputHavingDotsThenReturnsFinalPart()
+        [ExpectedException(typeof(ValidationException))]
+        public void ValidateWhenStringLenghtGreaterThan50ThenThrowsException()
         {
-            var result = ApiQueryUtils.GetProcedureName("Test.Test2.Test3.Result");
+            ValidationSampleObject obj = new ValidationSampleObject()
+            {
+                StringPropertyAs50Chars = "123456789012345678901234567890123456789012345678901" //51chars
+            };
 
-            Assert.AreEqual("Result", result);
+            obj.Validate();
         }
 
         [TestMethod]
-        public void GetProcedureNameWhenInputOnlyTextThenReturnsSameText()
+        public void ValidateWhenStringLenghtLessThan50ThenValid()
         {
-            var result = ApiQueryUtils.GetProcedureName("Result");
+            ValidationSampleObject obj = new ValidationSampleObject()
+            {
+                StringPropertyAs50Chars = "12345678901234567890123456789012345678901234567890",//50chars,
+            };
 
-            Assert.AreEqual("Result", result);
+            obj.Validate();
         }
+
+        [TestMethod]
+        public void ValidateWhenStringLenghtGreaterThan50ThenReturn910Message()
+        {
+            var request = new ValidationSampleObject()
+            {
+                StringPropertyAs50Chars = "123456789012345678901234567890123456789012345678901",//51chars,
+            };
+
+            var engine = new ApiQueryEngine<ValidationSampleObject, Int32>(
+                new OracleApiQueryAdaptor("OracleConnection"));
+
+            var responseTask = engine.Execute(request);
+            var response = responseTask.GetAwaiter().GetResult();
+            Assert.AreEqual("910", response.Code, response.Message);
+            Assert.AreEqual(0, response.Data);
+
+            Console.WriteLine(response.Message);   
+
+        }
+
 
     }
 }

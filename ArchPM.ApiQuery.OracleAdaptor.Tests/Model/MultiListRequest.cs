@@ -4,30 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.ApiQuery.Tests.Model
+namespace ArchPM.ApiQuery.OracleAdaptor.Tests.Model
 {
-    class ComplexObjectRequest : ApiQueryRequest
+    class MultiListRequest : ApiQueryRequest
     {
-        [InputApiQueryField("PI_DATA")]
+        [InputApiQueryField("PI_SAMPLE1_ID")]
         public int Id { get; set; }
 
-        public override string ProcedureName => "TATILLA.PCK_APIQUERY.COMPLEX_OBJECT"; 
+        public override string ProcedureName => "TATILLA.PCK_APIQUERY.MULTI_LIST"; //fistan: buna burada gerek yok. bunu engine uzerine alm
     }
 
 
-    class ComplexObjectResponse
+    class MultiListResponse
     {
-        [OutputApiQueryField("PO_SAMPLE1_ID")]
-        public Int32? Id { get; set; }
+        //public MultiListResponse()
+        //{
+        //    List1 = new List<MultiList1>();
+        //    List2 = new List<MultiList2>();
+        //}
 
-        [OutputApiQueryField("PO_1ROW_LIST")]
-        public Complex1 Complex { get; set; }
+        [OutputApiQueryField("PO_DATASET")]
+        public List<MultiList1> List1 { get; set; }
 
-        [OutputApiQueryField("PO_MULTIROW_LIST")]
-        public List<ComplexList2> List2 { get; set; }
+        [OutputApiQueryField("PO_DATASET2")]
+        public List<MultiList2> List2 { get; set; }
     }
 
-    class Complex1
+    class MultiList1
     {
         [OutputApiQueryField("SAMPLE3_ID")]
         public Int32 Sample3Id { get; set; }
@@ -52,7 +55,7 @@ namespace ArchPM.ApiQuery.Tests.Model
 
     }
 
-    class ComplexList2
+    class MultiList2
     {
         [OutputApiQueryField("SAMPLE3_ID")]
         public Int32 Sample3Id { get; set; }

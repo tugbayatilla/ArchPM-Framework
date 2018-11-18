@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchPM.ApiQuery.Tests.Model
+namespace ArchPM.ApiQuery.OracleAdaptor.Tests.Model
 {
     class SingleListRequest : ApiQueryRequest
     {

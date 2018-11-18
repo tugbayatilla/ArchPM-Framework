@@ -1,5 +1,6 @@
 ﻿using ArchPM.Core;
-using Oracle.DataAccess.Client;
+using ArchPM.Core.Extensions;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,8 +15,8 @@ namespace ArchPM.ApiQuery
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="ArchPM.ApiQuery.IApiQueryDatabaseProvider" />
-    public class OracleApiQueryProvider : IApiQueryDatabaseProvider
+    /// <seealso cref="ArchPM.ApiQuery.IApiQueryDatabaseAdaptor" />
+    public class OracleApiQueryAdaptor : IApiQueryDatabaseAdaptor
     {
         /// <summary>
         /// The factory
@@ -23,10 +24,10 @@ namespace ArchPM.ApiQuery
         readonly OracleClientFactory factory = OracleClientFactory.Instance;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OracleApiQueryProvider"/> class.
+        /// Initializes a new instance of the <see cref="OracleApiQueryAdaptor" /> class.
         /// </summary>
         /// <param name="connectionStringName">Name of the connection string.</param>
-        public OracleApiQueryProvider(String connectionStringName)
+        public OracleApiQueryAdaptor(String connectionStringName)
         {
             this.ConnectionStringName = connectionStringName;
         }
@@ -59,15 +60,48 @@ namespace ArchPM.ApiQuery
         /// Creates the connection.
         /// </summary>
         /// <returns></returns>
-        public DbConnection CreateConnection()
+        public DbConnection CreateDbConnection()
         {
             return factory.CreateConnection();
         }
+
+        public DbDataAdapter CreateDbDataAdaptor(DbCommand command)
+        {
+            return new OracleDataAdapter(command as OracleCommand);
+        }
+
+        public DbParameter CreateDbParameter(string name, DbType dbType, ParameterDirection direction, object value, int size = 0)
+        {
+            OracleDbType oracleDbType = OracleAdaptorUtils.ConvertDbTypeToOracleDbType(dbType);
+            var parameter = new OracleParameter()
+            {
+                ParameterName = name,
+                OracleDbType = oracleDbType,
+                Direction = direction,
+                Value = value,
+                Size = size
+            };
+            return parameter;
+        }
+
+        public DbParameter CreateDbParameter(string name, DbType dbType, ParameterDirection direction, int size = 0)
+        {
+            OracleDbType oracleDbType = OracleAdaptorUtils.ConvertDbTypeToOracleDbType(dbType);
+            var parameter = new OracleParameter()
+            {
+                ParameterName = name,
+                OracleDbType = oracleDbType,
+                Direction = direction,
+                Size = size
+            };
+            return parameter;
+        }
+
         /// <summary>
         /// Generates the command.
         /// </summary>
         /// <returns></returns>
-        public DbCommand GenerateCommand()
+        public DbCommand CreateDbCommandCommand()
         {
             return factory.CreateCommand();
         }

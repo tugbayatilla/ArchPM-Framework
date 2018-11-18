@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D7883C81-2B04-4278-97D7-4868606E4E9B}</ProjectGuid>
+    <ProjectGuid>{1762D1D9-ABD8-4D1E-B364-A3A43BAD183B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ArchPM.ApiQuery.Tests</RootNamespace>
-    <AssemblyName>ArchPM.ApiQuery.Tests</AssemblyName>
+    <RootNamespace>ArchPM.ApiQuery.OracleAdaptor.Tests</RootNamespace>
+    <AssemblyName>ArchPM.ApiQuery.OracleAdaptor.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -20,7 +20,6 @@
     <TestProjectType>UnitTest</TestProjectType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,17 +46,34 @@
       <HintPath>..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComplexObjectTests.cs" />
+    <Compile Include="DatabaseProviderTests.cs" />
+    <Compile Include="GetObjectTests.cs" />
+    <Compile Include="Model\ComplexObjectRequest.cs" />
+    <Compile Include="Model\GetObjectRequest.cs" />
+    <Compile Include="Model\InsertSample1Request.cs" />
+    <Compile Include="Model\ListRequest.cs" />
+    <Compile Include="Model\MultiListRequest.cs" />
+    <Compile Include="Model\ValidationSampleObject.cs" />
+    <Compile Include="MultiListTests.cs" />
+    <Compile Include="ReturnValueTests.cs" />
+    <Compile Include="SingleListTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilsTests.cs" />
+    <Compile Include="ValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArchPM.ApiQuery.OracleAdaptor\ArchPM.ApiQuery.OracleAdaptor.csproj">
+      <Project>{ac06f093-daa0-4d6c-a3db-d2e98ba5c106}</Project>
+      <Name>ArchPM.ApiQuery.OracleAdaptor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ArchPM.ApiQuery\ArchPM.ApiQuery.csproj">
       <Project>{3ae38a9b-bc44-460b-af7b-358f702d5a2f}</Project>
       <Name>ArchPM.ApiQuery</Name>

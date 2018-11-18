@@ -1,5 +1,4 @@
 ﻿using ArchPM.Core.Extensions;
-using Oracle.DataAccess.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +17,19 @@ namespace ArchPM.ApiQuery
     public class ObjectManager
     {
         /// <summary>
+        /// The database adaptor
+        /// </summary>
+        readonly IApiQueryDatabaseAdaptor databaseAdaptor;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectManager"/> class.
+        /// </summary>
+        /// <param name="databaseAdaptor">The database adaptor.</param>
+        public ObjectManager(IApiQueryDatabaseAdaptor databaseAdaptor)
+        {
+            this.databaseAdaptor = databaseAdaptor;
+        }
+
+        /// <summary>
         /// Fills the single list.
         /// </summary>
         /// <param name="listType">Type of the list.</param>
@@ -26,7 +38,7 @@ namespace ArchPM.ApiQuery
         /// <exception cref="Exception">
         /// FillSingleList
         /// </exception>
-        public static Object FillSingleList(Type listType, DbCommand dbCommand)
+        public Object FillSingleList(Type listType, DbCommand dbCommand)
         {
             try
             {
@@ -39,7 +51,7 @@ namespace ArchPM.ApiQuery
                 IList resultList = (IList)Activator.CreateInstance(listType);
 
                 DataSet ds = new DataSet();
-                OracleDataAdapter adapter = new OracleDataAdapter(dbCommand as OracleCommand);
+                DbDataAdapter adapter = databaseAdaptor.CreateDbDataAdaptor(dbCommand);
                 adapter.Fill(ds);
 
                 //get name of the cursor name defined on the class
@@ -79,7 +91,7 @@ namespace ArchPM.ApiQuery
         /// <param name="dbCommand">The database command.</param>
         /// <returns></returns>
         /// <exception cref="Exception">FillObject</exception>
-        public static Object FillObject(Type resultType, DbCommand dbCommand)
+        public Object FillObject(Type resultType, DbCommand dbCommand)
         {
             try
             {
@@ -113,7 +125,7 @@ namespace ArchPM.ApiQuery
                             //define list type
                             var listType = responseProperty.ValueTypeOf;
 
-                            var data = ObjectManager.FillSingleList(listType, dbCommand);
+                            var data = FillSingleList(listType, dbCommand);
                             // set value to property
                             PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
                             propertyInfo.SetValue(result, Convert.ChangeType(data, propertyInfo.PropertyType), null);
@@ -122,7 +134,7 @@ namespace ArchPM.ApiQuery
                         {
                             var objectType = responseProperty.ValueTypeOf;
 
-                            var data = ObjectManager.FillClassPropertyInClass(objectType, dbCommand);
+                            var data = FillClassPropertyInClass(objectType, dbCommand);
 
                             // set value to property
                             PropertyInfo propertyInfo = result.GetType().GetProperty(responseProperty.Name);
@@ -148,7 +160,7 @@ namespace ArchPM.ApiQuery
         /// <param name="returnValueName">Name of the return value.</param>
         /// <returns></returns>
         /// <exception cref="Exception">FillObject</exception>
-        public static Object ReturnValue(Type resultType, DbCommand dbCommand, String returnValueName)
+        public Object ReturnValue(Type resultType, DbCommand dbCommand, String returnValueName)
         {
             try
             {
@@ -187,7 +199,7 @@ namespace ArchPM.ApiQuery
         /// <exception cref="Exception">
         /// FillClassPropertyInClass
         /// </exception>
-        internal static Object FillClassPropertyInClass(Type objectType, DbCommand dbCommand)
+        internal Object FillClassPropertyInClass(Type objectType, DbCommand dbCommand)
         {
             try
             {
@@ -199,7 +211,7 @@ namespace ArchPM.ApiQuery
                 var record = Activator.CreateInstance(objectType);
 
                 DataSet ds = new DataSet();
-                OracleDataAdapter adapter = new OracleDataAdapter(dbCommand as OracleCommand);
+                DbDataAdapter adapter = databaseAdaptor.CreateDbDataAdaptor(dbCommand);
                 adapter.Fill(ds);
 
                 //get name of the cursor name defined on the class
@@ -238,7 +250,7 @@ namespace ArchPM.ApiQuery
         /// <exception cref="Exception">
         /// FillValuesInClass
         /// </exception>
-        internal static Object FillValuesInClass(Type objectType, DbCommand dbCommand)
+        internal Object FillValuesInClass(Type objectType, DbCommand dbCommand)
         {
             try
             {
