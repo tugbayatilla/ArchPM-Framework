@@ -38,9 +38,31 @@ namespace ArchPM.ApiQuery
         /// <returns></returns>
         DbConnection CreateDbConnection();
 
+        /// <summary>
+        /// Creates the database data adaptor.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
         DbDataAdapter CreateDbDataAdaptor(DbCommand command);
 
+        /// <summary>
+        /// Creates the database parameter.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         DbParameter CreateDbParameter(String name, DbType dbType, ParameterDirection direction, Object value, Int32 size = 0);
+        /// <summary>
+        /// Creates the database parameter.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         DbParameter CreateDbParameter(String name, DbType dbType, ParameterDirection direction, Int32 size = 0);
     }
 }

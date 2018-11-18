@@ -317,7 +317,7 @@ namespace ArchPM.Messaging.MqLog
 
             messageDto.TBYEntityName = AnonymousSupportedTypeName(typeof(T));
             messageDto.TBYMessageType = messageType;
-            messageDto.Properties = entity.Properties().ToList();
+            messageDto.Properties = entity.CollectProperties().ToList();
 
             return messageDto;
         }

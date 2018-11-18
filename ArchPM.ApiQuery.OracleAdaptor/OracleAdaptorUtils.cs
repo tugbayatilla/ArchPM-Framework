@@ -27,6 +27,11 @@ namespace ArchPM.ApiQuery
         }
 
 
+        /// <summary>
+        /// Converts the type of the database type to oracle database.
+        /// </summary>
+        /// <param name="dbType">Type of the database.</param>
+        /// <returns></returns>
         public static OracleDbType ConvertDbTypeToOracleDbType(DbType dbType)
         {
             OracleDbType result = OracleDbType.Varchar2;

@@ -65,11 +65,25 @@ namespace ArchPM.ApiQuery
             return factory.CreateConnection();
         }
 
+        /// <summary>
+        /// Creates the database data adaptor.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
         public DbDataAdapter CreateDbDataAdaptor(DbCommand command)
         {
             return new OracleDataAdapter(command as OracleCommand);
         }
 
+        /// <summary>
+        /// Creates the database parameter.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         public DbParameter CreateDbParameter(string name, DbType dbType, ParameterDirection direction, object value, int size = 0)
         {
             OracleDbType oracleDbType = OracleAdaptorUtils.ConvertDbTypeToOracleDbType(dbType);
@@ -84,6 +98,14 @@ namespace ArchPM.ApiQuery
             return parameter;
         }
 
+        /// <summary>
+        /// Creates the database parameter.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="dbType">Type of the database.</param>
+        /// <param name="direction">The direction.</param>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
         public DbParameter CreateDbParameter(string name, DbType dbType, ParameterDirection direction, int size = 0)
         {
             OracleDbType oracleDbType = OracleAdaptorUtils.ConvertDbTypeToOracleDbType(dbType);
