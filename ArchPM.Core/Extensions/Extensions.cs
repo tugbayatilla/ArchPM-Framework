@@ -446,9 +446,15 @@ namespace ArchPM.Core.Extensions
             if (entityType.Module.Name == "mscorlib.dll")
                 return new List<PropertyDTO>();
 
-            var entity = Activator.CreateInstance(entityType);
-
-            return CollectProperties(entity, predicate);
+            Object entity = null;
+            try
+            {
+                entity = Activator.CreateInstance(entityType);
+                return CollectProperties(entity, predicate);
+            }
+            catch {
+                return new List<PropertyDTO>();
+            }
         }
 
         /// <summary>

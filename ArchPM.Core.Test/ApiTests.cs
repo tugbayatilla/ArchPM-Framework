@@ -10,6 +10,16 @@ namespace ArchPM.Core.Tests
     public class ApiTests
     {
         [TestMethod]
+        public void ApiHelperOnClassInheritedByClassImplementedByInterface_Having3Class()
+        {
+            var response = new Api.ApiHelpResponse(typeof(ApiHelperOnClassInheritedByClassImplementedByInterface));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(5, response.Actions.Count);
+        }
+
+        [TestMethod]
         public void ApiHelpAttributeDefinedOnlyOnClass_NoInputNoOutput_Valid()
         {
             var response = new Api.ApiHelpResponse(typeof(ApiHelpAttributeDefinedOnlyOnClass));

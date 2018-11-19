@@ -8,6 +8,34 @@ using System.Threading.Tasks;
 namespace ArchPM.Core.Tests.Domain
 {
     [ApiHelp]
+    public class ApiHelperOnClassInheritedByClassImplementedByInterface  : ClassImplementedByInterface
+    {
+        public void MethodNotHavingApiHelpAttribute1()
+        {
+
+        }
+
+        public void MethodNotHavingApiHelpAttribute2()
+        {
+
+        }
+    }
+
+    public class ClassImplementedByInterface : IClassImplementedByInterface
+    {
+        public IClassImplementedByInterface InterfaceProperty { get; set; }
+
+        public void MethodNotHavingApiHelpAttributeInBaseClass()
+        {
+
+        }
+    }
+
+    public interface IClassImplementedByInterface
+    { }
+
+
+    [ApiHelp]
     public class ApiHelpAttributeDefinedOnlyOnClass
     {
         public void MethodNotHavingApiHelpAttribute1()
