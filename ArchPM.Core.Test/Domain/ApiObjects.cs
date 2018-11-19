@@ -7,8 +7,51 @@ using System.Threading.Tasks;
 
 namespace ArchPM.Core.Tests.Domain
 {
+    public class TestApiHelpAttributesClass
+    {
+        [ApiHelp]
+        public void ApiHelpAttributeOnClassTest(ApiHelpAttributeOnClass request)
+        {
+        }
+
+        [ApiHelp]
+        public void ApiHelpAttributeOnPropertiesTest(ApiHelpAttributeOnProperties request)
+        {
+        }
+
+        [ApiHelp]
+        public void NoApiHelpAttributeAtAllTest(NoApiHelpAttributeAtAll request)
+        {
+        }
+    }
+
+    public class NoApiHelpAttributeAtAll
+    {
+        public int MyProperty { get; set; }
+    }
+
     [ApiHelp]
-    public class ApiHelperOnClassInheritedByClassImplementedByInterface  : ClassImplementedByInterface
+    public class ApiHelpAttributeOnClass
+    {
+        public int MyProperty1 { get; set; }
+        public int MyProperty2 { get; set; }
+        public int MyProperty3 { get; set; }
+        public int MyProperty4 { get; set; }
+    }
+
+    public class ApiHelpAttributeOnProperties
+    {
+        [ApiHelp]
+        public int MyProperty1 { get; set; }
+        [ApiHelp]
+        public int MyProperty2 { get; set; }
+
+        public int MyProperty3 { get; set; }
+    }
+
+
+    [ApiHelp]
+    public class ApiHelperOnClassInheritedByClassImplementedByInterface : ClassImplementedByInterface
     {
         public void MethodNotHavingApiHelpAttribute1()
         {
@@ -59,6 +102,7 @@ namespace ArchPM.Core.Tests.Domain
 
         }
 
+        [ApiHelp]
         public class HavingNullablePropertyClass
         {
             public Int32? NullableInt32 { get; set; }

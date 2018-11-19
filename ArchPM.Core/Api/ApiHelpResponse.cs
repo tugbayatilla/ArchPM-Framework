@@ -153,12 +153,30 @@ namespace ArchPM.Core.Api
             //when it is class
             if (!prmType.IsDotNetPirimitive())
             {
-                foreach (var property in prmType.CollectProperties())
+                IEnumerable<PropertyDTO> properties = GetPropertyDTOList(prmType);
+                foreach (var property in properties)
                 {
                     FillRecursively(prm, property);
                 }
             }
 
+        }
+
+        IEnumerable<PropertyDTO> GetPropertyDTOList(Type prmType)
+        {
+            IEnumerable<PropertyDTO> properties = null;
+            //when class has ApiHelp, Collect all properties
+            if (prmType.GetCustomAttribute(typeof(ApiHelpAttribute)) != null)
+            {
+                properties = prmType.CollectProperties();
+            }
+            else
+            {
+                //collect only properties having ApiHelpAttribute 
+                properties = prmType.CollectProperties(p => p.Attributes.Any(x => x is ApiHelpAttribute));
+            }
+
+            return properties;
         }
 
         /// <summary>
@@ -173,7 +191,7 @@ namespace ArchPM.Core.Api
                 prm.Parameters = new List<ApiHelpParameter>();
             }
 
-            var inprm = new ApiHelpParameter()
+            var childPrm = new ApiHelpParameter()
             {
                 Name = propertyDTO.Name,
                 Type = propertyDTO.ValueType,
@@ -182,21 +200,21 @@ namespace ArchPM.Core.Api
 
             if (propertyDTO.IsPrimitive && propertyDTO.Nullable && propertyDTO.ValueTypeOf != typeof(String))
             {
-                inprm.Type += "?";
+                childPrm.Type += "?";
             }
 
             if (propertyDTO.IsList)
             {
-                inprm.Type = $"{propertyDTO.ValueType.Replace("`1", "")}<{propertyDTO.ValueTypeOf.GetGenericArguments()[0].Name}>";
+                childPrm.Type = $"{propertyDTO.ValueType.Replace("`1", "")}<{propertyDTO.ValueTypeOf.GetGenericArguments()[0].Name}>";
             }
             if (propertyDTO.Attributes.FirstOrDefault(p => p is ApiHelpAttribute) is ApiHelpAttribute attr)
             {
-                inprm.Comment = attr.Comment;
+                childPrm.Comment = attr.Comment;
             }
-            prm.Parameters.Add(inprm);
+            prm.Parameters.Add(childPrm);
 
             //recursive same object prevention
-            if (prm.Type == inprm.Type)
+            if (prm.Type == childPrm.Type)
                 return;
 
             if (!propertyDTO.IsPrimitive)
@@ -206,10 +224,10 @@ namespace ArchPM.Core.Api
                 {
                     type = propertyDTO.ValueTypeOf.GetGenericArguments()[0];
                 }
-                var propDtps = type.CollectProperties(); //isgeneric?
-                foreach (var dto in propDtps)
+                IEnumerable<PropertyDTO> properties = GetPropertyDTOList(type);
+                foreach (var dto in properties)
                 {
-                    FillRecursively(inprm, dto);
+                    FillRecursively(childPrm, dto);
                 }
             }
         }
@@ -310,7 +328,7 @@ namespace ArchPM.Core.Api
         /// The name.
         /// </value>
         public String Name { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the type.
         /// </summary>
@@ -318,7 +336,7 @@ namespace ArchPM.Core.Api
         /// The type.
         /// </value>
         public String Type { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the comment.
         /// </summary>

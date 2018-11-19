@@ -10,6 +10,7 @@ namespace ArchPM.Core.Api
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="ArchPM.Core.Api.IApiResponse" />
+    [ApiHelp()]
     public class ApiResponse<T> : IApiResponse<T>
     {
         /// <summary>

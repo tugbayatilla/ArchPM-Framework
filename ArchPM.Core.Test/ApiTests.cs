@@ -3,12 +3,70 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using ArchPM.Core.Extensions;
 using ArchPM.Core.Tests.Domain;
+using System.Linq;
 
 namespace ArchPM.Core.Tests
 {
     [TestClass]
     public class ApiTests
     {
+        public object ApiHelpAttributeOnClassTest { get; private set; }
+
+        [TestMethod]
+        public void NoApiHelpAttributeAtAll_DoNothing()
+        {
+            var response = new Api.ApiHelpResponse(typeof(TestApiHelpAttributesClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(3, response.Actions.Count);
+
+            var NoApiHelpAttributeAtAllTest = response.Actions.FirstOrDefault(p => p.Name == "NoApiHelpAttributeAtAllTest");
+            Assert.IsNotNull(NoApiHelpAttributeAtAllTest, "NoApiHelpAttributeAtAllTest is null");
+
+            Assert.AreEqual(null, NoApiHelpAttributeAtAllTest.InputParameters[0].Parameters);
+        }
+
+        [TestMethod]
+        public void ApiHelpAttributeOnProperties_GetOnlyApiHelpAttributedProperties()
+        {
+            var response = new Api.ApiHelpResponse(typeof(TestApiHelpAttributesClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(3, response.Actions.Count);
+
+            var ApiHelpAttributeOnPropertiesTest = response.Actions.FirstOrDefault(p => p.Name == "ApiHelpAttributeOnPropertiesTest");
+            Assert.IsNotNull(ApiHelpAttributeOnPropertiesTest, "ApiHelpAttributeOnPropertiesTest is null");
+
+            Assert.AreEqual(2, ApiHelpAttributeOnPropertiesTest.InputParameters[0].Parameters.Count);
+            Assert.AreEqual("MyProperty1", ApiHelpAttributeOnPropertiesTest.InputParameters[0].Parameters[0].Name);
+            Assert.AreEqual("MyProperty2", ApiHelpAttributeOnPropertiesTest.InputParameters[0].Parameters[1].Name);
+        }
+
+
+
+        [TestMethod]
+        public void ApiHelpAttributeOnClass_GetAllProperties()
+        {
+            var response = new Api.ApiHelpResponse(typeof(TestApiHelpAttributesClass));
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.Actions, "Actions is null");
+            Assert.AreEqual(3, response.Actions.Count);
+
+            var ApiHelpAttributeOnClassTest = response.Actions.FirstOrDefault(p => p.Name == "ApiHelpAttributeOnClassTest");
+            Assert.IsNotNull(ApiHelpAttributeOnClassTest, "ApiHelpAttributeOnClassTest is null");
+
+            Assert.AreEqual(4, ApiHelpAttributeOnClassTest.InputParameters[0].Parameters.Count);
+            Assert.AreEqual("MyProperty1", ApiHelpAttributeOnClassTest.InputParameters[0].Parameters[0].Name);
+            Assert.AreEqual("MyProperty2", ApiHelpAttributeOnClassTest.InputParameters[0].Parameters[1].Name);
+            Assert.AreEqual("MyProperty3", ApiHelpAttributeOnClassTest.InputParameters[0].Parameters[2].Name);
+            Assert.AreEqual("MyProperty4", ApiHelpAttributeOnClassTest.InputParameters[0].Parameters[3].Name);
+
+        }
+
+
         [TestMethod]
         public void ApiHelperOnClassInheritedByClassImplementedByInterface_Having3Class()
         {
