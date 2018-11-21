@@ -57,6 +57,7 @@
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\EnvironmentInfoElement.cs" />
     <Compile Include="Model\AuthElementCollection.cs" />
+    <Compile Include="Model\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -50,6 +50,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionTests.cs" />
     <Compile Include="CaseInsensitiveValueSectionSampleTests.cs" />
     <Compile Include="ValidSectionSampleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
