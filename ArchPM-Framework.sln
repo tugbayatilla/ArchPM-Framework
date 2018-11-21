@@ -74,6 +74,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.ApiQuery.OracleAdapt
 		{C3F8FC44-3D6F-485B-842D-8BE24528AE25} = {C3F8FC44-3D6F-485B-842D-8BE24528AE25}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.ApiQuery.AuthConfigSection", "ArchPM.ApiQuery.AuthConfigSection\ArchPM.ApiQuery.AuthConfigSection.csproj", "{1AC083ED-D53D-4A8E-B1CB-D0BFE417608C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchPM.ApiQuery.AuthConfigSection.Tests", "ArchPM.ApiQuery.AuthConfigSection.Tests\ArchPM.ApiQuery.AuthConfigSection.Tests.csproj", "{4F25FFFF-4AA3-4731-A5C9-CFF172E18537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +152,14 @@ Global
 		{1762D1D9-ABD8-4D1E-B364-A3A43BAD183B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1762D1D9-ABD8-4D1E-B364-A3A43BAD183B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1762D1D9-ABD8-4D1E-B364-A3A43BAD183B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC083ED-D53D-4A8E-B1CB-D0BFE417608C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC083ED-D53D-4A8E-B1CB-D0BFE417608C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC083ED-D53D-4A8E-B1CB-D0BFE417608C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC083ED-D53D-4A8E-B1CB-D0BFE417608C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25FFFF-4AA3-4731-A5C9-CFF172E18537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25FFFF-4AA3-4731-A5C9-CFF172E18537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25FFFF-4AA3-4731-A5C9-CFF172E18537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25FFFF-4AA3-4731-A5C9-CFF172E18537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
