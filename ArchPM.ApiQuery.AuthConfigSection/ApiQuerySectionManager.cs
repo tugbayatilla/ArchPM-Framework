@@ -24,16 +24,19 @@ namespace ArchPM.ApiQuery.AuthConfigSection
         /// <summary>
         /// Initializes the specified section name.
         /// </summary>
-        /// <param name="config">The configuration. use WebConfigurationManager.OpenWebConfiguration for web, 
-        /// ConfigurationManager.OpenExeConfiguration for client</param>
         /// <param name="sectionName">Name of the section.</param>
+        /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static ApiQuerySectionManager Initialize(String sectionName = "ApiQueryAuthSection")
+        public static ApiQuerySectionManager Initialize(String sectionName = "ApiQueryAuthSection", Configuration config = null)
         {
             ApiQuerySectionManager manager = new ApiQuerySectionManager();
 
+            if(config == null)
+            {
+                config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            }
             // Get the custom configuration section.
-            ApiQueryAuthSection section = ConfigurationManager.GetSection(sectionName) as ApiQueryAuthSection;
+            ApiQueryAuthSection section = config.GetSection(sectionName) as ApiQueryAuthSection;
             section.ThrowExceptionIfNull($"Section '{sectionName}' is not defined in configSections!");
 
             manager.Section = section;
