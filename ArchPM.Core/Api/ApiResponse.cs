@@ -36,12 +36,12 @@ namespace ArchPM.Core.Api
         /// </value>
         public virtual String Message { get; set; }
         /// <summary>
-        /// Gets the source.
+        /// Gets or sets the Source.
         /// </summary>
         /// <value>
-        /// Default is Core
+        /// The default value is Core
         /// </value>
-        public virtual String Source => "Core";
+        public virtual String Source { get; set; }
         /// <summary>
         /// Gets or sets the errors.
         /// </summary>
@@ -63,7 +63,6 @@ namespace ArchPM.Core.Api
         /// The Execution Time
         /// </value>
         public virtual Int64 ET { get; set; }
-
         /// <summary>
         /// Gets or sets the requested URL.
         /// </summary>
@@ -71,7 +70,6 @@ namespace ArchPM.Core.Api
         /// The requested URL.
         /// </value>
         public String RequestedUrl { get; set; }
-
         /// <summary>
         /// Gets or sets the try count.
         /// </summary>
@@ -87,6 +85,7 @@ namespace ArchPM.Core.Api
         {
             this.Errors = new List<ApiError>();
             this.TryCount = 0;
+            this.Source = "Core";
         }
 
         /// <summary>
