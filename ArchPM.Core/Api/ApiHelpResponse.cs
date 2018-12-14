@@ -115,12 +115,6 @@ namespace ArchPM.Core.Api
                 prm.Name = "Void";
             }
 
-            if (prmType.IsGenericType)
-            {
-                prm.Name = prmType.Name;
-                prm.Type = $"{prmType.Name.Replace("`1", "")}<{prmType.GetGenericArguments()[0].Name}>";
-            }
-
             //value type
             if (prmType.IsDotNetPirimitive())
             {
@@ -138,12 +132,20 @@ namespace ArchPM.Core.Api
                     }
                 }
             }
-
-            //when simple class
-            if (!prmType.IsDotNetPirimitive() && !prmType.IsList())
+            else
             {
-                prm.Name = parameter.Name ?? prmType.Name;
-                prm.Type = prmType.Name;
+                //when simple class
+                if (!prmType.IsDotNetPirimitive() && !prmType.IsList())
+                {
+                    prm.Name = parameter.Name ?? prmType.Name;
+                    prm.Type = prmType.Name;
+                }
+
+                if (prmType.IsGenericType)
+                {
+                    prm.Name = prmType.Name;
+                    prm.Type = $"{prmType.Name.Replace("`1", "")}<{prmType.GetGenericArguments()[0].Name}>";
+                }
             }
 
             //when having ApiHelp Attribute

@@ -61,6 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ApiHelpTestObjects\ApiResponseSamples.cs" />
     <Compile Include="ApiHelpTestObjects\Class_NoApiHelp.cs" />
     <Compile Include="ApiHelpTestObjects\Class_WithoutApiHelp.cs" />
     <Compile Include="ApiHelpTests.cs" />
