@@ -63,7 +63,7 @@
     <Compile Include="Api\IApiResponseError.cs" />
     <Compile Include="IO\LogFileTraceListener.cs" />
     <Compile Include="IO\LogToFileManager.cs" />
-    <Compile Include="IO\Utils.cs" />
+    <Compile Include="IO\IOUtils.cs" />
     <Compile Include="Notifications\NotificationException.cs" />
     <Compile Include="Notifications\INotification.cs" />
     <Compile Include="Notifications\INotifier.cs" />

@@ -8,7 +8,7 @@ using System.Linq;
 namespace ArchPM.Core.Tests
 {
     [TestClass]
-    public class ApiTests
+    public class ApiHelpTests
     {
         public object ApiHelpAttributeOnClassTest { get; private set; }
 

@@ -88,8 +88,9 @@ namespace ArchPM.Core.Api
                 }
 
                 //output parameters
-                Fill(method.ReturnParameter, action.OutputParameters);
-
+                List<ApiHelpParameter> outargs = new List<ApiHelpParameter>();
+                Fill(method.ReturnParameter, outargs);
+                action.OutputParameter = outargs.FirstOrDefault();
                 //add into the response
                 response.Actions.Add(action);
             }
@@ -110,7 +111,9 @@ namespace ArchPM.Core.Api
             prmType = SkipTaskType(prmType);
 
             if (prmType.Name == "Void")
-                return;
+            {
+                prm.Name = "Void";
+            }
 
             if (prmType.IsGenericType)
             {
@@ -272,7 +275,7 @@ namespace ArchPM.Core.Api
         public ApiHelpAction()
         {
             this.InputParameters = new List<ApiHelpParameter>();
-            this.OutputParameters = new List<ApiHelpParameter>();
+            this.OutputParameter = new ApiHelpParameter();
         }
 
         /// <summary>
@@ -302,7 +305,7 @@ namespace ArchPM.Core.Api
         /// <value>
         /// The output parameters.
         /// </value>
-        public List<ApiHelpParameter> OutputParameters { get; set; }
+        public ApiHelpParameter OutputParameter { get; set; }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

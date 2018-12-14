@@ -19,7 +19,6 @@
         /// <value>
         /// The subject.
         /// </value>
-
         public virtual string Subject { get; set; }
         
         /// <summary>

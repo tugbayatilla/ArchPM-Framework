@@ -12,7 +12,7 @@ namespace ArchPM.Core.IO
     /// <summary>
     /// 
     /// </summary>
-    public class Utils
+    public class IOUtils
     {
         /// <summary>
         /// Waits file to be ready or returns null
@@ -33,7 +33,7 @@ namespace ArchPM.Core.IO
                     {
                         // If the file can be opened for exclusive access it means that the file
                         // is no longer locked by another process.
-                        FileStream inputStream = Utils.GetOrCreateFile(fileFullPath);
+                        FileStream inputStream = IOUtils.GetOrCreateFile(fileFullPath);
                         if (!inputStream.CanWrite)
                             continue;
 

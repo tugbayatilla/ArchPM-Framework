@@ -61,10 +61,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ApiHelpTestObjects\Class_NoApiHelp.cs" />
+    <Compile Include="ApiHelpTestObjects\Class_WithoutApiHelp.cs" />
+    <Compile Include="ApiHelpTests.cs" />
+    <Compile Include="ApiHelpTestObjects\Class_WithApiHelp.cs" />
     <Compile Include="Domain\ApiObjects.cs" />
     <Compile Include="Domain\ClassObjects.cs" />
     <Compile Include="ApiTests.cs" />
     <Compile Include="EnumTests.cs" />
+    <Compile Include="ExtensionMethodsTests.cs" />
     <Compile Include="GetPropertiesTests.cs" />
     <Compile Include="PropertiesTests.cs" />
     <Compile Include="TextExtensionsTests.cs" />
@@ -84,6 +89,7 @@
   <ItemGroup>
     <None Include="ArchPM.Core.Tests.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

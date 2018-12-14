@@ -18,7 +18,11 @@ namespace ArchPM.Core
         {
             if (exception == null)
             {
-                exception = new Exception(String.Format("Object is null!"));
+                exception = new Exception($"An object '{nameof(obj)}' instance can't be null");
+            }
+            if(predicate == null)
+            {
+                throw new Exception($"{nameof(predicate)} is null!");
             }
             if (predicate.Invoke(obj))
             {
@@ -36,19 +40,15 @@ namespace ArchPM.Core
         /// <exception cref="Exception"></exception>
         public static void ThrowExceptionIf<T>(this T obj, Func<T, Boolean> predicate, String message)
         {
-            if (predicate.Invoke(obj))
-            {
-                throw new Exception(message);
-            }
+            ThrowExceptionIf(obj, predicate, new Exception(message));
         }
 
         /// <summary>
         /// Throws the exception if null.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
         /// <param name="exception">The exception.</param>
-        public static void ThrowExceptionIfNull<T>(this T obj, Exception exception = null)
+        public static void ThrowExceptionIfNull(this Object obj, Exception exception = null)
         {
             obj.ThrowExceptionIf(p => p == null, exception);
         }
@@ -74,7 +74,7 @@ namespace ArchPM.Core
         {
             if(String.IsNullOrEmpty(message))
             {
-                message = "A object instance can't be null";
+                message = $"An object '{nameof(obj)}' instance can't be null";
             }
             var ex = (T)Activator.CreateInstance(typeof(T), message);
 

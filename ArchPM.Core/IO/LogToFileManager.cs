@@ -42,7 +42,7 @@ namespace ArchPM.Core.IO
         public LogToFileManager()
         {
             this.LogDirectoryPath = Path.Combine(Environment.CurrentDirectory, "Logs");
-            this.LogFileNameWithExtension = Utils.GenerateDateTimeBasedFileNameWithExtension();
+            this.LogFileNameWithExtension = IOUtils.GenerateDateTimeBasedFileNameWithExtension();
             this.WaitMilliseconds = 10000;
         }
 
@@ -56,14 +56,14 @@ namespace ArchPM.Core.IO
         public async Task AppendToFile(String message, NotifyAs notifyAs = NotifyAs.Message, Boolean isNewLine = true)
         {
             //creates directory if not exist
-            Utils.GetOrCreateDirectory(LogDirectoryPath);
+            IOUtils.GetOrCreateDirectory(LogDirectoryPath);
 
             var fileFullPath = Path.Combine(LogDirectoryPath, LogFileNameWithExtension);
 
             // Append new text to an existing file.
             // The using statement automatically flushes AND CLOSES the stream and calls 
             // IDisposable.Dispose on the stream object.
-            FileStream fileStream = await Utils.WaitFileTillReadyToAppend(fileFullPath);
+            FileStream fileStream = await IOUtils.WaitFileTillReadyToAppend(fileFullPath);
             if (fileStream != null)
             {
                 using (fileStream)

@@ -10,25 +10,12 @@ namespace ArchPM.Core.Enums
     public class EnumDescriptionAttribute : Attribute
     {
         /// <summary>
-        /// The description
-        /// </summary>
-        private String description;
-
-        /// <summary>
-        /// The exclude
-        /// </summary>
-        private Boolean exclude = false;
-
-        /// <summary>
-        /// Get description
+        /// Gets and Sets description
         /// </summary>
         /// <value>
         /// The description.
         /// </value>
-        public String Description
-        {
-            get { return description; }
-        }
+        public String Description { get; set; }
 
         /// <summary>
         /// Gets and Sets it is excluded for not
@@ -36,11 +23,7 @@ namespace ArchPM.Core.Enums
         /// <value>
         ///   <c>true</c> if exclude; otherwise, <c>false</c>.
         /// </value>
-        public Boolean Exclude
-        {
-            get { return exclude; }
-            set { exclude = value; }
-        }
+        public Boolean Exclude { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumDescriptionAttribute"/> class.
@@ -48,7 +31,8 @@ namespace ArchPM.Core.Enums
         /// <param name="description">The description.</param>
         public EnumDescriptionAttribute(String description)
         {
-            this.description = description;
+            this.Description = description;
+            this.Exclude = false;
         }
 
        

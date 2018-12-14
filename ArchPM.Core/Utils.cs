@@ -13,18 +13,23 @@ namespace ArchPM.Core
         /// <summary>
         /// The lock
         /// </summary>
-        static Object _lock = new object();
+        static readonly Object _lock = new object();
 
         /// <summary>
         /// Creates the unique number.
         /// </summary>
         /// <returns></returns>
-        public static UInt64 CreateUniqueNumber()
+        public static UInt64 CreateUniqueNumber(DateTime? now = null)
         {
+            if(!now.HasValue)
+            {
+                now = DateTime.Now;
+            }
+
             UInt64 result = default(UInt64);
             lock (_lock)
             {
-                var unique = String.Format("{0:yyyyMMddHHmmssffffff}", DateTime.Now);
+                var unique = String.Format("{0:yyyyMMddHHmmssffffff}", now);
                 result = Convert.ToUInt64(unique);
             }
             return result;
