@@ -16,10 +16,10 @@ using System.Threading.Tasks;
 namespace ArchPM.ApiQuery
 {
     /// <summary>
-    /// 
+    /// Generating and executing sql query with given Request object and returning Response object depending on query result
     /// </summary>
-    /// <typeparam name="Req">The type of the eq.</typeparam>
-    /// <typeparam name="Res">The type of the es.</typeparam>
+    /// <typeparam name="Req">Request object must match with given Procedure input parameters</typeparam>
+    /// <typeparam name="Res">Response object must match with given Procedure output parameters</typeparam>
     public class ApiQueryEngine<Req, Res>
         where Req : ApiQueryRequest
     {
@@ -56,6 +56,8 @@ namespace ArchPM.ApiQuery
                     sw.Start();
 
                     request.ThrowExceptionIfNull($"Request '{typeof(Req).Name}' cannot be null");
+
+                    request.PreValidate();
                     //validate request object
                     request.Validate();
 

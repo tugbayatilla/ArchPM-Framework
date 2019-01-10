@@ -129,5 +129,12 @@ namespace ArchPM.ApiQuery
 
         }
 
+        /// <summary>
+        /// Executes just before Validate method.
+        /// </summary>
+        public virtual void PreValidate()
+        {
+        }
+
     }
 }
